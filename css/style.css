@@ -1,0 +1,54 @@
+html
+{
+	height: 100%;
+	margin:0;
+	padding:0;
+	background: url(Images/background/fond1.png) no-repeat center fixed;
+	background-size: cover; /* version standardisée */
+	font-family: Ubuntu;
+}
+
+.nav
+{
+	background-image:linear-gradient(white, black);
+	height :50px;
+        width: 100%;
+}
+
+.nav_link
+{
+	color: #DDD9D1;
+}
+
+.bouton_connexion
+{
+	color: #DDD9D1;
+	background-image: linear-gradient(to bottom, #626055, #3F3E39);
+	border-radius: 7px;
+	font-size: 15px;
+	padding: 10px 20px 10px 20px;
+ 	border: solid #000000 1px;
+	text-decoration: none;
+}
+
+.bouton_connexion:hover
+{
+	background-image: linear-gradient(to bottom, #3F3E39, #626055);
+}
+
+.bouton_inscription
+{
+	color: #DDD9D1;
+	background-image: linear-gradient(to bottom, #3498db, #2980b9);
+        border-radius: 7px;
+        font-size: 15px;
+        padding: 10px 20px 10px 20px;
+        border: solid #000000 1px;
+        text-decoration: none;
+}
+
+.bouton_inscription:hover
+{
+	background-image: linear-gradient(to bottom, #2980b9, #3498db);
+}
+
