@@ -5,7 +5,7 @@
 	<a class="nav_link" href="pricing.php"> Princing </a>
 	
 	<form method="post" action="searchbar.php">
-        	<label for="Search"></label><input type="text" name="searchbar" id="searchbar" placeholder="Rechercher" />
+        	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Rechercher" />
         </form>
 
 	<div class="bouton_connexion">

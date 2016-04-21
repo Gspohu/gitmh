@@ -10,6 +10,9 @@ html
 
 .nav
 {
+	position: absolute;
+	top: 0;
+	left: 0;
 	background-image:linear-gradient(white, black);
 	height :50px;
         width: 100%;
@@ -22,6 +25,9 @@ html
 
 .bouton_connexion
 {
+	position: relative;
+	height: 40px;
+	width: 100px;	
 	color: #DDD9D1;
 	background-image: linear-gradient(to bottom, #626055, #3F3E39);
 	border-radius: 7px;
@@ -38,6 +44,9 @@ html
 
 .bouton_inscription
 {
+	position: relative;
+	height: 40px;
+	width: 100px;
 	color: #DDD9D1;
 	background-image: linear-gradient(to bottom, #3498db, #2980b9);
         border-radius: 7px;

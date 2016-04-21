@@ -1,4 +1,4 @@
 	<body>
-		<h1>Test de la page</h1>
+		<p>Test de la page</p>
 
 	</body>
