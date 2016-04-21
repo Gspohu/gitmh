@@ -23,6 +23,12 @@ html
 	color: #DDD9D1;
 }
 
+.nav_logo
+{
+	float: left;
+	height: 40px;
+}
+
 .bouton_connexion
 {
 	position: relative;
