@@ -13,6 +13,8 @@ a
 	text-decoration: none;
 }
 
+/*Barre de navigation hors connexion */
+
 .nav
 {
 	position: absolute;
@@ -24,6 +26,13 @@ a
 	background-image:linear-gradient(#7A776A, #2D2C28);
 	height: 65px;
         width: 100%;
+}
+
+.nav_link_div
+{
+	width: 25%;
+	display: flex;
+	justify-content: space-around;
 }
 
 .nav_link
@@ -41,12 +50,19 @@ a
 	height: 60px;
 }
 
+.div_button
+{
+	width: 20%;
+        display: flex;
+        justify-content: space-around;	
+}
+
 .bouton_connexion
 {
 	height: 20px;
 	width: 50px;	
 	color: #DDD9D1;
-	background-image: linear-gradient(to bottom, #626055, #3F3E39);
+	background-image: linear-gradient(to bottom, #68655A, #3D3B36);
 	border-radius: 7px;
 	font-size: 15px;
 	padding: 10px 20px 10px 20px;
@@ -56,7 +72,7 @@ a
 
 .bouton_connexion:hover
 {
-	background-image: linear-gradient(to bottom, #3F3E39, #626055);
+	background-image: linear-gradient(to bottom, #3D3B36, #68655A);
 	color: #FFFFFF;
 }
 
@@ -65,7 +81,7 @@ a
 	height: 20px;
 	width: 50px;
 	color: #DDD9D1;
-	background-image: linear-gradient(to bottom, #3498db, #2573A7);
+	background-image: linear-gradient(to bottom, #37A0E7, #2573A7);
         border-radius: 7px;
         font-size: 15px;
         padding: 10px 20px 10px 20px;
@@ -75,15 +91,26 @@ a
 
 .bouton_inscription:hover
 {
-	background-image: linear-gradient(to bottom, #2573A7, #3498db);
+	background-image: linear-gradient(to bottom, #2573A7, #37A0E7);
 	color: #FFFFFF;	
+}
+
+.div_searchbar
+{
+	width: 30%;
+        margin-left: 10%;
+        margin-right: 5%;
+
 }
 
 .searchbar
 {
-	width: 300px;
+	width: 100%;
 	height: 25px;
+	border: solid 1px black;
 	border-radius: 6px;
-	margin-left: 85px;
-	margin-right: 40px;
 }
+
+/*Barre de navigation utilisateur connecté*/
+
+/**/
