@@ -14,7 +14,7 @@
         </head>
 
 <?php
-	include_once('controller/index.php');
+	include_once('controller/inscription.php');
 ?>
 
 <html>
