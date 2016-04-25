@@ -15,7 +15,8 @@
 
 .nav_link_div
 {
-	width: 25%;
+	width: 20%;
+	max-width: 380px;
 	display: flex;
 	justify-content: space-around;
 }
@@ -38,6 +39,7 @@
 .div_button
 {
 	width: 20%;
+	max-width: 270px;
         display: flex;
         justify-content: space-around;	
 }
@@ -45,11 +47,10 @@
 .bouton_connexion
 {
 	height: 20px;
-	width: 50px;	
+	width: 55px;	
 	color: #DDD9D1;
 	background-image: linear-gradient(to bottom, #68655A, #3D3B36);
 	border-radius: 7px;
-	font-size: 15px;
 	padding: 10px 20px 10px 20px;
  	border: solid #1F1E1C 1px;
 	text-decoration: none;
@@ -68,7 +69,6 @@
 	color: #DDD9D1;
 	background-image: linear-gradient(to bottom, #37A0E7, #2573A7);
         border-radius: 7px;
-        font-size: 15px;
         padding: 10px 20px 10px 20px;
         border: solid #1F1E1C 1px;
         text-decoration: none;
