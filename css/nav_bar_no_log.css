@@ -8,7 +8,6 @@
 	align-items: center;
 	top: 0;
 	left: 0;
-	/*background: #2B2A26;*/
 	background-image: url(../images/texture_nav.png);
 	height: 65px;
         width: 100%;
@@ -53,7 +52,7 @@
 	height: 20px;
 	width: 55px;	
 	color: #DDD9D1;
-	background-image: linear-gradient(to bottom, #504D45, #35332E);
+	background-image: url(../images/texture_connexion.png);;
 	border-radius: 5px;
 	padding: 10px 20px 10px 20px;
  	border: solid #1F1E1C 1px;
@@ -62,7 +61,6 @@
 
 .bouton_connexion:hover
 {
-	background-image: linear-gradient(to bottom, #35332E, #504D45);
 	color: #FFFFFF;
 }
 
@@ -71,7 +69,7 @@
 	height: 20px;
 	width: 50px;
 	color: #DDD9D1;
-	background-image: linear-gradient(to bottom, #37A0E7, #2573A7);
+	background-image: url(../images/texture_titlefield.png);
         border-radius: 5px;
         padding: 10px 20px 10px 20px;
         border: solid #1F1E1C 1px;
@@ -80,7 +78,6 @@
 
 .bouton_inscription:hover
 {
-	background-image: linear-gradient(to bottom, #2573A7, #37A0E7);
 	color: #FFFFFF;	
 }
 
