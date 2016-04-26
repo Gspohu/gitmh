@@ -8,9 +8,11 @@
 	align-items: center;
 	top: 0;
 	left: 0;
-	background-image:linear-gradient(#7A776A, #2D2C28);
+	background: #2B2A26;
 	height: 65px;
         width: 100%;
+	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7); 
+	z-index: 2000;
 }
 
 .nav_link_div
@@ -24,7 +26,7 @@
 
 .nav_link
 {
-	color: #DDD9D1;
+	color: #B9B6B0;
 }
 
 .nav_link:hover
@@ -50,8 +52,8 @@
 	height: 20px;
 	width: 55px;	
 	color: #DDD9D1;
-	background-image: linear-gradient(to bottom, #68655A, #3D3B36);
-	border-radius: 7px;
+	background-image: linear-gradient(to bottom, #504D45, #35332E);
+	border-radius: 5px;
 	padding: 10px 20px 10px 20px;
  	border: solid #1F1E1C 1px;
 	text-decoration: none;
@@ -59,7 +61,7 @@
 
 .bouton_connexion:hover
 {
-	background-image: linear-gradient(to bottom, #3D3B36, #68655A);
+	background-image: linear-gradient(to bottom, #35332E, #504D45);
 	color: #FFFFFF;
 }
 
@@ -69,7 +71,7 @@
 	width: 50px;
 	color: #DDD9D1;
 	background-image: linear-gradient(to bottom, #37A0E7, #2573A7);
-        border-radius: 7px;
+        border-radius: 5px;
         padding: 10px 20px 10px 20px;
         border: solid #1F1E1C 1px;
         text-decoration: none;
@@ -94,6 +96,6 @@
 	width: 100%;
 	height: 25px;
 	border: solid 1px black;
-	border-radius: 6px;
+	border-radius: 5px;
 }
 
