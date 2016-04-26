@@ -1,0 +1,84 @@
+.tab
+{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	position: relative;
+	margin-top: 20px;
+	color: #DDD9D1;	
+}
+
+.tab1
+{
+	position: relative;
+	width: 250px;
+	height: 350px;
+        border-radius: 5px;
+        border: solid black 0px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+	background:
+			linear-gradient(45deg, #277676 45px, transparent 45px)64px 64px,
+			linear-gradient(45deg, #277676 45px, transparent 45px,transparent 91px, #77AA99 91px, #77AA99 135px, transparent 135px),
+			linear-gradient(-45deg, #277676 23px, transparent 23px, transparent 68px,#277676 68px,#277676 113px,transparent 113px,transparent 158px,#277676 158px);
+	background-color:#77AA99;
+	background-size: 128px 128px;
+}
+
+.tab2
+{
+        position: relative;
+        width: 250px;
+        height: 350px;
+        background-image: url(../images/texture_nav.png);
+        border-radius: 5px;
+        border: solid black 0px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.tab3
+{
+        position: relative;
+        width: 250px;
+        height: 350px;
+	background-color:#269;
+	background-image: linear-gradient(white 2px, transparent 2px),
+	linear-gradient(90deg, white 2px, transparent 2px),
+	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+	background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
+	border-radius: 5px;
+        border: solid black 0px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.tab_img
+{
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 10px;
+}
+
+.text_tab
+{
+	position: relative;
+	width: 80%;
+	margin-left: 10%;
+	margin-top: 20px;
+}
+
+.title_tab
+{
+	position: relative;
+	margin-top: 10px;
+	width: 40%;
+	height: 20px;
+	background-image: url(../images/texture_inscription.png);
+	border-radius: 0px 5px 5px 0px;
+	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);		
+}
+
+.title_text
+{
+	margin-left: 10px;
+}
