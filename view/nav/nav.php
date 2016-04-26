@@ -15,7 +15,7 @@
 	 </div>
 
 	<div class="div_button">
-		<a class="bouton_connexion" href="index.php">Sign up</a>
+		<a class="bouton_connexion" href="connexion.php">Sign up</a>
 		<a class="bouton_inscription" href="inscription.php">Sign in</a>
 	</div>
 

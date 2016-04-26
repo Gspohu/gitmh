@@ -1,4 +1,4 @@
-.inscription
+.connexion
 {
         position: relative;
 	width: 30%;
@@ -13,7 +13,7 @@
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
-.title_inscription
+.title_connexion
 {
 	position: relative;
 	font-size: 30px;
@@ -22,7 +22,7 @@
 	margin-bottom: -10px;
 }
 
-.inscription_field
+.connexion_field
 {
 	position: relative;
 	width: 100%;
@@ -33,25 +33,25 @@
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
-.title_form_inscription
+.title_form_connexion
 {
 	position: relative;
 	bottom: -16px;
 	width: 50%;
-	background-image: url(../images/texture_inscription.png);
+	background-image: url(../images/texture_connexion.png);
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	border-radius: 2px;
 	padding: 5px 5px 5px 5px;
 }
 
-.submit_inscription
+.submit_connexion
 {
 	position: relative;
 	width: calc(100% + 25px);
 	left: -10px;
 	bottom: -10px;
 	height: 30px;
-	background-image: url(../images/texture_inscription.png);	
+	background-image: url(../images/texture_connexion.png);	
 	content: '||||||';
 	border-radius: 5px;
 	border: solid black 1px;
@@ -59,7 +59,18 @@
 	font-size: 16px;
 }
 
-.submit_inscription:hover
+.submit_connexion:hover
+{
+	color: white;
+}
+
+.text_connexion 
+{
+	color: #DDD9D1;
+	text-decoration: none;
+}
+
+.text_connexion:hover
 {
 	color: white;
 }
