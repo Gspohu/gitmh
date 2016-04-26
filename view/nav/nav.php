@@ -1,7 +1,7 @@
 <header>
 <div class="nav">
 	<a href="index.php"><img class="nav_logo" src="images/logo_alpha.png" alt="Logo" /></a>
-	
+
 	<div class="nav_link_div">
 		<a class="nav_link" href="open-hardware.php">Open-Hardware</a> 
 		<a class="nav_link" href="tools.php">Tools</a> 

@@ -5,12 +5,19 @@ html
 	padding:0;
 	background: url(Images/background/fond1.png) no-repeat center fixed;
 	background-size: cover;
-	font-family: 'Ubuntu'
+	font-family: 'Ubuntu';
+	display: flex;
+	flex-direction: column;
 }
 
 a
 {
 	text-decoration: none;
+}
+
+body
+{
+	margin: 0;
 }
 
 @font-face {
