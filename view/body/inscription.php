@@ -1,14 +1,14 @@
 <body>
 		
 	<div class="inscription">
-		<h1>Inscription</h1>
+		<p class="title_inscription" >Sign in</p>
 
                 <form method="post" >
-                        Pseudo <p><label for="Pseudo"></label> <input type="text" name="reg_pseudo" id="Pseudo" value="<?php echo htmlspecialchars($_POST['reg_pseudo']);?>" /></p>
-                        Mot de passe <p><label for="Mot de passe"></label> <input type="password" name="reg_password" id="Mot de passe" /></p>
-			Re-tapez mot de passe <p><label for="ReMot de passe"></label> <input type="password" name="reg_repassword" id="ReMot de passe" /></p>
-                        Adresse e-mail <p><label for="Mail"></label> <input type="text" name="reg_mail" id="Mail" value="<?php echo htmlspecialchars($_POST['reg_mail']);?>"/></p>
-		        <input type="submit" value="Envoyer" />
+                        <p class="title_form_inscription" >Username<p> <p><label for="Pseudo"></label> <input class="inscription_field" type="text" name="reg_pseudo" id="Pseudo" value="<?php echo htmlspecialchars($_POST['reg_pseudo']);?>" /></p>
+                        <p class="title_form_inscription" >Password<p> <p><label for="Mot de passe"></label> <input class="inscription_field" type="password" name="reg_password" id="Mot de passe" /></p>
+			<p class="title_form_inscription" >Re-password<p> <p><label for="ReMot de passe"></label> <input class="inscription_field" type="password" name="reg_repassword" id="ReMot de passe" /></p>
+                        <p class="title_form_inscription" >Email<p> <p><label for="Mail"></label> <input class="inscription_field" type="text" name="reg_mail" id="Mail" value="<?php echo htmlspecialchars($_POST['reg_mail']);?>"/></p>
+		        <input class="submit_inscription" type="submit" value="Submit" />
 		</form>
 
 	</div>
