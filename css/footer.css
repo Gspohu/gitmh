@@ -35,3 +35,26 @@ footer
 {
 	margin-left: 10px;	
 }
+
+.links_footer
+{
+	position: relative;
+	display: flex;
+        justify-content: space-between;	
+}
+
+.text_footer
+{
+	color: #DDD9D1;
+	margin-right: 10%;
+}
+
+.text_footer p
+{
+	line-height: 6pt;
+}
+
+.text_footer p:hover
+{
+	color: white;
+}

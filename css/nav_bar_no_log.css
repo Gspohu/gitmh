@@ -34,6 +34,11 @@
 	color: #FFFFFF;
 }
 
+.nav_link:active
+{
+	text-shadow: -1px -1px 2px #000000;
+}
+
 .nav_logo
 {
 	height: 60px;
