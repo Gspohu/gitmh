@@ -2,10 +2,10 @@ footer
 {
 	position: relative;
 	display: block;
-	height: 150px;
 	background-image: url(../images/texture_nav.png);
 	box-shadow: 5px 0px 5px 1px rgba(0, 0, 0, 0.7);	
 	padding-top: 10px;
+	padding-bottom: 10px;
 	margin-top: 100px;
 }
 
@@ -31,9 +31,16 @@ footer
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
-.copyright_text
+.copyright_text a
 {
 	margin-left: 10px;	
+        color: #DDD9D1;
+        text-decoration: none;
+}
+
+.copyright_text a:hover
+{
+	color: white;
 }
 
 .links_footer
@@ -45,16 +52,19 @@ footer
 
 .text_footer
 {
+	line-height: 20pt;
 	color: #DDD9D1;
 	margin-right: 10%;
+	margin-bottom: 20px;
 }
 
-.text_footer p
+.text_footer a
 {
-	line-height: 6pt;
+	color: #DDD9D1;
+	text-decoration: none;
 }
 
-.text_footer p:hover
+.text_footer a:hover
 {
 	color: white;
 }
