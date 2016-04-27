@@ -1,5 +1,3 @@
-<body>
-		
 	<div class="inscription">
 		<p class="title_inscription" >Sign in</p>
 
@@ -12,5 +10,3 @@
 		</form>
 
 	</div>
-
-</body>

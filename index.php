@@ -15,8 +15,10 @@
 		<link href="css/footer.css" rel="stylesheet" />
         </head>
 
+	<div class="conteneur" >
 <?php
 	include_once('controller/index.php');
 ?>
+	</div>
 
 <html>

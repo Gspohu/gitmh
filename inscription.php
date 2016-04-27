@@ -14,8 +14,9 @@
 		<link href="css/footer.css" rel="stylesheet" />
         </head>
 
+	<div class="conteneur" >
 <?php
 	include_once('controller/inscription.php');
 ?>
-
+	</div>
 <html>

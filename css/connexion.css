@@ -2,6 +2,7 @@
 {
         position: relative;
 	width: 30%;
+	min-width: 200px;
 	color: #DDD9D1;
 	background-image: url(../images/texture_nav.png);
         margin-top: 85px;
@@ -38,6 +39,7 @@
 	position: relative;
 	bottom: -16px;
 	width: 50%;
+	min-width: 120px;
 	background-image: url(../images/texture_connexion.png);
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	border-radius: 2px 2px 0px 0px;

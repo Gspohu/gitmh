@@ -6,8 +6,6 @@ html
 	background: url(Images/background/fond1.png) no-repeat center fixed;
 	background-size: cover;
 	font-family: 'Ubuntu';
-	display: flex;
-	flex-direction: column;
 }
 
 a
@@ -18,6 +16,15 @@ a
 body
 {
 	margin: 0;
+	height: 100%;
+}
+
+.conteneur
+{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+	height: 100%;
 }
 
 @font-face {

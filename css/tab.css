@@ -1,3 +1,8 @@
+.tab_container
+{
+	display: block;
+}
+
 .tab
 {
 	width: 100%;
@@ -17,10 +22,10 @@
         border: solid grey 1px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	background:
-			linear-gradient(45deg, #277676 45px, transparent 45px)64px 64px,
-			linear-gradient(45deg, #277676 45px, transparent 45px,transparent 91px, #77AA99 91px, #77AA99 135px, transparent 135px),
-			linear-gradient(-45deg, #277676 23px, transparent 23px, transparent 68px,#277676 68px,#277676 113px,transparent 113px,transparent 158px,#277676 158px);
-	background-color:#77AA99;
+			linear-gradient(45deg, #206464 45px, transparent 45px)64px 64px,
+			linear-gradient(45deg, #206464 45px, transparent 45px,transparent 91px, #699687 91px, #699687 135px, transparent 135px),
+			linear-gradient(-45deg, #206464 23px, transparent 23px, transparent 68px,#206464 68px,#206464 113px,transparent 113px,transparent 158px,#206464 158px);
+	background-color:#699687;
 	background-size: 128px 128px;
 }
 
@@ -43,8 +48,8 @@
 	background-color:#269;
 	background-image: linear-gradient(white 2px, transparent 2px),
 	linear-gradient(90deg, white 2px, transparent 2px),
-	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+	linear-gradient(rgba(190,190,190,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(190,190,190,.3) 1px, transparent 1px);
 	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 	background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
 	border-radius: 5px;
@@ -65,6 +70,7 @@
 	width: 80%;
 	margin-left: 10%;
 	margin-top: 20px;
+	text-shadow: 1px 1px 2px #000000;
 }
 
 .title_tab

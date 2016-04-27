@@ -1,5 +1,3 @@
-<body>
-		
 	<div class="connexion">
 		<p class="title_connexion" >Sign up</p>
 
@@ -10,5 +8,3 @@
 		        <input class="submit_connexion" type="submit" value="Submit" />
 		</form>
 	</div>
-
-</body>
