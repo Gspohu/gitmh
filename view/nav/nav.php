@@ -9,7 +9,7 @@
 	</div>
 
 	 <div class="div_searchbar">
-	<form method="post" action="search.php?sort=recentupdate&in=project">
+	<form method="post" action="search.php<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
         	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder=" Search" />
         </form>
 	 </div>
