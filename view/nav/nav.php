@@ -9,7 +9,7 @@
 	</div>
 
 	 <div class="div_searchbar">
-	<form method="post" action="searchbar.php">
+	<form method="post" action="search.php">
         	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder=" Search" />
         </form>
 	 </div>
