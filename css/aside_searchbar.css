@@ -1,0 +1,57 @@
+.aside_searchbar
+{
+	position: absolute;
+	left: 0;
+	top: 65px;
+	width: 150px;
+	height: calc(100% - 226px);
+	background-image: url(../images/texture_aside.png);
+	z-index: 2000;
+	box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.7);
+}
+
+.aside_searchbar_title
+{
+        position: relative;
+	width: 60%;
+        height: 20px; 
+        margin-top: 10px;
+        background-image: url(../images/texture_inscription.png);
+        border-radius: 0px 5px 5px 0px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.aside_searchbar_title_text
+{
+	margin-left: 10px;
+	color: #DDD9D1;
+}
+
+.aside_searchbar_choix
+{
+        position: relative;
+        width: 82%;
+        height: 20px;
+        margin-top: 10px;
+        margin-left: 18%;
+}
+
+
+.aside_searchbar_choix_active
+{
+        position: relative;
+        width: 82%;
+        height: 20px;
+	margin-top: 10px;
+	margin-left: 18%;
+        background-image: url(../images/texture_connexion.png);
+        border-radius: 5px 0px 0px 5px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.aside_searchbar_choix_text
+{
+        margin-right: 10px;
+	margin-left: 5px;
+        color: #DDD9D1;
+}
