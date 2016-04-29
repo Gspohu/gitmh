@@ -1,13 +1,47 @@
+#reduce
+{
+	position: relative;
+	min-height: 340px;
+	display: flex;
+	flex-direction: column;
+        justify-content: space-between;
+	width: 150px;
+        z-index: 2000;
+        margin-bottom: -100px;
+	flex: 1;
+}
+
 .aside_searchbar
 {
-	position: absolute;
-	left: 0;
-	top: 65px;
+	position: relative;
 	width: 150px;
-	height: calc(100% - 226px);
+	height: 100%;
 	background-image: url(../images/texture_aside.png);
 	z-index: 2000;
 	box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.7);
+	flex: 1;
+}
+
+.aside_searchbar_lit
+{
+	position: relative;
+        width: 55px;
+        height: 100%;
+        background-image: url(../images/texture_aside.png);
+        z-index: 2000;
+        box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.7);
+        flex: 1;
+	display: none;
+}
+
+#reduce:target .aside_searchbar_lit
+{
+	display: block;
+}
+
+#reduce:target .aside_searchbar
+{
+	display: none;
 }
 
 .aside_searchbar_title
@@ -54,4 +88,59 @@
         margin-right: 10px;
 	margin-left: 5px;
         color: #DDD9D1;
+}
+
+.reduire 
+{
+	position: relative;
+        margin-top: 50px;
+	width: 150px;
+	border-top: 1px grey solid;
+}
+
+.reduire a
+{
+        color: #DDD9D1;
+        font-size: xx-large;
+	margin-left: 45%;
+	height: 20px;
+}
+
+.reduire a:hover
+{
+	color: white;
+}
+
+.agrandir
+{
+        position: relative;
+        margin-top: 50px;
+        width: 55px;
+        border-top: 1px grey solid;
+}
+
+.agrandir a
+{
+        color: #DDD9D1;
+        font-size: xx-large;
+        margin-left: 45%;
+        height: 20px;
+}
+
+.agrandir a:hover
+{
+        color: white;
+}
+
+.picto_title
+{
+	margin-top: 3px;
+	margin-left: -7px;
+	height: 15px;
+}
+
+.picto
+{
+	margin-top: 3px;
+        height: 15px;
 }
