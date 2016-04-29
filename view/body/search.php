@@ -29,7 +29,8 @@
         </div>
 
         <div class="reduire" >
-		<a href="#reduce">&#8249;</a>
+		<a href="#reduce" ><label for="reducebutton"></label><input type="radio" name="reducebutton" id="reducebutton" value="reduce" onclick="document.location.href='#reduce'"></a>
+		<a href="#reduce" class="hide_checkbox">&#8249;</a>
         </div>
 
 </div>
@@ -64,8 +65,10 @@
         </div>
 
         <div class="agrandir" >
-                <a href="#">&#8250;</a>
+                <a href="#" ><label for="reducebutton"></label><input type="radio" name="reducebutton" id="reducebutton" value="noreduce" onclick="document.location.href='#'"></a>
+                <a href="#" class="hide_checkbox_agrandir" >&#8250;</a>
         </div>
 
 </div>
 </div>
+</form>

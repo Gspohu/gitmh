@@ -93,7 +93,7 @@
 .reduire 
 {
 	position: relative;
-        margin-top: 50px;
+        margin-top: 45px;
 	width: 150px;
 	border-top: 1px grey solid;
 }
@@ -102,13 +102,27 @@
 {
         color: #DDD9D1;
         font-size: xx-large;
-	margin-left: 45%;
-	height: 20px;
+	margin-top: -5px;
 }
 
 .reduire a:hover
 {
 	color: white;
+}
+
+.hide_checkbox
+{
+	margin-left: 45%;
+}
+
+#reducebutton
+{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	left: 44%;
+	margin-top: 12px;
+	opacity: 0;
 }
 
 .agrandir
@@ -123,13 +137,16 @@
 {
         color: #DDD9D1;
         font-size: xx-large;
-        margin-left: 45%;
-        height: 20px;
 }
 
 .agrandir a:hover
 {
         color: white;
+}
+
+.hide_checkbox_agrandir
+{
+	margin-left: 55%;
 }
 
 .picto_title
@@ -144,3 +161,4 @@
 	margin-top: 3px;
         height: 15px;
 }
+
