@@ -3,9 +3,6 @@ include_once('model/get_text.php');
 
 include_once('view/nav/nav.php');
 
-include_once('view/body/inscription.php');
-
-
 if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg_password']) && isset($_POST['reg_repassword']) && isset($_POST['captcha']))
 {
 	$pseudo       = htmlspecialchars($_POST['reg_pseudo']);
@@ -25,7 +22,7 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 			
 			if( $nb_carac_password < 8)
 			{
-				echo 'Passphrase too short';
+				$error_pass_length = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Passphrase too short';
 			}
 			else
 			{
@@ -33,15 +30,15 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 				include_once('model/verif_mail_pseudo.php');
 				if(filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE)
 				{
-					echo 'Email invalide ';
+					$error_bad_email = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Invalid email';
 				}
 				else if($result_pseudo)
 				{
-					echo 'Pseudo existant';
+					$error_existing_pseudo = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Existing pseudo';
 				}
 				else if($result_email)
 				{
-					echo 'Email existant';
+					$error_existing_pseudo = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Existing email';
 				}
 				else
 				{
@@ -54,12 +51,12 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 		}
 		else
 		{
-				echo 'Vos mots de passes ne correspondent pas';
+				$error_pass_doesnt_match = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Passphrases does not match';
 		}	
 	}
 	else
 	{
-			echo 'Le captcha ne correspond pas';
+			$error_bad_captcha = '<img src="images/pictogrammes/redcross.png" alt="error" width=15px /> Bad captcha';
 			unset($_SESSION['captcha']);
 	}	
 }
@@ -71,6 +68,8 @@ $nb_captcha=rand(1, 60);
 $captcha_name="images/captcha/captcha".$nb_captcha.".png";
 copy($captcha_name, 'images/captcha/captcha.png');
 $_SESSION['captcha'] = hash('sha256', $captcha[$nb_captcha-1]);
+
+include_once('view/body/inscription.php');
 
 include_once('view/footer/footer.php');
 ?>
