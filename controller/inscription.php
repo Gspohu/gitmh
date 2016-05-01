@@ -1,11 +1,20 @@
 <?php
+#Déclaration des varibales
+$error_pass_length = "";
+$error_bad_email = "";
+$error_existing_pseudo = "";
+$error_existing_email = "";
+$error_pass_doesnt_match = "";
+$error_bad_captcha = "";
+
+
 include_once('model/get_text.php');
 
 include_once('view/nav/nav.php');
 
 if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg_password']) && isset($_POST['reg_repassword']) && isset($_POST['captcha']))
 {
-	$pseudo       = htmlspecialchars($_POST['reg_pseudo']);
+	$pseudo       = preg_replace("#[^[:alnum:]-]#","", $_POST['reg_pseudo']);
 	$email        = htmlspecialchars($_POST['reg_mail']);
 	$captcha_user = hash('sha256', $_POST['captcha']);
 	
@@ -44,7 +53,9 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 				{
                                         $password=hash('sha256', $_POST['reg_password']);
                                         include_once('model/inscription.php');
-                                        echo 'Votre compte à été enregistré';
+					mkdir("repository/$pseudo", 0777);	
+					copy("index_user.php", "repository/$pseudo/index.php");
+                                        header("Location: repository/$pseudo"); 
 				}
 		
 			}	
