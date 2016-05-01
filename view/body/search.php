@@ -19,7 +19,7 @@
                 <p class="aside_searchbar_title_text" >Search in :</p>
         </div>
 	<div class="aside_searchbar_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project"class="aside_searchbar_choix_text" >Project</a>
+                <a href="search.php?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_searchbar_choix_text" >Project</a>
         </div>
         <div class="aside_searchbar_choix<?php if(htmlspecialchars($_GET['in']) == "user" ){ echo "_active"; } ?>" >
                 <a href="search.php?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_searchbar_choix_text" >User</a>

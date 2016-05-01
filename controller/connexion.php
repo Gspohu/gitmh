@@ -10,13 +10,7 @@ if (isset($_POST['conn_pseudo']) && isset($_POST['conn_password']))
 	$pseudo= $_POST['conn_pseudo'];
 	$password = hash('sha256', $_POST['conn_password']);
 
-	// Vérification des identifiants
-	$req = $bdd->prepare('SELECT id FROM Member WHERE Pseudo = :pseudo AND Password = :pass');
-	$req->execute(array(
-	    'pseudo' => $pseudo,
-	    'pass' => $password));
-
-	$result = $req->fetch();
+	include_once('model/connexion.php');
 
 	if (!$result)
 	{

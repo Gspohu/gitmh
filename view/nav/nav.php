@@ -12,6 +12,7 @@
 	<form method="post" action="search.php<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
         	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo ' Search'; } ?>" />
 	 </div>
+	<?php if( ! preg_match( "#.*search.php.*#", $_SERVER['REQUEST_URI'])) {echo '</form>';}?>
 
 	<div class="div_button">
 		<a class="bouton_connexion" href="connexion.php">Sign up</a>
