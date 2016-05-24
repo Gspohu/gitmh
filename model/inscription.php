@@ -6,4 +6,6 @@ $req->execute(array(
 	'password' => $password,
 	'timestamp' => date('l jS \of F Y h:i:s A'),
 	));
+
+$req->closeCursor();
 ?>

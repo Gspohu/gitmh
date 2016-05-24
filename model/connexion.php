@@ -6,4 +6,18 @@
             'pass' => $password));
 
         $result = $req->fetch();
+
+	$req->closeCursor();
+
+	$req_droits = $bdd->prepare('SELECT Droits FROM Member WHERE Pseudo = :pseudo');
+	$req_droits->execute(array(
+            'pseudo' => $pseudo));
+
+        while($donnes = $req_droits->fetch())
+        {
+                $droits = $donnes['Droits'];
+        }
+
+        $req_droits->closeCursor();
+
 ?>

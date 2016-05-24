@@ -21,7 +21,7 @@ footer
 {
 	position: relative;
 	display: block;
-	width: 210px;
+	width: 220px;
 	height: 20px;
 	color: #DDD9D1;
 	margin-left: 0px;
@@ -56,6 +56,7 @@ footer
 	color: #DDD9D1;
 	margin-right: 10%;
 	margin-bottom: 20px;
+	text-align: center;
 }
 
 .text_footer a

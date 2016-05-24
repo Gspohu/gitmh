@@ -69,6 +69,9 @@
 .captcha
 {
 	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 	width: 100px;
 	height: 22px;
         border-radius: 0px 5px 5px 0px;
@@ -76,8 +79,45 @@
 	margin-top: -38px;
         border: solid black 0px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);	
-	background-image: url(../images/captcha/captcha.png);
-	background-size: contain;
+	background-image: url(../images/captcha/captcha-fond.png);
+	background-size: cover;
+}
+
+.captcha1
+{
+	position: relative;
+	background-image: url(../images/captcha/captcha1.png);
+	height: 22px;
+	width: 22px;
+	background-size: cover;
+}
+
+.captcha2
+{
+        position: relative;
+        background-image: url(../images/captcha/captcha2.png);
+        height: 22px;
+	width: 22px;
+	background-size: cover;
+}
+
+.captcha3
+{
+        position: relative;
+        background-image: url(../images/captcha/captcha3.png);
+        height: 22px;
+	width: 22px;
+	background-size: cover;
+}
+
+.captcha4
+{
+        background-image: url(../images/captcha/captcha4.png);
+        position: relative;
+        height: 22px;
+	width: 22px;
+	border-radius: 0px 5px 5px 0px;
+	background-size: cover;
 }
 
 .captcha_field

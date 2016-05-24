@@ -1,0 +1,11 @@
+Options +FollowSymlinks
+ErrorDocument 404 /erreur404.php 
+ErrorDocument 403 /erreur403.php
+ErrorDocument 401 /erreur401.php
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+RewriteRule ^Gspohu$  index_user.php [L]

@@ -9,8 +9,9 @@
                 <meta charset="utf-8" />
                 <title>CairnGit</title>
                 <link href="css/style.css" rel="stylesheet" />
+		<link href="css/modification.css" rel="stylesheet" />
 		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
-		<link href="css/open-hardware.css" rel="stylesheet" />
+		<link href="css/pricing.css" rel="stylesheet" />
 		<link href="css/footer.css" rel="stylesheet" />
         </head>
 

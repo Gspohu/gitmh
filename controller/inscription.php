@@ -10,6 +10,8 @@ $error_bad_captcha = "";
 
 include_once('model/get_text.php');
 
+include_once('controller/modif_text.php');
+
 include_once('view/nav/nav.php');
 
 if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg_password']) && isset($_POST['reg_repassword']) && isset($_POST['captcha']))
@@ -51,11 +53,21 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 				}
 				else
 				{
-                                        $password=hash('sha256', $_POST['reg_password']);
+                                        $password = hash('sha256', $_POST['reg_password']);
                                         include_once('model/inscription.php');
-					mkdir("repository/$pseudo", 0777);	
-					copy("index_user.php", "repository/$pseudo/index.php");
-                                        header("Location: repository/$pseudo"); 
+						
+					#Création du repo
+					$repo_name = $pseudo."_repo";
+					mkdir("repository/$repo_name", 0777);
+					mkdir("repository/$repo_name/profil", 0777);	
+					copy("images/avatar.png", "repository/$repo_name/profil/avatar.png");
+					$fichier = fopen('.htaccess', 'a');
+					fputs($fichier, "RewriteRule ^$pseudo$  index_user.php [L]".PHP_EOL);
+					fclose($fichier);
+
+					$_SESSION['pseudo'] = $pseudo;
+					$_SESSION['pass'] = $password;
+                                        header("Location: $pseudo"); 
 				}
 		
 			}	
@@ -75,10 +87,18 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 #Génération du captcha
 include_once('model/captcha.php');
 
-$nb_captcha=rand(1, 60);
-$captcha_name="images/captcha/captcha".$nb_captcha.".png";
-copy($captcha_name, 'images/captcha/captcha.png');
-$_SESSION['captcha'] = hash('sha256', $captcha[$nb_captcha-1]);
+$cpt=1;
+$captcha_val = "";
+while ($cpt < 5)
+{
+	$nb_captcha=rand(1, 52);
+	$captcha_name="images/captcha/".$nb_captcha.".png";
+	copy($captcha_name, "images/captcha/captcha".$cpt.".png");
+	$captcha_val = $captcha_val.$captcha[$nb_captcha-1];
+	$cpt++;
+}
+
+$_SESSION['captcha'] = hash('sha256', $captcha_val);
 
 include_once('view/body/inscription.php');
 
