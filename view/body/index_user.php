@@ -52,13 +52,11 @@
 
 <div class="repo_list">
         <div class="repo_list_title">
-                Repository
+                Project
         </div>
 
-	<a href="add-repo">
-	        <div class="repo_list_add_repo">
-        	        Add
-        	</div>
+	<a class="repo_list_add_repo" href="add-repo">
+        	        New project
 	</a>
 
         <?php

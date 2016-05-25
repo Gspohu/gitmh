@@ -77,10 +77,9 @@
 .repo_list
 {
 	position: relative;
-	width: calc(100% - 300px);
-	margin-left: 50px;
-	margin-top: 20px;
-	margin-right: 50px;	 
+	width: calc(85% - 200px);
+	margin-top: 30px;
+	margin-right: 7.5%;
 }
 
 .repo_list_title
@@ -88,21 +87,21 @@
         position: relative;
 	color: black;
 	font-size: xx-large;
+	margin-bottom: 10px;
 }
 
 .repo_list_add_repo
 {
 	position: relative;
-	left: 95%;
-	top: 0px;
-	height: 15px;
-        width: 35px;
+	left: calc(99% - 130px);
+	height: 25px;
         color: #DDD9D1;
         background-image: url(../images/texture_connexion.png);
         border-radius: 5px;
         padding: 10px 20px 10px 20px;
         border: solid #1F1E1C 1px;
         text-decoration: none;	
+	text-align: center;
 }
 
 .repo_list_add_repo:hover

@@ -12,7 +12,7 @@
 		<link href="css/modification.css" rel="stylesheet" />
 		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
 		<link href="css/search.css" rel="stylesheet" />
-		<link href="css/repo_perso.css" rel="stylesheet" />
+		<link href="css/index_user.css" rel="stylesheet" />
 		<link href="css/footer.css" rel="stylesheet" />
         </head>
 
