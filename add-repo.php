@@ -13,7 +13,6 @@
 		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
 		<link href="css/add-repo.css" rel="stylesheet" />
 		<link href="css/footer.css" rel="stylesheet" />
-		<script src="js/add-repo.js" type="text/javascript"></script>
         </head>
 
 	<div class="conteneur" >

@@ -91,11 +91,21 @@
 	background-color: white;
 }
 
-.logo_repo_add
+.div_logo_repo_add
 {
 	position: relative;
-	width: 15%;
 	margin-top: 15px;
+}
+
+.div_logo_repo_add img
+{
+	width: 15%;
+}
+
+.img
+{
+	width: 500px;
+	height: 15px;
 }
 
 div.inputfile 

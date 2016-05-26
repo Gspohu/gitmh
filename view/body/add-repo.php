@@ -8,14 +8,19 @@
 			<p class="title_form_add">Name</p>
 			<input class="field_add" type="text" name="name" />
 
-			<img class="logo_repo_add" src="images/logo/logo_base_proj.png"/>
+			<div id="prev" class="div_logo_repo_add">
+				<img id="logo_base" class="logo_repo_add" src="images/logo/logo_base_proj.png"/>
+			</div>
+
 			<div class="inputfile">
-				<input type="file" class="file" />
+				<input type="file" class="file" id="file"/>
 				<div class="mask">
 					<input class="button_file" type="button" value="Add a logo" />
 				</div>
 			</div>
-			
+		
+			<script src="js/aff_dyna_img.js" ></script>
+	
 			<div class="inline">
 				<img width="25px" height="25px" src="images/pictogrammes/Picto_publproj.png" />
 				<input type="radio" name="pubpriv" value="public" id="public" onclick="checkbox();" checked/> Public

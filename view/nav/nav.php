@@ -10,7 +10,7 @@
 
 	 <div class="div_searchbar">
 	<form method="post" action="search<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
-        	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo $get_text['Nav_placeholder_search']; } ?>" <?php modif_text('Nav_placeholder_searchbar');?>/>
+        	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo $get_text['Nav_placeholder_search']; } ?>" <?php modif_text('Nav_placeholder_search');?>/>
 
 		<?php if( ! preg_match( "#.*search.*#", $_SERVER['REQUEST_URI'])) {echo '</form>';}?>
          </div>
@@ -38,9 +38,6 @@
 					</li>							
 				</ul>
 				<style>.nav_profil_avatar{ background-image: url(repository/'.$_SESSION['pseudo'].'_repo/profil/avatar.png); background-size: contain; background-position: center; background-repeat: no-repeat; }</style>';
-	        #<div class="nav_profil">
-                #<a class="nav_profil_avatar" href="profil"><img class="nav_logo" src="repository/'.$_SESSION['pseudo'].'_repo/profil/avatar.png" alt="Avatar" /></a>
-        	#</div>;
 		}
 		else
 		{
