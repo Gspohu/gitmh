@@ -7,5 +7,6 @@ function checkbox()
 	else
 	{
 		document.getElementById('encryption').disabled = 'disabled';
+		document.getElementById('encryption').checked = false;
 	}
 }
