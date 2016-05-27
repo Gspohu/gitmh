@@ -60,13 +60,21 @@
 	</a>
 
         <?php
-                $cpt = 2;
+                $cpt  = 2;
                 while(isset($repo_list[$cpt]))
                 {
-                        echo '<div class="repo_list_result">';
-                        echo $repo_list[$cpt];
-                        echo "</div>";
-                        $cpt++;
+			if($repo_list[$cpt]{0} != '.')
+			{
+	                        echo '<div class="repo_list_result">';
+				echo '<img width="80px" src="repository/'.$_SESSION['pseudo'].'_repo/'.$repo_list[$cpt].'/.cairn/repo_logo'.$ext.'"/>';
+                	        echo $repo_list[$cpt];
+                        	echo "</div>";
+                      		$cpt++;
+			}
+			else
+			{
+				$cpt++;
+			}
                 }
         ?>
 </div>

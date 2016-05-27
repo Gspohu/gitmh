@@ -37,7 +37,7 @@
 						</div>
 					</li>							
 				</ul>
-				<style>.nav_profil_avatar{ background-image: url(repository/'.$_SESSION['pseudo'].'_repo/profil/avatar.png); background-size: contain; background-position: center; background-repeat: no-repeat; }</style>';
+				<style>.nav_profil_avatar{ background-image: url(repository/'.$_SESSION['pseudo'].'_repo/.profil/avatar.png); background-size: contain; background-position: center; background-repeat: no-repeat; }</style>';
 		}
 		else
 		{

@@ -59,8 +59,8 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 					#Création du repo
 					$repo_name = $pseudo."_repo";
 					mkdir("repository/$repo_name", 0777);
-					mkdir("repository/$repo_name/profil", 0777);	
-					copy("images/avatar.png", "repository/$repo_name/profil/avatar.png");
+					mkdir("repository/$repo_name/.profil", 0777);	
+					copy("images/avatar.png", "repository/$repo_name/.profil/avatar.png");
 					$fichier = fopen('.htaccess', 'a');
 					fputs($fichier, "RewriteRule ^$pseudo$  index_user.php [L]".PHP_EOL);
 					fclose($fichier);
