@@ -21,11 +21,11 @@ if (isset($_POST['conn_pseudo']) && isset($_POST['conn_password']))
 	else
 	{
 	    session_start();
-	    $_SESSION['connexion'] = 'OK';
-	    $_SESSION['pass'] = $password;
+	    $_SESSION['pass']   = $password;
 	    $_SESSION['pseudo'] = $pseudo;
 	    $_SESSION['Droits'] = $droits;
-	    header("Location: $pseudo");
+	    $redirect           = $pseudo."🜉";
+	    header("Location: $redirect");
 	}
 }
 

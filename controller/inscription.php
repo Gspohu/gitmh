@@ -63,6 +63,7 @@ if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg
 					copy("images/avatar.png", "repository/$repo_name/.profil/avatar.png");
 					$fichier = fopen('.htaccess', 'a');
 					fputs($fichier, "RewriteRule ^$pseudo$  index_user.php [L]".PHP_EOL);
+					fputs($fichier, "RewriteRule ^$pseudo/$1  repo.php?repo=$1 [L]".PHP_EOL);
 					fclose($fichier);
 
 					$_SESSION['pseudo'] = $pseudo;

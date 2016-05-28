@@ -7,36 +7,36 @@
                 	<p class="aside_repoperso_title_text" >Search in :</p>
         	</div>
 
-	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-                	<a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Recent update</a>
+	        <div class="aside_repoperso_choix" >
+                	<a href="" class="aside_repoperso_choix_text" >Recent update</a>
        		</div>
 	
-		<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Public</a>
+		<div class="aside_repoperso_choix" >
+	                <a href="" class="aside_repoperso_choix_text" >Public</a>
 	        </div>
         
-		<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "user" ){ echo "_active"; } ?>" >
-	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repoperso_choix_text" >Private</a>
+		<div class="aside_repoperso_choix" >
+	                <a href="" class="aside_repoperso_choix_text" >Private</a>
 	        </div>
 	
-		<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Fork</a>
+		<div class="aside_repoperso_choix" >
+	                <a href="" class="aside_repoperso_choix_text" >Fork</a>
 	        </div>
 
 	        <div class="aside_repoperso_title" >
 	                <p class="aside_repoperso_title_text" >Group :</p>
 	        </div>
         
-		<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Me</a>
+		<div class="aside_repoperso_choix" >
+	                <a href="" class="aside_repoperso_choix_text" >Me</a>
 	        </div>
 
 	        <div class="aside_repoperso_title" >
 	                <p class="aside_repoperso_title_text" >Type :</p>
 	        </div>
         
-		<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >All</a>
+		<div class="aside_repoperso_choix" >
+	                <a href="" class="aside_repoperso_choix_text" >All</a>
 	        </div>
 
        		<div class="aside_repoperso_space" data-color="<?php echo $weight_color; ?>"></div> 
@@ -55,27 +55,32 @@
                 Project
         </div>
 
+	<?php
+		if(isset($_SESSION['pseudo']))
+		{
+			if($owner == $_SESSION['pseudo'])
+			{
+			echo '
 	<a class="repo_list_add_repo" href="add-repo">
         	        New project
-	</a>
+	</a>';
+			}
+		}
+	?>	
 
         <?php
-                $cpt  = 2;
-                while(isset($repo_list[$cpt]))
+                while($data = $data_sql->fetch())
                 {
-			if($repo_list[$cpt]{0} != '.')
-			{
-	                        echo '<div class="repo_list_result">';
-				echo '<img width="80px" src="repository/'.$_SESSION['pseudo'].'_repo/'.$repo_list[$cpt].'/.cairn/repo_logo'.$ext.'"/>';
-                	        echo $repo_list[$cpt];
-                        	echo "</div>";
-                      		$cpt++;
-			}
-			else
-			{
-				$cpt++;
-			}
+	                echo '
+	<div class="repo_list_result">
+		<img class="project_logo" src="repository/'.$owner.'_repo/'.$data['Name'].'/.cairn/repo_logo'.$data['logo'].'"/>
+		<div class="project_name_description">
+	        	<a href="'.$owner.'🜉/'.$data['Name'].'📂/">'.$data['Name'].'</a>
+			<p class="description">'.$data['Description'].'</p>
+		</div>
+        </div>';
                 }
+		$data_sql->closeCursor();
         ?>
 </div>
 

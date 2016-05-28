@@ -1,12 +1,15 @@
 <?php
 
+#Déclaration variable
+$extension_upload = ".png";
+
 include_once('model/update_purchase.php');
 
 include_once('model/view_purchase.php');
 
 include_once('model/view_repo_info.php');
 
-if(!isset($_SESSION['connexion']))
+if(!isset($_SESSION['pseudo']))
 {
 	header("Location: erreur403");	
 }
@@ -43,9 +46,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 			#Encryption
 
 			$view_what  = $repo_name;
-			$view_where = 'Owner';
 			$view_value = $_SESSION['pseudo'];
-			$result     = view_repo_info($bdd, $view_what, $view_where, $view_value);
+			$result     = view_repo_info_name($bdd, $view_what, $view_value);
 
 			if(!$result)
 			{
@@ -67,9 +69,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 			update_purchase($bdd, $update_value, $update_what, $update_who);
                  
 		        $view_what  = $repo_name;
-                        $view_where = 'Owner';
                         $view_value = $_SESSION['pseudo'];
-                        $result     = view_repo_info($bdd, $view_what, $view_where, $view_value);
+                        $result     = view_repo_info_name($bdd, $view_what, $view_value);
 
                         if(!$result)
                         {
@@ -89,9 +90,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 	else if($publpriv == 'public')
 	{
                         $view_what  = $repo_name;
-                        $view_where = 'Owner';
                         $view_value = $_SESSION['pseudo'];
-                        $result     = view_repo_info($bdd, $view_what, $view_where, $view_value);
+                        $result     = view_repo_info_name($bdd, $view_what, $view_value);
 
                         if(!$result)
                         {
@@ -117,15 +117,16 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
         		        $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png', 'svg');
 	                	if (in_array($extension_upload, $extensions_autorisees))
 		                {
-        		                move_uploaded_file($_FILES['repo_logo']['tmp_name'], "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo");
+        		                move_uploaded_file($_FILES['repo_logo']['tmp_name'], "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo.".$extension_upload);
 					chmod("repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo.".$extension_upload, 0644);
 				}
         		}
 		}
 		else
 		{
-			copy("images/logo/logo_base_proj.png", "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo");
+			copy("images/logo/logo_base_proj.png", "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo.png");
 		}
+			$ext = ".". $extension_upload;
 			include_once('model/add_repo.php');
 
 			$path = "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/";
@@ -136,7 +137,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 			fputs($gitignore, '.gitignore'.PHP_EOL);
  			fputs($gitignore, '.cairn'.PHP_EOL);
 			fclose($gitignore);
-			header("Location: repo");			
+			$redirec = $_SESSION['pseudo']."🜉/".$repo_name."📂/";
+			header("Location: $redirec");			
 			
 			#Système de chiffrement
 	}

@@ -1,0 +1,153 @@
+.repoperso_body
+{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	flex: 1;
+}
+
+#reduce
+{
+	position: relative;
+	min-height: 340px;
+	display: flex;
+	flex-direction: column;
+        justify-content: space-between;
+	width: 200px;
+        margin-bottom: -100px;
+	flex: 1;
+}
+
+.aside_repoperso
+{
+	position: relative;
+	width: 200px;
+	height: 100%;
+	background-image: url(../images/texture_aside.png);
+	z-index: 2000;
+	box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.7);
+	flex: 1;
+}
+
+.aside_repoperso_title
+{
+        position: relative;
+	width: 60%;
+        height: 20px; 
+        margin-top: 10px;
+        background-image: url(../images/texture_inscription.png);
+        border-radius: 0px 5px 5px 0px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.aside_repoperso_title_text
+{
+	margin-left: 10px;
+	color: #DDD9D1;
+}
+
+.aside_repoperso_choix
+{
+        position: relative;
+        width: 82%;
+        height: 20px;
+        margin-top: 10px;
+        margin-left: 18%;
+}
+
+
+.aside_repoperso_choix_active
+{
+        position: relative;
+        width: 82%;
+        height: 20px;
+	margin-top: 10px;
+	margin-left: 18%;
+        background-image: url(../images/texture_connexion.png);
+        border-radius: 5px 0px 0px 5px;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.aside_repoperso_choix_text
+{
+        margin-right: 10px;
+	margin-left: 5px;
+        color: #DDD9D1;
+}
+
+.repo_list_title
+{
+        position: relative;
+	color: black;
+	font-size: xx-large;
+	margin-bottom: 10px;
+}
+
+.repo_list_contain
+{
+        position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+        width: calc(80% - 236px);
+        min-width: 200px;
+        color: #DDD9D1;
+        background-image: url(../images/texture_nav.png);
+        margin-top: 40px;
+        margin-right: 10%;
+        border-radius: 5px;
+        padding: 5px 5px 30px 5px;
+        border: solid #282622 1px;
+        text-decoration: none;
+        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+}
+
+.title_repo_list_contain
+{
+        position: relative;
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 10px;
+        margin-bottom: -10px;
+}
+
+.title_repo_list_contain a
+{
+	text-decoration: none;
+	color: #DDD9D1;
+}
+
+.tabgroup_repo_list_contain
+{
+	display: flex;
+	position: relative;
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 30px;
+}
+
+.tab_repo_list_contain
+{
+	position: relative;
+        width: 25%;
+	height: 25px;
+	background-image: url(../images/texture_connexion.png);
+	border-radius: 3px 3px 0px 0px;
+	border: 1px solid black;
+	text-align: center;
+	text-decoration: none;
+        color: #DDD9D1;
+	padding-top: 5px;
+}
+
+.file_repo_list_contain
+{
+        position: relative;
+        background-color: white;
+        width: calc(90% - 1px);
+	flex: 1;
+	margin-top: -1px; 
+        margin-left: 5%;
+	border-radius: 0px 0px 3px 3px;
+        border: 1px solid black;
+}

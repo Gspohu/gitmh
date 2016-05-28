@@ -1,4 +1,7 @@
 <?php
+
+include_once('model/view_repo_info.php');
+
 function FileSizeConvert($bytes)
 {
     $bytes = floatval($bytes);
@@ -24,6 +27,8 @@ function FileSizeConvert($bytes)
                 "VALUE" => 1
             ),
         );
+	
+	$result = 0;
 
     foreach($arBytes as $arItem)
     {
@@ -58,8 +63,8 @@ function FileSizeConvert($bytes)
 
 #Vérification de la connexion
 
-
-$repo_name         = "repository/".$_SESSION['pseudo']."_repo";
+$owner             = htmlspecialchars($_GET['owner']);
+$repo_name         = "repository/".$owner."_repo";
 $repo_list         = scandir($repo_name);
 $repo_proto_weight = 0;
 
@@ -90,6 +95,9 @@ else if ($weight_percent < 100)
 	$weight_color = 'red';
 }
 
+
+$view_value = $owner;
+$data_sql = view_repo_info_table($bdd, $view_value);
 
 include_once('model/get_text.php');
 

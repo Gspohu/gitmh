@@ -1,14 +1,19 @@
 <?php
 function modif_text($Name)
 {
-	if($_SESSION['Droits'] == "Admin")
+	if(isset($_SESSION['Droits']))
 	{
-		echo 'oncontextmenu="document.location.href=\'#Modif\'; title_modif(\''.$Name.'\'); return false;"';
+		if($_SESSION['Droits'] == "Admin")
+		{
+			echo 'oncontextmenu="document.location.href=\'#Modif\'; title_modif(\''.$Name.'\'); return false;"';
+		}
 	}
 }
 ?>
 
 <?php
+if(isset($_SESSION['Droits']))
+{
 	if($_SESSION['Droits'] == "Admin")
         {
 		if (isset($_POST['name']) && isset($_POST['content']))
@@ -22,4 +27,5 @@ function modif_text($Name)
 
 		include_once('view/body/div_modif.php');
 	}	
+}
 ?>

@@ -24,8 +24,18 @@
 			$profil_nav_name = $_SESSION['pseudo'];
 		}	
 		
-		if(isset($_SESSION['pseudo']) && isset($_SESSION['pass']))
+		if(isset($_SESSION['pseudo']))
 		{
+                	if(strlen($_SESSION['pseudo']) > 6)
+                	{
+                		$profil_nav_name = 'Profil';
+                	}
+                	else
+        	        {
+       	        	        $profil_nav_name = $_SESSION['pseudo'];
+	                }
+
+
 			echo '
 				<ul class="nav_profil">
 					<li>
