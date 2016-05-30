@@ -28,6 +28,9 @@
 	<div class="repo_list_contain">
 		
 		<div class="title_repo_list_contain">
+<?php
+?>
+			<div class="title_repo_list_contain_a">
                         <?php 
 				echo '<img class="project_logo" src="repository/'.$owner.'_repo/'.$repo.'/.cairn/repo_logo'.$ext.'"/>';
                                 if(isset($_GET['tab'])) 
@@ -40,7 +43,22 @@
                                 }
                                 
                          ?>
+			</div>
+
+			<div class="title_repo_list_link_group">	
+        	                <a href="<?php echo $owner."🜉/".$repo."📂/upload"; ?>" class="button_upload">Upload file</a> 
+                	        <a href="<?php echo $owner."🜉/".$repo."📂/new-folder"; ?>" class="button_new_folder">Create new folder</a> 			
+				<a href="<?php echo $owner."🜉/".$repo."📂/#GitLink"; ?>" class="button_git">Git link</a>
+			</div>
 		</div>
+
+                	<div id="GitLink">
+                        	<div class="inline-between">
+                                	<h3>Clone this project using Git :</h3>
+                                        <a href="<?php echo $owner."🜉/".$repo."📂/"; ?>#">Close</a>
+                                </div>
+                                <div class="lien_git"><?php echo "http://".$_SERVER['HTTP_HOST']."/repository/".$owner."_repo/".$repo.".git"; ?></div>
+                        </div>
 
 	 	<div class="tabgroup_repo_list_contain">
 			<a href="<?php echo $owner."🜉/".$repo."📂"; ?>/commit⚙" id="Commit" class="tab_repo_list_contain">

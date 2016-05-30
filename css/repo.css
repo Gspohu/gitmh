@@ -103,19 +103,25 @@
 {
         position: relative;
 	display: flex;
-	justify-content: flex-start;
-        font-size: 20px;
-        font-weight: normal;
-        margin-bottom: -10px;
+	justify-content: space-between;
 	background-color: rgba(38, 142, 156, 0.3);
 	border-bottom: 1px solid rgba(38, 142, 156, 0.5);
 }
 
-.title_repo_list_contain a
+.title_repo_list_contain_a
+{
+	display: flex;
+	justify-content: flex-start;
+}
+
+.title_repo_list_contain_a a
 {
 	text-decoration: none;
 	color: #68777d;
 	margin-top: 15px;
+        font-size: 20px;
+        font-weight: normal;
+        margin-bottom: -10px;
 }
 
 .tabgroup_repo_list_contain
@@ -123,7 +129,7 @@
 	display: flex;
 	position: relative;
 	width: 100%;
-	margin-top: 50px;
+	margin-top: 65px;
 }
 
 .tab_repo_list_contain
@@ -153,6 +159,101 @@
 	margin-top: -1px; 
 	border-radius: 0px 0px 3px 3px;
         border-top: 1px solid black;
+}
+
+.title_repo_list_link_group
+{
+	display: flex;
+	justify-content: space-around;
+	width: 50%;
+	margin-top: 20px;
+}
+
+.button_git
+{
+        width: 120px;
+	height: 18px;
+	border-radius: 3px;
+        border: 1px solid #7D171F;
+        background: linear-gradient(#E72B3A, #A51E29);	
+	margin-top: -3px;
+	color:white;
+	text-align: center;
+        font-size: small;
+}
+
+.button_upload
+{
+        width: 120px;
+        height: 18px;
+        border-radius: 3px;
+        border: 1px solid #7D171F;
+        background: linear-gradient(#00E700, #00A500);
+        margin-top: -3px;
+        color:white;
+        text-align: center;
+        font-size: small;
+}
+
+.button_new_folder
+{
+        width: 120px;
+        height: 18px;
+        border-radius: 3px;
+        border: 1px solid #7D171F;
+        background: linear-gradient(#24ADE7, #197BA5);
+        margin-top: -3px;
+        color:white;
+        text-align: center;
+        font-size: small;
+}
+
+#GitLink
+{
+	display: none;
+}
+
+#GitLink:target
+{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 50px;
+	width: auto;
+	background: white;
+	border-radius: 0px 0px 0px 3px;
+	border-left: 1px solid #BEBEBE;
+	border-bottom: 1px solid #BEBEBE;
+	padding: 5px;
+	color: black; 
+	right: 0;
+	top: 50px;
+	line-height: 17px;
+}
+
+#GitLink:target h3
+{
+	font-weight: bold;
+	margin: 0;
+}
+
+.lien_git
+{
+	border-radius: 3px;
+	border: 1px solid #C9C9C9;
+	padding: 3px;
+}
+
+.lien_git::selection
+{
+        background: #C90000;
+}
+
+
+.lien_git::-moz-selection
+{
+	background: #C90000;
 }
 
 .project_logo
