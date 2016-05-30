@@ -9,7 +9,7 @@
 	</div>
 
 	 <div class="div_searchbar">
-	<form method="post" action="search<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
+	<form method="get" action="search<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
         	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo $get_text['Nav_placeholder_search']; } ?>" <?php modif_text('Nav_placeholder_search');?>/>
 
 		<?php if( ! preg_match( "#.*search.*#", $_SERVER['REQUEST_URI'])) {echo '</form>';}?>
@@ -41,8 +41,8 @@
 					<li>
 						<div class="nav_profil_Wcircle nav_profil_avatar">
 							<div class="nav_profil_link">
-								<h3><a href="profil">'.$profil_nav_name.'</a></h3>
-							<a class="nav_profil_linka" href="deconnexion">Sign out</a>
+								<h3><a href="'.$_SESSION['pseudo'].'🜉">'.$profil_nav_name.'</a></h3>
+								<a class="nav_profil_linka" href="deconnexion">Sign out</a>
 							</div>
 						</div>
 					</li>							

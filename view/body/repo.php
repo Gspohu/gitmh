@@ -29,6 +29,7 @@
 		
 		<div class="title_repo_list_contain">
                         <?php 
+				echo '<img class="project_logo" src="repository/'.$owner.'_repo/'.$repo.'/.cairn/repo_logo'.$ext.'"/>';
                                 if(isset($_GET['tab'])) 
                                 {       
                                         echo '<a href="'.$owner.'🜉/">'.$owner.'/</a><a href="'.$owner.'🜉/'.$repo.'📂/">'.$repo.'/</a><a href="'.$owner.'🜉/'.$repo.'📂/'.$tab.'⚙"">'.$tab.'</a>';
@@ -43,16 +44,16 @@
 
 	 	<div class="tabgroup_repo_list_contain">
 			<a href="<?php echo $owner."🜉/".$repo."📂"; ?>/commit⚙" id="Commit" class="tab_repo_list_contain">
-				Commit
+				<br/>Commit
                 	</a>
                         <a href="<?php echo $owner."🜉/".$repo."📂"; ?>/branch⚙" id="Branch" class="tab_repo_list_contain">
-				Branch
+				<br/>Branch
                         </a> 
                         <a href="<?php echo $owner."🜉/".$repo."📂"; ?>/release⚙" id="Release" class="tab_repo_list_contain">
-				Release
+				<br/>Release
                         </a> 
                         <a href="<?php echo $owner."🜉/".$repo."📂"; ?>/contributors⚙" id="Contibutors" class="tab_repo_list_contain">
-				Contibutors
+				<br/>Contibutors
                         </a> 
                 </div>
 	

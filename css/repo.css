@@ -92,62 +92,73 @@
         width: calc(80% - 236px);
         min-width: 200px;
         color: #DDD9D1;
-        background-image: url(../images/texture_nav.png);
         margin-top: 40px;
         margin-right: 10%;
-        border-radius: 5px;
-        padding: 5px 5px 30px 5px;
-        border: solid #282622 1px;
         text-decoration: none;
-        box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+	border-radius: 3px;
+	border: 1px solid #BEBEBE;
 }
 
 .title_repo_list_contain
 {
         position: relative;
+	display: flex;
+	justify-content: flex-start;
         font-size: 20px;
-        font-weight: 600;
-        margin-top: 10px;
+        font-weight: normal;
         margin-bottom: -10px;
+	background-color: rgba(38, 142, 156, 0.3);
+	border-bottom: 1px solid rgba(38, 142, 156, 0.5);
 }
 
 .title_repo_list_contain a
 {
 	text-decoration: none;
-	color: #DDD9D1;
+	color: #68777d;
+	margin-top: 15px;
 }
 
 .tabgroup_repo_list_contain
 {
 	display: flex;
 	position: relative;
-	width: 90%;
-	margin-left: 5%;
-	margin-top: 30px;
+	width: 100%;
+	margin-top: 50px;
 }
 
 .tab_repo_list_contain
 {
 	position: relative;
         width: 25%;
-	height: 25px;
-	background-image: url(../images/texture_connexion.png);
-	border-radius: 3px 3px 0px 0px;
-	border: 1px solid black;
+	height: 0px;
+	line-height: 10px;	
+	border-right: 30px solid transparent;
+	border-bottom: 30px solid rgba(0, 0, 0, 0.7);
 	text-align: center;
 	text-decoration: none;
-        color: #DDD9D1;
-	padding-top: 5px;
+        color: #E6E3DC;
+}
+
+.tab_repo_list_contain:hover
+{
+	border-bottom: 30px solid #009400;
 }
 
 .file_repo_list_contain
 {
         position: relative;
-        background-color: white;
-        width: calc(90% - 1px);
+        background-color: #F2F2F2;
+        width: 100%;
 	flex: 1;
 	margin-top: -1px; 
-        margin-left: 5%;
 	border-radius: 0px 0px 3px 3px;
-        border: 1px solid black;
+        border-top: 1px solid black;
+}
+
+.project_logo
+{
+        position: relative;
+        width: auto;
+        height: 50px;
+	margin-right: 15px;
 }

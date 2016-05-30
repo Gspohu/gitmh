@@ -1,7 +1,7 @@
 <?php
 
 #Déclaration variable
-$extension_upload = ".png";
+$extension_upload = "png";
 
 include_once('model/update_purchase.php');
 
