@@ -46,7 +46,24 @@
 			</div>
 
 			<div class="title_repo_list_link_group">	
-        	                <a href="<?php echo $owner."🜉/".$repo."📂/upload"; ?>" class="button_upload">Upload file</a> 
+				<form class="inline_button" method="post" enctype="multipart/form-data">
+				<div class="select_files">
+	                                <div class="inputfile">
+	                                        <input type="file" class="file" name="files[]" id="files" directory="" webkitdirectory="" mozdirectory="" multiple="">
+        	                                <div class="mask">
+                	                                <input class="button_file" type="button" value="Folder">
+                        	                </div>
+                                	</div>
+
+                                        <div class="inputfile">
+                                                <input type="file" class="file" name="files" id="files" multiple="">
+                                                <div class="mask">
+                                                        <input class="button_file" type="button" value="File" />
+                                                </div>
+                                        </div>
+				</div>
+					<input class="button_upload" type="submit" value="Upload" />
+				</form> 
                 	        <a href="<?php echo $owner."🜉/".$repo."📂/new-folder"; ?>" class="button_new_folder">Create new folder</a> 			
 				<a href="<?php echo $owner."🜉/".$repo."📂/#GitLink"; ?>" class="button_git">Git link</a>
 			</div>

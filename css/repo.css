@@ -97,6 +97,7 @@
         text-decoration: none;
 	border-radius: 3px;
 	border: 1px solid #BEBEBE;
+        overflow: hidden;
 }
 
 .title_repo_list_contain
@@ -106,6 +107,7 @@
 	justify-content: space-between;
 	background-color: rgba(38, 142, 156, 0.3);
 	border-bottom: 1px solid rgba(38, 142, 156, 0.5);
+	overflow: hidden;
 }
 
 .title_repo_list_contain_a
@@ -165,7 +167,7 @@
 {
 	display: flex;
 	justify-content: space-around;
-	width: 50%;
+	width: 60%;
 	margin-top: 20px;
 }
 
@@ -184,15 +186,69 @@
 
 .button_upload
 {
-        width: 120px;
-        height: 18px;
+        width: 60px;
+        height: 22px;
         border-radius: 3px;
         border: 1px solid #7D171F;
         background: linear-gradient(#00E700, #00A500);
-        margin-top: -3px;
         color:white;
         text-align: center;
         font-size: small;
+}
+
+.button_file
+{
+        width: 60px;
+        height: 18px;
+        border-radius: 3px;
+        border: 1px solid #7D171F;
+        background: linear-gradient(#E77300, #A55200);
+        color:white;
+	text-align: center;
+        font-size: small;
+}
+
+div.inputfile
+{
+        position: relative;
+        width: 60px;
+	height: 20px;
+}
+
+div.mask
+{
+        position: absolute;
+        width: 60px;
+        height: 18px;
+        left: 0px;
+        z-index: 1;
+}
+
+input.file
+{
+        position: relative;
+        width: 100%;
+        height: 20px;
+        top: 22px;
+        text-align: right;
+        opacity: 0;
+        z-index: 2;
+	overflow:hidden;
+}
+
+.select_files
+{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	top: -30px;
+}
+
+.inline_button
+{
+        display: flex;
+        justify-content: flex-start;
 }
 
 .button_new_folder
