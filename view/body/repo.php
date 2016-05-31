@@ -49,14 +49,14 @@
 				<form class="inline_button" method="post" enctype="multipart/form-data">
 				<div class="select_files">
 	                                <div class="inputfile">
-	                                        <input type="file" class="file" name="files[]" id="files" directory="" webkitdirectory="" mozdirectory="" multiple="">
+	                                        <input type="file" class="file" name="folder[]" id="folder" directory="" webkitdirectory="" mozdirectory="" multiple="">
         	                                <div class="mask">
                 	                                <input class="button_file" type="button" value="Folder">
                         	                </div>
                                 	</div>
 
                                         <div class="inputfile">
-                                                <input type="file" class="file" name="files" id="files" multiple="">
+                                                <input type="file" class="file" name="files[]" id="files" multiple="">
                                                 <div class="mask">
                                                         <input class="button_file" type="button" value="File" />
                                                 </div>
@@ -65,16 +65,16 @@
 					<input class="button_upload" type="submit" value="Upload" />
 				</form> 
                 	        <a href="<?php echo $owner."🜉/".$repo."📂/new-folder"; ?>" class="button_new_folder">Create new folder</a> 			
-				<a href="<?php echo $owner."🜉/".$repo."📂/#GitLink"; ?>" class="button_git">Git link</a>
+				<a href="<?php echo $owner."🜉/".$repo."📂/#GitLink"; ?>" class="button_git" >Git link</a>
 			</div>
 		</div>
 
                 	<div id="GitLink">
                         	<div class="inline-between">
-                                	<h3>Clone this project using Git :</h3>
+                                	<h3 onclick="document.getElementById('link').select();">Clone this project using Git :</h3>
                                         <a href="<?php echo $owner."🜉/".$repo."📂/"; ?>#">Close</a>
                                 </div>
-                                <div class="lien_git"><?php echo "http://".$_SERVER['HTTP_HOST']."/repository/".$owner."_repo/".$repo.".git"; ?></div>
+                                <textarea id="link" class="lien_git"><?php echo "http://".$_SERVER['HTTP_HOST']."/repository/".$owner."_repo/".$repo.".git"; ?></textarea>
                         </div>
 
 	 	<div class="tabgroup_repo_list_contain">
