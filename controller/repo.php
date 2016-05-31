@@ -21,11 +21,17 @@ $data_sql->closeCursor();
 $count = 0;
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
+	if (isset($_POST['folder_name']))
+	{
+		$folder_name = htmlspecialchars($_POST['folder_name']);
+		mkdir("repository/".$_SESSION['pseudo']."_repo/".$repo."/".$folder_name."/", 0777);
+	}
+
 	foreach ($_FILES['folder']['name'] as $i => $name) 
 	{
         	if (strlen($_FILES['folder']['name'][$i]) > 1) 
 		{
-            		if (move_uploaded_file($_FILES['folder']['tmp_name'][$i], "repository/".$_SESSION['pseudo']."_repo/".$repo."/".$name)) 
+            		if (move_uploaded_file($_FILES['folder']['tmp_name'][$i], "repository/".$_SESSION['pseudo']."_repo/".$repo."/".$folder_name."/".$name)) 
 			{
                			$count++;
             		}

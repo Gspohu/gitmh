@@ -14,6 +14,7 @@
 		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
 		<link href="css/repo.css" rel="stylesheet" />
 		<link href="css/footer.css" rel="stylesheet" />
+                <script src="js/repo.js"></script>
         </head>
 
 	<div class="conteneur" >

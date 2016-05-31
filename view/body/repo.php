@@ -46,10 +46,10 @@
 			</div>
 
 			<div class="title_repo_list_link_group">	
-				<form class="inline_button" method="post" enctype="multipart/form-data">
+				<form class="inline_button" method="post" name="uploadForm" enctype="multipart/form-data" >
 				<div class="select_files">
 	                                <div class="inputfile">
-	                                        <input type="file" class="file" name="folder[]" id="folder" directory="" webkitdirectory="" mozdirectory="" multiple="">
+	                                        <input type="file" class="file" name="folder[]" id="folder" directory="" webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" multiple="" onchange="selectFolder(event)">
         	                                <div class="mask">
                 	                                <input class="button_file" type="button" value="Folder">
                         	                </div>
@@ -62,6 +62,7 @@
                                                 </div>
                                         </div>
 				</div>
+					<input name="folder_name" type="hidden" value="">
 					<input class="button_upload" type="submit" value="Upload" />
 				</form> 
                 	        <a href="<?php echo $owner."🜉/".$repo."📂/new-folder"; ?>" class="button_new_folder">Create new folder</a> 			
