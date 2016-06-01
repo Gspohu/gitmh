@@ -125,23 +125,33 @@
 				}
 				else if (isset($_GET['file']))
 				{
-					$file_path = 'repository/'.$owner."_repo/".$repo."/".htmlspecialchars($_GET['file']);
-					$file = fopen($file_path, 'r+');
+					$path_file = 'repository/'.$owner."_repo/".$repo."/".htmlspecialchars($_GET['file']);
+                                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                        $type  = explode("/", finfo_file($finfo, $path_file));
 
-					echo '<pre><code>';
-	
-					if ($file)
+					if($type[0] == "text")
 					{
-						while (!feof($file))
+						$file = fopen($path_file, 'r+');
+
+						echo '<pre><code>';
+		
+						if ($file)
 						{
-							$buffer = fgets($file);
-							echo $buffer;
+							while (!feof($file))
+							{
+								$buffer = fgets($file);
+								echo $buffer;
+							}
 						}
+        	                                echo '</code></pre>';
+	                                        
+        	                                fclose($file);
 					}
-					
-					echo '</code></pre>';
-					
-					fclose($file);
+					else if ($type[0] == "image")
+					{
+						echo '<img class="aff_img" src="'.$path_file.'">';
+					}
+
 				}
 				else
 				{
@@ -168,7 +178,7 @@
 							echo '<div class="repo_list_result">';
                                                         echo '<img class="repo_icon" src="images/pictogrammes/file_icon.png"/>';
                                                         echo $repo_files[$cpt];
-                                                        echo "</div>";
+							echo "</div>";
 							echo '</a>';
                                                         $cpt++;
 						}
