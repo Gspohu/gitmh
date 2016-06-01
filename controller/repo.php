@@ -51,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         }
 }
 
+$repo_name = "repository/".$owner."_repo/".$repo."/";
+$repo_files = scandir($repo_name);
+
 include_once('model/get_text.php');
 
 include_once('controller/modif_text.php');

@@ -325,3 +325,11 @@ input.file
         height: 50px;
 	margin-right: 15px;
 }
+
+.repo_icon
+{
+	width: 25px;
+	height: auto;
+	margin-left: 10px;
+	margin-right: 5px;
+}

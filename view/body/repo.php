@@ -117,7 +117,32 @@
 				}
 				else
 				{
-					echo 'Liste des fichiers à la racine du projet';
+					echo '<div class="repo_files">';
+					$cpt = 2;
+ 					while(isset($repo_files[$cpt]))
+					{
+						$path_file = "repository/".$owner."_repo/".$repo."/".$repo_files[$cpt];
+						if($repo_files[$cpt] == '.cairn' || $repo_files[$cpt] == '.git')
+						{
+							$cpt++;
+						}
+						else if (is_dir($path_file))
+						{
+							echo '<div class="repo_list_result">';
+							echo '<img class="repo_icon" src="images/pictogrammes/folder_icon.png"/>';
+							echo $repo_files[$cpt];
+							echo "</div>";
+							$cpt++;
+						}
+						else
+						{
+							echo '<div class="repo_list_result">';
+                                                        echo $repo_files[$cpt];
+                                                        echo "</div>";
+                                                        $cpt++;
+						}
+					}
+					echo '</div>';
 				}
 				
 			 ?>
