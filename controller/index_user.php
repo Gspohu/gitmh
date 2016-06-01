@@ -35,11 +35,11 @@ function FileSizeConvert($bytes)
         if($bytes >= $arItem["VALUE"])
         {
             $result = $bytes / $arItem["VALUE"];
-            $result = str_replace(".", "," , strval(round($result, 2)))." ".$arItem["UNIT"];
+            $result_HR = strval(round($result, 2))." ".$arItem["UNIT"];
             break;
         }
     }
-    return $result;
+    return $result_HR;
 }
 
 #if (htmlspecialchars($_POST['reducebutton']) == 'noreduce')
@@ -64,20 +64,45 @@ function FileSizeConvert($bytes)
 #Vérification de la connexion
 
 $owner             = htmlspecialchars($_GET['owner']);
-$repo_name         = "repository/".$owner."_repo";
+$repo_name         = "repository/".$owner."_repo/";
 $repo_list         = scandir($repo_name);
 $repo_proto_weight = 0;
 
 #Lister les fichiers de manière récursive et additionner le poids
-$cpt = 2;
-while(isset($repo_list[$cpt]))
+function scanRecursif($rep,  $repo_proto_weight, $depth=0) 
 {
-        $repo_proto_weight = filesize($repo_list[$cpt]) + $repo_proto_weight;
-	$cpt++;
+	$depth++; // définit la profondeur du dossier et des fichier
+	$dir = scandir($rep);
+
+	if($dir) 
+	{
+        	// on traite chaque élément retourné par la fonction php scandir
+        	foreach($dir as $f) 
+		{
+			// on vérifit la présence de sous répertoires, par contre on ne prend pas en compte les répertoires précédents "./" et  "../"
+		        if(is_dir($rep.$f) && $f!=".." && $f!="." ) 
+			{
+		                $new_dir=realpath($rep.$f); //chemin absolu du répertoire enfant
+                		// On réitère la fonction pour aller scanner les sous répertoires.
+		                $repo_proto_weight = scanRecursif("$new_dir/",  $repo_proto_weight, $depth);
+            		}
+ 
+            		// ce traitement est effectué si la variable $f est un fichier
+			if(is_file($rep.$f)) 
+			{
+				$repo_proto_weight = filesize($rep.$f) + $repo_proto_weight;	
+            		}
+        	}
+    	}
+ 
+	return $repo_proto_weight;
 }
 
+$repo_proto_weight = 0;
+$repo_proto_weight = scanRecursif($repo_name, $repo_proto_weight);
 $repo_weight = FileSizeConvert($repo_proto_weight);
-$weight_percent = "14";
+echo $repo_weight;
+$weight_percent = round($repo_proto_weight/1073741824, 2) * 100;
 if ($weight_percent < 15)
 {
 	$weight_color = 'green';
