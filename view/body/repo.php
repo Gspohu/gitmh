@@ -2,23 +2,23 @@
 	<div id="reduce" >
         	<div class="aside_repoperso" >
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-        	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Sources</a>
+        	               <img class="aside_icon" src="images/pictogrammes/sources.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Sources</a>
         	        </div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-        	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Bug track</a>
+        	                <img class="aside_icon" src="images/pictogrammes/bug_track.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Bug track</a>
        	         	</div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "user" ){ echo "_active"; } ?>" >
-        	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repoperso_choix_text" >Wiki</a>
+        	               <img class="aside_icon" src="images/pictogrammes/wiki.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repoperso_choix_text" >Wiki</a>
        	         	</div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-        	                <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Progest</a>
+        	               <img class="aside_icon" src="images/pictogrammes/progest.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Progest</a>
         	        </div>
 	
        	         	<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-       	                	 <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Setting</a>
+       	                	<img class="aside_icon" src="images/pictogrammes/setting.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Setting</a>
 		        </div>
 	
 	        </div>
@@ -115,6 +115,26 @@
                                         }
 
 				}
+				else if (isset($_GET['file']))
+				{
+					$file_path = 'repository/'.$owner."_repo/".$repo."/".htmlspecialchars($_GET['file']);
+					$file = fopen($file_path, 'r+');
+
+					echo '<pre><code>';
+	
+					if ($file)
+					{
+						while (!feof($file))
+						{
+							$buffer = fgets($file);
+							echo $buffer;
+						}
+					}
+					
+					echo '</code></pre>';
+					
+					fclose($file);
+				}
 				else
 				{
 					echo '<div class="repo_files">';
@@ -136,9 +156,12 @@
 						}
 						else
 						{
+							echo '<a href="'.$owner."🜉/".$repo."📂/".$repo_files[$cpt].'⏵">';
 							echo '<div class="repo_list_result">';
+                                                        echo '<img class="repo_icon" src="images/pictogrammes/file_icon.png"/>';
                                                         echo $repo_files[$cpt];
                                                         echo "</div>";
+							echo '</a>';
                                                         $cpt++;
 						}
 					}

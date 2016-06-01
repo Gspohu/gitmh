@@ -50,7 +50,7 @@
 {
         position: relative;
         width: 82%;
-        height: 20px;
+        height: 30px;
         margin-top: 10px;
         margin-left: 18%;
 }
@@ -155,12 +155,24 @@
 .file_repo_list_contain
 {
         position: relative;
-        background-color: #F2F2F2;
+        background-color: #FAFAFA;
         width: 100%;
 	flex: 1;
 	margin-top: -1px; 
 	border-radius: 0px 0px 3px 3px;
         border-top: 1px solid black;
+	color: #323232;
+}
+
+.repo_list_result
+{
+	border-bottom: 1px solid #E6E6E6;
+	padding: 5px;
+}
+
+.repo_list_result:hover
+{
+        background-color: rgba(59, 148, 178, 0.05);
 }
 
 .title_repo_list_link_group
@@ -179,7 +191,7 @@
         border: 1px solid #7D171F;
         background: linear-gradient(#E72B3A, #A51E29);	
 	margin-top: -3px;
-	color:white;
+	color: white;
 	text-align: center;
         font-size: small;
 }
@@ -234,7 +246,7 @@ input.file
         text-align: right;
         opacity: 0;
         z-index: 2;
-	overflow:hidden;
+	overflow: hidden;
 }
 
 .select_files
@@ -261,7 +273,7 @@ input.file
         border: 1px solid #7D171F;
         background: linear-gradient(#24ADE7, #197BA5);
         margin-top: -3px;
-        color:white;
+        color: white;
         text-align: center;
         font-size: small;
 }
@@ -326,9 +338,17 @@ input.file
 	margin-right: 15px;
 }
 
+.aside_icon
+{
+        width: 25px;
+        height: auto;
+        margin-left: 10px;
+        margin-right: 5px;
+}
+
 .repo_icon
 {
-	width: 25px;
+	width: 30px;
 	height: auto;
 	margin-left: 10px;
 	margin-right: 5px;

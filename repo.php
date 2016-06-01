@@ -14,6 +14,9 @@
 		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
 		<link href="css/repo.css" rel="stylesheet" />
 		<link href="css/footer.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/highlight/arduino-light.css">
+		<script src="js/highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
                 <script src="js/repo.js"></script>
         </head>
 
