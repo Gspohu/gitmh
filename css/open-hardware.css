@@ -5,7 +5,6 @@
 	flex-direction: column;
 	justify-content: space-around;
 	width: 80%;
-	height: 1500px;
 	margin-left: 10%;
 	margin-top: 10px;
 }
@@ -16,6 +15,7 @@
 	display: flex;
 	justify-content: space-between;
 	border-bottom: 1px solid #BEBEBE;	
+        margin-top: 15px;
 }
 
 .open-hardware_image_1
@@ -24,10 +24,9 @@
 	background-image: url(../images/OH_img_1.png);
 	background-size: contain;
         background-repeat: no-repeat;
-	width: 620px;
-	height: 173px;
-	margin-bottom: 15px;
-	margin-right: 15px;
+	width: 65%;
+	height: auto;
+	margin-right: 10px;
 	z-index: 1;
 }
 
@@ -39,12 +38,13 @@
 .open-hardware_image_2
 {
         position: relative;
-        background-image: url(../images/pictogrammes/2.png);
+        background-image: url(../images/OH_img_2.svg);
         background-size: contain;
 	background-repeat: no-repeat;
-        width: 255px;
-        height: 191px;
+        width: 65%;
+        height: auto;
         z-index: 1;
+	margin-left: 10px;
 }
 
 .open-hardware_image_2:hover
@@ -55,14 +55,14 @@
 .open-hardware_image_3
 {
         position: relative;
-	background-image: url(../images/OH_img_3.png);
+	background-image: url(../images/OH_img_3.svg);
         background-size: contain;
 	background-repeat: no-repeat;
-        width: 496px;
-        height: 408px;
         margin-bottom: 15px;
-        margin-right: 15px;
+        width: 65%;
+        height: auto;
         z-index: 1;
+	margin-right: 10px;
 }
 
 .open-hardware_image_3:hover
@@ -73,12 +73,13 @@
 .open-hardware_image_4
 {
         position: relative;
-	background-image: url(../images/pictogrammes/4.png);
+	background-image: url(../images/OH_img_4.svg);
         background-size: contain;
 	background-repeat: no-repeat;
-        width: 255px;
-        height: 191px;
+        width: 65%;
+        height: auto;
         z-index: 1;
+	margin-left: 10px;
 }
 
 .open-hardware_image_4:hover
@@ -89,11 +90,13 @@
 .open-hardware_image_5
 {
         position: relative;
-        background-image: url(../images/pictogrammes/3.png);
+        /*background-image: url(../images/pictogrammes/3.png);*/
+	background-color: grey;
         background-size: contain;
-        width: 255px;
-        height: 191px;
+        width: 65%;
+        height: auto;
         z-index: 1;
+	margin-right: 10px;
 }
 
 .open-hardware_image_5:hover

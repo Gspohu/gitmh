@@ -8,6 +8,7 @@
 
 	<div class="open-hardware_part">
 		<div class="open-hardware_image_1">
+			<img src="images/mask_OH_img.png">
 		</div>
 
 		<div class="open-hardware_text">
@@ -21,11 +22,13 @@
                 </div>
 
 		<div class="open-hardware_image_2">
+                        <img src="images/mask_OH_img.png">
 		</div>
 	</div>
 
 	<div class="open-hardware_part">
 		<div class="open-hardware_image_3">
+                        <img src="images/mask_OH_img.png">
 		</div>
 
                 <div class="open-hardware_text">
@@ -40,11 +43,13 @@
                 </div>
 
 		<div class="open-hardware_image_4">
+                        <img src="images/mask_OH_img.png">
 		</div>
 	</div>
 
         <div class="open-hardware_part">
                 <div class="open-hardware_image_5">
+                        <img src="images/mask_OH_img.png">
                 </div>
 
                 <div class="open-hardware_text">
