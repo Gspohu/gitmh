@@ -101,7 +101,6 @@ function scanRecursif($rep,  $repo_proto_weight, $depth=0)
 $repo_proto_weight = 0;
 $repo_proto_weight = scanRecursif($repo_name, $repo_proto_weight);
 $repo_weight = FileSizeConvert($repo_proto_weight);
-echo $repo_weight;
 $weight_percent = round($repo_proto_weight/1073741824, 2) * 100;
 if ($weight_percent < 15)
 {
