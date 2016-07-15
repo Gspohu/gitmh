@@ -137,12 +137,15 @@
 		
 						if ($file)
 						{
+							$cpt = 0;
 							while (!feof($file))
 							{
 								$buffer = fgets($file);
-								echo $buffer;
+								echo $cpt."    ".htmlspecialchars($buffer, ENT_NOQUOTES, ENT_SUBSTITUTE);
+								$cpt++;
 							}
 						}
+
         	                                echo '</code></pre>';
 	                                        
         	                                fclose($file);
