@@ -6,7 +6,7 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	background-image: url(../images/texture_nav.png);
+	background-color: #171B1D;
 	height: 65px;
         width: 100%;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7); 
@@ -24,7 +24,7 @@
 
 .nav_link
 {
-	color: #B9B6B0;
+	color: #DFDCD5;
 }
 
 .nav_link:hover
@@ -48,36 +48,40 @@
 
 .bouton_connexion
 {
-	height: 20px;
-	width: 55px;	
-	color: #DDD9D1;
-	background-image: url(../images/texture_connexion.png);
-	border-radius: 5px;
-	padding: 10px 20px 10px 20px;
- 	border: solid #1F1E1C 1px;
+        min-width: 75px;
+	height: 28px;
+	color: #171B1D;
+	background-color: #9D00F5;
+	border-radius: 2px;
+        padding-top: 7px;
+	border: solid #9D00F5 1px;
 	text-decoration: none;
+	text-align: center
 }
 
 .bouton_connexion:hover
 {
-	color: #FFFFFF;
+        background-color: #171B1D;
+	color: #9D00F5;
 }
 
 .bouton_inscription
 {
-	height: 20px;
-	width: 50px;
-	color: #DDD9D1;
-	background-image: url(../images/texture_inscription.png);
-        border-radius: 5px;
-        padding: 10px 20px 10px 20px;
-        border: solid #1F1E1C 1px;
+	min-width: 75px;
+	height: 28px;
+	color: #171B1D;
+	background-color: #57C349;
+        border-radius: 2px;
+        padding-top: 7px;
+        border: solid #57C349 1px;
         text-decoration: none;
+        text-align: center
 }
 
 .bouton_inscription:hover
 {
-	color: #FFFFFF;	
+        background-color: #171B1D;
+        color: #57C349;
 }
 
 .div_searchbar
@@ -92,7 +96,7 @@
 	width: 100%;
 	min-width: 100px;
 	height: 25px;
-	border: solid 0px black;
+	border: solid 2px white;
 	border-radius: 5px;
 }
 
