@@ -51,10 +51,10 @@
         min-width: 75px;
 	height: 28px;
 	color: #171B1D;
-	background-color: #9D00F5;
+	background-color: #8736B9;
 	border-radius: 2px;
         padding-top: 7px;
-	border: solid #9D00F5 1px;
+	border: solid #8736B9 1px;
 	text-decoration: none;
 	text-align: center
 }
@@ -62,7 +62,7 @@
 .bouton_connexion:hover
 {
         background-color: #171B1D;
-	color: #9D00F5;
+	color: #8736B9;
 }
 
 .bouton_inscription
@@ -70,10 +70,10 @@
 	min-width: 75px;
 	height: 28px;
 	color: #171B1D;
-	background-color: #57C349;
+	background-color: #45B936;
         border-radius: 2px;
         padding-top: 7px;
-        border: solid #57C349 1px;
+        border: solid #45B936 1px;
         text-decoration: none;
         text-align: center
 }
@@ -81,7 +81,7 @@
 .bouton_inscription:hover
 {
         background-color: #171B1D;
-        color: #57C349;
+        color: #45B936;
 }
 
 .div_searchbar

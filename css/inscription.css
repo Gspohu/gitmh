@@ -79,7 +79,7 @@
 	margin-top: -38px;
         border: solid black 0px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);	
-	background-image: url(../images/captcha/captcha-fond.png);
+	background-color: #377A2E;
 	background-size: cover;
 }
 
