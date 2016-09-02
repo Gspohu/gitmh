@@ -14,6 +14,11 @@ include_once('controller/modif_text.php');
 
 include_once('view/nav/nav.php');
 
+if( ! isset($_SESSION['captcha']))
+{
+	$_SESSION['captcha']= "";
+}
+
 if(isset($_POST['reg_pseudo']) && isset($_POST['reg_mail']) && isset($_POST['reg_password']) && isset($_POST['reg_repassword']) && isset($_POST['captcha']))
 {
 	$pseudo       = preg_replace("#[^[:alnum:]-]#","", $_POST['reg_pseudo']);

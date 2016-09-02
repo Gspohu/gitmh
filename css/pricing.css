@@ -29,6 +29,15 @@
 	border: 1px solid grey;
 }
 
+@media screen and (max-width: 1024px)
+{  
+	.price_bulle
+	{
+		margin-right: 7%;
+		margin-left: 7%;
+	}
+}
+
 .price_bulle_1 
 {
 	list-style: none;
