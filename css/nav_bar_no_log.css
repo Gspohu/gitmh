@@ -6,7 +6,7 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	background-color: #171B1D;
+	background-color: #23282D;
 	height: 65px;
         width: 100%;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7); 
@@ -51,18 +51,18 @@
         min-width: 75px;
 	height: 28px;
 	color: #171B1D;
-	background-color: #8736B9;
+	background-color: #8748E6;
 	border-radius: 2px;
         padding-top: 7px;
-	border: solid #8736B9 1px;
+	border: solid #8748E6 1px;
 	text-decoration: none;
 	text-align: center
 }
 
 .bouton_connexion:hover
 {
-        background-color: #171B1D;
-	color: #8736B9;
+        background-color: #23282D;
+	color: #8748E6;
 }
 
 .bouton_inscription
@@ -70,18 +70,18 @@
 	min-width: 75px;
 	height: 28px;
 	color: #171B1D;
-	background-color: #45B936;
+	background-color: #4BBC3A;
         border-radius: 2px;
         padding-top: 7px;
-        border: solid #45B936 1px;
+        border: solid #4BBC3A 1px;
         text-decoration: none;
         text-align: center
 }
 
 .bouton_inscription:hover
 {
-        background-color: #171B1D;
-        color: #45B936;
+        background-color: #23282D;
+        color: #4BBC3A;
 }
 
 .div_searchbar

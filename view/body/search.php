@@ -1,79 +1,90 @@
 <div class="repo_list_body">
-<div id="reduce" >
-<div class="aside_searchbar" >
-
-	<div class="aside_searchbar_title" >
-		<p class="aside_searchbar_title_text" >Sort by :</p>
+	<div class="aside_searchbar" >
+                <div class="aside_searchbar_title">
+                        Sort by
+                </div>
+		<a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=🕒&in=<?php echo htmlspecialchars($_GET['in']); ?>" class="aside_searchbar_tab<?php if( $_SESSION['sort'] == "🕒" ) { echo "_active"; } ?>" >
+			<div class="aside_temoin<?php if( $_SESSION['sort'] == "🕒" ) { echo "_active"; } ?>" ></div>
+			<div class="aside_logo" >
+				🕒
+				<div class="aside_text" >Recent update</div>
+			</div>
+		</a>
+                <a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=✩&in=<?php echo htmlspecialchars($_GET['in']); ?>" class="aside_searchbar_tab<?php if( $_SESSION['sort'] == "✩" ) { echo "_active"; } ?>" >
+                        <div class="aside_temoin<?php if( $_SESSION['sort'] == "✩" ) { echo "_active"; } ?>" ></div>
+                        <div class="aside_logo" >
+				✩
+                        	<div class="aside_text" >Best noted</div>
+			</div>
+                </a>
+                <a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=⑂&in=<?php echo htmlspecialchars($_GET['in']); ?>" class="aside_searchbar_tab<?php if( $_SESSION['sort'] == "⑂" ) { echo "_active"; } ?>" >
+                        <div class="aside_temoin<?php if( $_SESSION['sort'] == "⑂" ) { echo "_active"; } ?>" ></div>
+                        <div class="aside_logo" >
+				⑂
+                        	<div class="aside_text" >Most fork</div>
+			</div>
+                </a>
+                <div class="aside_searchbar_title">
+                        Search in
+                </div>
+                <a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=📁" class="aside_searchbar_tab<?php if( $_SESSION['in'] == "📁" ) { echo "_active"; } ?>" >
+                        <div class="aside_temoin<?php if( $_SESSION['in'] == "📁" ) { echo "_active"; } ?>" ></div>
+                        <div class="aside_logo" >
+				📁
+                        	<div class="aside_text" >Projects</div>
+			</div>
+                </a>
+                <a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=🚹" class="aside_searchbar_tab<?php if( $_SESSION['in'] == "🚹" ) { echo "_active"; } ?>" >
+                        <div class="aside_temoin<?php if( $_SESSION['in'] == "🚹" ) { echo "_active"; } ?>" ></div>
+                        <div class="aside_logo" >
+				🚹
+                        	<div class="aside_text" >Users</div>
+			</div>
+                </a>
+                <a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=🚹🚹" class="aside_searchbar_tab<?php if($_SESSION['in'] == "🚹🚹" ) { echo "_active"; } ?>" >
+                        <div class="aside_temoin<?php if( $_SESSION['in'] == "🚹🚹" ) { echo "_active"; } ?>" ></div>
+                        <div class="aside_logo" >
+				🚹🚹
+                  	      <div class="aside_text" >Groups</div>
+			</div>
+                </a>
+                <div class="aside_searchbar_title">
+                        Type
+                </div>
+                <div class="aside_searchbar_tab">
+			<form method="post" action="traitement.php">
+				<select class="select_type" name="repo_type" id="type" >
+                                        <option value="All">All</option>
+                                	<option value="electronic">Electronic</option>
+	                                <option value="audio_electronics">Audio electronics</option>
+        	                        <option value="video_electronics">Video electronics</option>
+                	                <option value="cameras">Cameras</option>
+                        	        <option value="robotics">Robotics</option>
+                                	<option value="telephony">Telephony</option>
+	                                <option value="computer">Computer</option>
+        	                        <option value="car">Car</option>
+                	                <option value="wireless_networking">Wireless networking</option>
+                        	        <option value="amateur_radio">Amateur radio</option>
+                       	        	<option value="renewable_energy">Renewable energy</option>
+                       	      		<option value="measure_scientific">Measure scientific</option>
+                                	<option value="3d_printers">3D printers</option>
+                                	<option value="medical">Medical</option>
+                                	<option value="carpentry">Carpentry</option>
+                                	<option value="furniture">Furniture</option>
+                                	<option value="design">Design</option>
+                                	<option value="model_aircraft">Model aircraft</option>
+                                	<option value="tools">Tools</option>
+                               		<option value="home_automation">Home automation</option>
+                                	<option value="musical_instrument">Musical instrument</option>
+                                	<option value="fixing">Fixing</option>
+                                	<option value="software">Software</option>
+                                	<option value="clothes_fabric">Clothes/Fabric</option>
+				</select>
+			</form>	
+                </div>
 	</div>
-	<div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "🕒" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=🕒&in=<?php echo $_SESSION['in']; ?>" class="aside_searchbar_choix_text" >Recent update</a>
-        </div>
-	<div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "✩" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=✩&in=<?php echo $_SESSION['in']; ?>" class="aside_searchbar_choix_text" >Best noted</a>
-        </div>
-	<div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "⑂" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=⑂&in=<?php echo $_SESSION['in']; ?>" class="aside_searchbar_choix_text" >Most forked</a>
-        </div>
-	
-
-	<div class="aside_searchbar_title" >
-                <p class="aside_searchbar_title_text" >Search in :</p>
-        </div>
-	<div class="aside_searchbar_choix<?php if($_SESSION['in'] == "📁" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=📁" class="aside_searchbar_choix_text" >Project</a>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['in'] == "🚹"){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=🚹" class="aside_searchbar_choix_text" >User</a>
-        </div>
-	<div class="aside_searchbar_choix<?php if($_SESSION['in'] == "🚹🚹" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=🚹🚹" class="aside_searchbar_choix_text" >Group</a>
-        </div>
-
-        <div class="reduire" >
-		<a href="#reduce" ><label for="reducebutton"></label><input type="radio" name="reducebutton" id="reducebutton" value="reduce" onclick="document.location.href='#reduce'"></a>
-		<a href="#reduce" class="hide_checkbox">&#8249;</a>
-        </div>
-
-</div>
-
-<div class="aside_searchbar_lit" >
-
-        <div class="aside_searchbar_title" >
-                <p class="aside_searchbar_title_text" ><img class="picto_title" src="images/pictogrammes/trier.png" alt="Sort" title="Sort" /></p>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "recentupdate" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=recentupdate&in=<?php echo $_SESSION['in']; ?>#reduce" class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/rcupdate.png" alt="Recently update" title="Recently update"/></a>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "bestnoted" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=bestnoted&in=<?php echo $_SESSION['in']; ?>#reduce" class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/bestnoted.png" alt="Best noted" title="Best noted"/></a>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['sort'] == "mostforked" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=mostforked&in=<?php echo $_SESSION['in']; ?>#reduce" class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/mostforked.png" alt="Most forked" title="Most forked"/></a>
-        </div>
-        
-
-        <div class="aside_searchbar_title" >
-                <p class="aside_searchbar_title_text" ><img class="picto_title" src="images/pictogrammes/where.png" alt="Search in" title="Search in"/></p>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['in'] == "project" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=project#reduce"class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/project.png" alt="Project" title="Project"/></a>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['in'] == "user" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=user#reduce" class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/user.png" alt="User" title="User"/></a>
-        </div>
-        <div class="aside_searchbar_choix<?php if($_SESSION['in'] == "group" ){ echo "_active"; } ?>" >
-                <a href="search.php?sort=<?php echo $_SESSION['sort']; ?>&in=group#reduce" class="aside_searchbar_choix_text" ><img class="picto" src="images/pictogrammes/group.png" alt="Group" title="Group"/></a>
-        </div>
-
-        <div class="agrandir" >
-                <a href="#" ><label for="reducebutton"></label><input type="radio" name="reducebutton" id="reducebutton" value="noreduce" onclick="document.location.href='#'"></a>
-                <a href="#" class="hide_checkbox_agrandir" >&#8250;</a>
-        </div>
-
-</div>
-</div>
-</form>
 <div class="repo_list">
+Test
         <?php
                 while($data = $data_sql->fetch())
                 {

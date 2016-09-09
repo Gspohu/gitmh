@@ -17,13 +17,6 @@ while($data = $data_sql->fetch())
 $data_sql->closeCursor();
 
 
-
-
-if (htmlspecialchars($_POST['reducebutton']) == 'noreduce')
-{
-	$_SESSION['reduce_search_option'] = 'KO';
-}
-
 if (htmlspecialchars($_POST['reducebutton']) == 'reduce' || $_SESSION['reduce_search_option'] == 'OK' && $_SESSION['oneredirection'] == 'NO') 
 {
 	$_SESSION['reduce_search_option'] = 'OK';
@@ -41,7 +34,6 @@ if(isset($_SESSION['pseudo']))
 	{
 		$sort = htmlspecialchars($_GET['sort']);
 		$in = htmlspecialchars($_GET['in']);
-		$reduce = 'noreduce';
 		update_search_option($bdd, $sort, $in, $reduce, $_SESSION['pseudo']);
         	$_SESSION['sort'] = htmlspecialchars($_GET['sort']);
 	        $_SESSION['in'] = htmlspecialchars($_GET['in']);

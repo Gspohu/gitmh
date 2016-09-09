@@ -4,7 +4,7 @@
 	width: 40%;
 	min-width: 200px;
 	color: #DDD9D1;
-	background-image: url(../images/texture_nav.png);
+	background-color: #23282D;
         margin-top: 40px;
         margin-left: 30%;
 	border-radius: 5px;
@@ -52,7 +52,7 @@
 	bottom: -16px;
 	width: 30%;
 	min-width: 100px;
-	background-image: url(../images/texture_inscription.png);
+	background-color: #69499C;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	border-radius: 2px 2px 0px 0px;
 	padding: 5px 5px 5px 5px;
@@ -64,7 +64,7 @@
         bottom: -16px;
         width: 60%;
         min-width: 100px; 
-        background-image: url(../images/texture_inscription.png);
+        background-color: #69499C;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
         border-radius: 2px 2px 0px 0px;
         padding: 5px 5px 5px 5px;
@@ -98,7 +98,7 @@
 	left: -10px;
 	bottom: -10px;
 	height: 30px;
-	background-image: url(../images/texture_inscription.png);	
+	background-color: #69499C;	
 	content: '||||||';
 	border-radius: 5px;
 	border: solid black 1px;
@@ -140,7 +140,7 @@
 {
 	position: relative;
 	margin-top: 15px;
-        background-image: url(../images/texture_inscription.png);
+        background-color: #69499C;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
         border-radius: 2px 2px 0px 0px;
         padding: 5px 3px 5px 5px;
@@ -186,7 +186,7 @@ input.file
 {
 	width: 100%;
 	height: 30px;
-	background-image: url(../images/texture_inscription.png);	
+	background-color: #69499C;	
         border-radius: 0px 0px 3px 3px;
 	border-top: none;
 	border-left: solid black 1px;
