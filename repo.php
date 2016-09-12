@@ -8,16 +8,15 @@
         <head>
                 <meta charset="utf-8" />
                 <title>CairnGit</title>
-		<base href="<?php echo "http://".$_SERVER['SERVER_NAME']."/cairngit/" ?>"/>
-                <link href="css/style.css" rel="stylesheet" />
-		<link href="css/modification.css" rel="stylesheet" />
-		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
-		<link href="css/repo.css" rel="stylesheet" />
-		<link href="css/footer.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/highlight/arduino-light.css">
-		<script src="js/highlight.pack.js"></script>
+                <link href="/css/style.css" rel="stylesheet" />
+		<link href="/css/modification.css" rel="stylesheet" />
+		<link href="/css/nav_bar_no_log.css" rel="stylesheet" />
+		<link href="/css/repo.css" rel="stylesheet" />
+		<link href="/css/footer.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/css/highlight/arduino-light.css">
+		<script src="/js/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
-                <script src="js/repo.js"></script>
+                <script src="/js/repo.js"></script>
         </head>
 
 	<div class="conteneur" >

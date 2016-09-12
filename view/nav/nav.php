@@ -4,13 +4,13 @@
 
 	<div class="nav_link_div">
 		<a class="nav_link" href="open-hardware" <?php modif_text('Nav_menu_1'); ?>><?php echo $get_text['Nav_menu_1']."</a>\n"; ?></a>
-		<a class="nav_link" href="tools" <?php modif_text('Nav_menu_2');  ?>><?php echo $get_text['Nav_menu_2']."</a>\n"; ?></a> 
+		<a class="nav_link" href="explore" <?php modif_text('Nav_menu_2');  ?>><?php echo $get_text['Nav_menu_2']."</a>\n"; ?></a> 
 		<a class="nav_link" href="pricing" <?php modif_text('Nav_menu_3');?>><?php echo $get_text['Nav_menu_3']."</a>\n"; ?></a>
 	</div>
 
 	 <div class="div_searchbar">
 	<form method="get" action="search<?php if(isset($_GET['sort']) || isset($_GET['in']) ){ echo "?sort=".$_GET['sort']."&in=".$_GET['in']; }else{ echo "?sort=recentupdate&in=project"; } ?>">
-        	<label for="Search"></label><input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo $get_text['Nav_placeholder_search']; } ?>" <?php modif_text('Nav_placeholder_search');?>/>
+        	<input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="<?php if(isset($_POST['searchbar']) && htmlspecialchars($_POST['searchbar'] != '')) { echo '" value="'.$_POST['searchbar']; }else{ echo $get_text['Nav_placeholder_search']; } ?>" <?php modif_text('Nav_placeholder_search');?>/>
 
 		<?php if( ! preg_match( "#.*search.*#", $_SERVER['REQUEST_URI'])) {echo '</form>';}?>
          </div>

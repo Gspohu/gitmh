@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 20 Août 2016 à 15:21
+-- Généré le :  Lun 12 Septembre 2016 à 16:21
 -- Version du serveur :  5.7.13-0ubuntu0.16.04.2
 -- Version de PHP :  7.0.8-0ubuntu0.16.04.2
 
@@ -27,8 +27,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Content_EN` (
-  `Name` text CHARACTER SET latin1 NOT NULL,
-  `Content` text CHARACTER SET latin1 NOT NULL
+  `Name` text NOT NULL,
+  `Content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='English';
 
 --
@@ -37,11 +37,11 @@ CREATE TABLE `Content_EN` (
 
 INSERT INTO `Content_EN` (`Name`, `Content`) VALUES
 ('Nav_menu_1', 'Open-Hardware'),
-('Nav_menu_2', 'Tools'),
+('Nav_menu_2', 'Explore'),
 ('Nav_menu_3', 'Pricing'),
 ('Nav_placeholder_search', ' Search'),
-('Nav_button_connexion', 'Sign up'),
-('Nav_button_inscription', 'Sign in'),
+('Nav_button_connexion', 'Sign in'),
+('Nav_button_inscription', 'Sign up'),
 ('Connexion_title', 'Sign in'),
 ('Connexion_form_1', 'Username'),
 ('Connexion_form_2', 'Passphrase'),
@@ -74,11 +74,11 @@ INSERT INTO `Content_EN` (`Name`, `Content`) VALUES
 ('Contact_form_placeholder_3', 'Copy the text to your right'),
 ('Contact_submit', 'Submit'),
 ('Nav_menu_1', 'Open-Hardware'),
-('Nav_menu_2', 'Tools'),
+('Nav_menu_2', 'Explore'),
 ('Nav_menu_3', 'Pricing'),
 ('Nav_placeholder_search', ' Search'),
-('Nav_button_connexion', 'Sign up'),
-('Nav_button_inscription', 'Sign in'),
+('Nav_button_connexion', 'Sign in'),
+('Nav_button_inscription', 'Sign up'),
 ('Connexion_title', 'Sign in'),
 ('Connexion_form_1', 'Username'),
 ('Connexion_form_2', 'Passphrase'),

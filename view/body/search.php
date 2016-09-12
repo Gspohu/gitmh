@@ -3,7 +3,7 @@
                 <div class="aside_searchbar_title">
                         Sort by
                 </div>
-		<a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=🕒&in=<?php echo htmlspecialchars($_GET['in']); ?>" class="aside_searchbar_tab<?php if( $_SESSION['sort'] == "🕒" ) { echo "_active"; } ?>" >
+		<a href="search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=🕒&in=<?php echo htmlspecialchars($_GET['in']); ?>" class="aside_searchbar_tab<?php if( $_SESSION['sort'] == "🕒")  { echo "_active" ;}  ?>" >
 			<div class="aside_temoin<?php if( $_SESSION['sort'] == "🕒" ) { echo "_active"; } ?>" ></div>
 			<div class="aside_logo" >
 				🕒
@@ -54,13 +54,13 @@
                 <div class="aside_searchbar_tab">
 			<form method="post" action="traitement.php">
 				<select class="select_type" name="repo_type" id="type" >
-                                        <option value="All">All</option>
-                                	<option value="electronic">Electronic</option>
-	                                <option value="audio_electronics">Audio electronics</option>
-        	                        <option value="video_electronics">Video electronics</option>
-                	                <option value="cameras">Cameras</option>
-                        	        <option value="robotics">Robotics</option>
-                                	<option value="telephony">Telephony</option>
+					<option value="All">All</option>
+               <option value="electronic">Electronic</option>
+	            <option value="audio_electronics">Audio electronics</option>
+        	      <option value="video_electronics">Video electronics</option>
+               <option value="cameras">Cameras</option>
+               <option value="robotics">Robotics</option>
+               <option value="telephony">Telephony</option>
 	                                <option value="computer">Computer</option>
         	                        <option value="car">Car</option>
                 	                <option value="wireless_networking">Wireless networking</option>
@@ -84,7 +84,6 @@
                 </div>
 	</div>
 <div class="repo_list">
-Test
         <?php
                 while($data = $data_sql->fetch())
                 {

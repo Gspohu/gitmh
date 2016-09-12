@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 20 Août 2016 à 15:30
+-- Généré le :  Lun 12 Septembre 2016 à 16:22
 -- Version du serveur :  5.7.13-0ubuntu0.16.04.2
 -- Version de PHP :  7.0.8-0ubuntu0.16.04.2
 
@@ -27,24 +27,27 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Projects` (
-  `Name` varchar(255) NOT NULL,
-  `Publpriv` varchar(255) NOT NULL,
-  `Encryption` varchar(255) NOT NULL,
-  `Type` varchar(255) NOT NULL,
-  `Description` varchar(2048) NOT NULL,
-  `License` varchar(255) NOT NULL,
-  `Tag` varchar(255) NOT NULL,
-  `Owner` varchar(255) NOT NULL,
-  `Contributor` varchar(255) NOT NULL,
-  `Admin` varchar(255) NOT NULL,
-  `Contributor_group` varchar(255) NOT NULL,
-  `logo` varchar(255) DEFAULT NULL,
-  `id` int(255) DEFAULT NULL
+  `Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Publpriv` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Encryption` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Type` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Description` varchar(2048) CHARACTER SET utf8 DEFAULT NULL,
+  `License` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Tag` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Owner` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Contributor` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Admin` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Contributor_group` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `logo` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `id` text CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `Projects`
 --
+
+INSERT INTO `Projects` (`Name`, `Publpriv`, `Encryption`, `Type`, `Description`, `License`, `Tag`, `Owner`, `Contributor`, `Admin`, `Contributor_group`, `logo`, `id`) VALUES
+('Chien', 'public', 'none', 'electronic', 'Ours chien vert', 'audio_electronics', 'Ours', 'Gspohu', NULL, NULL, NULL, '.png', NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

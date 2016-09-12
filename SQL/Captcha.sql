@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 20 Août 2016 à 15:20
+-- Généré le :  Lun 12 Septembre 2016 à 16:21
 -- Version du serveur :  5.7.13-0ubuntu0.16.04.2
 -- Version de PHP :  7.0.8-0ubuntu0.16.04.2
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Captcha` (
-  `Nom` text NOT NULL
+  `Nom` text CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
