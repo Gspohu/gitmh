@@ -108,19 +108,16 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 	if($create_repo == 'OK')
 	{
 		#Traitement de l'upload du logo du projet
-		if (isset($_FILES['repo_logo']) AND $_FILES['repo_logo']['error'] == 0)
+		if (isset($_FILES['repo_logo']) AND $_FILES['repo_logo']['error'] == 0 AND $_FILES['repo_logo']['size'] <= 4000000)
 		{
-		        if ($_FILES['repo_logo']['size'] <= 1000000)
-        		{
                		 	$infosfichier = pathinfo($_FILES['repo_logo']['name']);
-		                $extension_upload = $infosfichier['extension'];
+		                $extension_upload = strtolower($infosfichier['extension']);
         		        $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png', 'svg');
 	                	if (in_array($extension_upload, $extensions_autorisees))
 		                {
         		                move_uploaded_file($_FILES['repo_logo']['tmp_name'], "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo.".$extension_upload);
 					chmod("repository/".$_SESSION['pseudo']."_repo/".$repo_name."/.cairn/repo_logo.".$extension_upload, 0644);
 				}
-        		}
 		}
 		else
 		{

@@ -1,8 +1,7 @@
 <div class="open-hardware">
-
 	<div class="title_classic">
 		<div class="emph_border"></div>
-		Open-Hardware and innovation
+			Open-Hardware and innovation
 		<div class="emph_border"></div>
 	</div>
 
@@ -22,7 +21,7 @@
                 </div>
 
 		<div class="open-hardware_image_2">
-                        <img src="images/mask_OH_img.png">
+			<img src="images/mask_OH_img.png">
 		</div>
 	</div>
 

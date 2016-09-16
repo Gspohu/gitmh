@@ -1,21 +1,27 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+   header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 .repo_list_body
 {
 	display: flex;
    justify-content: space-between;
-   width: 100%;
-   flex: 1;
+	width: 100%;
+	flex: 1;
 }
 
 .aside_searchbar
 {
 	position: relative;
 	width: 150px;
-	height: 100%;
 	background-color: #353E46;
 	z-index: 2000;
-	margin-bottom: -100px;
-	padding-bottom: 50px;
 	border-right: 1px solid grey;
+	padding-bottom: 100px;
+	margin-bottom: -100px;
 }
 
 .aside_searchbar_title
@@ -49,6 +55,22 @@
    width: 150px;
    border-top: 1px solid grey;
    background-color: #44505A;
+}
+
+.aside_searchbar_tab_last
+{
+	display: flex;
+	justify-content: space-between;
+	height: 80px;
+	width: 150px;
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	background-color: #353E46;
+}
+
+.aside_searchbar_tab:hover
+{
+	background-color: #44505A;
 }
 
 .aside_temoin
@@ -109,33 +131,31 @@
 .repo_list_result
 {
 	position: relative;
-   display:flex;
+   display: flex;
    justify-content: flex-start;
    width: 100%;
-   border-bottom: 1px #DCDCDC solid;
+	height: 138px;
    margin-top: 25px;
    color: black;
-   padding-bottom: 10px;
-}
-
-.repo_list_result a
-{
-   text-decoration: none;
-   color: black;
+	border-radius: 2px;
+   box-shadow: 0px 0px 3px 1px grey;	
+	background-color: #F0F0F0;
 }
 
 .description
 {
-   width: 100%;
+   width: calc(100% - 12px);
    font-size: small;     
    word-wrap: break-word;
+	overflow: hidden;
 }
 
-.project_logo
+.project_logo img
 {
    position: relative;
    width: auto;
-   height: 100px;
+   height: 132px;
+	margin: 3px;
 }
 
 .project_name_description
@@ -145,18 +165,22 @@
    flex-direction: column;
    justify-content: space-between;
    margin-left: 20px;
+	margin-bottom: 5px;
    width: 80%;
 }
 
-.title_repo
+.title_repo 
 {
 	font-size: large;
    word-wrap: break-word;
+   text-decoration: none;
+	color: black;
 }
 
-.sub_title_repo
+.sub_title_repo 
 {
 	font-size: small;
 	color: #626968;
    word-wrap: break-word;
+	text-decoration: none;
 }

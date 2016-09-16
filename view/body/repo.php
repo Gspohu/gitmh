@@ -2,31 +2,31 @@
 	<div id="reduce" >
         	<div class="aside_repoperso" >
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-        	               <img class="aside_icon" src="images/pictogrammes/sources.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Sources</a>
+        	               <img class="aside_icon" src="/images/pictogrammes/sources.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Sources</a>
         	        </div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-        	                <img class="aside_icon" src="images/pictogrammes/bug_track.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Bug track</a>
+        	                <img class="aside_icon" src="/images/pictogrammes/bug_track.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Bug track</a>
        	         	</div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "user" ){ echo "_active"; } ?>" >
-        	               <img class="aside_icon" src="images/pictogrammes/wiki.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repoperso_choix_text" >Wiki</a>
+        	               <img class="aside_icon" src="/images/pictogrammes/wiki.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repoperso_choix_text" >Wiki</a>
        	         	</div>
 
                         <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-                               <img class="aside_icon" src="images/pictogrammes/collab.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Collab tools</a>
+                               <img class="aside_icon" src="/images/pictogrammes/collab.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Collab tools</a>
                         </div>
 		
         	        <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-        	               <img class="aside_icon" src="images/pictogrammes/progest.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Progest</a>
+        	               <img class="aside_icon" src="/images/pictogrammes/progest.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Progest</a>
         	        </div>
 
                         <div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-                               <img class="aside_icon" src="images/pictogrammes/edu.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Edu tools</a>
+                               <img class="aside_icon" src="/images/pictogrammes/edu.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repoperso_choix_text" >Edu tools</a>
                         </div>
 	
        	         	<div class="aside_repoperso_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-       	                	<img class="aside_icon" src="images/pictogrammes/setting.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Setting</a>
+       	                	<img class="aside_icon" src="/images/pictogrammes/setting.png"/> <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repoperso_choix_text" >Setting</a>
 		        </div>
 	
 	        </div>
@@ -40,7 +40,7 @@
 ?>
 			<div class="title_repo_list_contain_a">
                         <?php 
-				echo '<img class="project_logo" src="repository/'.$owner.'_repo/'.$repo.'/.cairn/repo_logo'.$ext.'"/>';
+				echo '<img class="project_logo" src="/repository/'.$owner.'_repo/'.$repo.'/.cairn/repo_logo'.$ext.'"/>';
                                 if(isset($_GET['tab'])) 
                                 {       
                                         echo '<a href="'.$owner.'🜉/">'.$owner.'/</a><a href="'.$owner.'🜉/'.$repo.'📂/">'.$repo.'/</a><a href="'.$owner.'🜉/'.$repo.'📂/'.$tab.'⚙"">'.$tab.'</a>';
@@ -169,112 +169,12 @@
 						else if($path_info['extension'] == "stl" || $path_info['extension'] == "STL")
 						{
 							
-							echo '  <script src="js/three.js"></script>
-								<script src="js/loaders/STLLoader.js"></script>
-								<script src="js/Detector.js"></script>
-								<script src="js/TrackballControls.js"></script>';
+							echo '  <script src="/js/three.js"></script>
+								<script src="/js/loaders/STLLoader.js"></script>
+								<script src="/js/Detector.js"></script>
+								<script src="/js/TrackballControls.js"></script>';
 							
-							echo '<script>if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-var click_on_element = 0;
-var container;
-
-var camera, cameraControls, scene, renderer, mesh;
-var group;
-
-var clock = new THREE.Clock();
-
-init();
-animate();
-
-
-function init() {
-    
-        // renderer
-
-        renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        container = document.createElement( \'div\' );
-        document.getElementById("file_repo_list_contain").appendChild( container );
-
-	container.appendChild(renderer.domElement);
-
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 10000 );
-
-        cameraControls = new THREE.TrackballControls(camera, renderer.domElement);
-        cameraControls.target.set(0, 0, 0);
-
-        scene = new THREE.Scene();
-
-        // lights
-
-        light = new THREE.DirectionalLight( 0xffffff );
-        light.position.set( 1, 1, 1 );
-        scene.add( light );
-
-        light = new THREE.DirectionalLight( 0x002288 );
-        light.position.set( -1, -1, -1 );
-        scene.add( light );
-
-        light = new THREE.AmbientLight( 0x222222 );
-        scene.add( light );
-        
-/*        material = new THREE.MeshBasicMaterial({
-            wireframe: true,
-            color: \'black\'
-        });*/
-	material = new THREE.MeshPhongMaterial( { color: 0x136BA1, specular: 0x1887CC, shininess: 100 } );
-
-        group = new THREE.Object3D();
-         
-        //load mesh 
-        var loader = new THREE.STLLoader();
-	loader.load(\''.$path_file.'\', modelLoadedCallback);
-
-        window.addEventListener( \'resize\', onWindowResize, false );
-
-}
-
-function modelLoadedCallback(geometry) {
-
-        mesh = new THREE.Mesh( geometry, material );
-	var bb = new THREE.Box3()
-	bb.setFromObject(mesh);
-	bb.center(cameraControls.target);
-        group.add(mesh);
-        scene.add( group );
-
-}
-
-function onWindowResize() {
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-        render();
-
-}
-
-function animate() {
-    
-        var delta = clock.getDelta();
-
-        requestAnimationFrame(animate);
-        
-        cameraControls.update(delta);
-
-	if(click_on_element != 1) 
-	{
-       		mesh.rotation.x += 0.001;
-		mesh.rotation.y += 0.001;
-       		mesh.rotation.z += 0.001;
-	}
- 
-        renderer.render(scene, camera);
-        
-}</script>';
+							echo '<script src="/js/aff_3d.js"></script>';
 	
 						}
 						else
@@ -297,7 +197,7 @@ function animate() {
 						else if (is_dir($path_file))
 						{
 							echo '<div class="repo_list_result">';
-							echo '<img class="repo_icon" src="images/pictogrammes/folder_icon.png"/>';
+							echo '<img class="repo_icon" src="/images/pictogrammes/folder_icon.png"/>';
 							echo $repo_files[$cpt];
 							echo "</div>";
 							$cpt++;
@@ -306,7 +206,7 @@ function animate() {
 						{
 							echo '<a href="'.$owner."🜉/".$repo."📂/".$repo_files[$cpt].'⏵">';
 							echo '<div class="repo_list_result">';
-                                                        echo '<img class="repo_icon" src="images/pictogrammes/file_icon.png"/>';
+                                                        echo '<img class="repo_icon" src="/images/pictogrammes/file_icon.png"/>';
                                                         echo $repo_files[$cpt];
 							echo "</div>";
 							echo '</a>';

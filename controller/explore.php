@@ -9,7 +9,7 @@ include_once('controller/modif_text.php');
 <?php
 include_once('view/nav/nav.php');
 
-include_once('view/body/tools.php');
+include_once('view/body/explore.php');
 
 include_once('view/footer/footer.php');
 ?>

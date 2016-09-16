@@ -1,3 +1,10 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+   header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 .open-hardware
 {
 	position: relative;
@@ -15,7 +22,7 @@
 	display: flex;
 	justify-content: space-between;
 	border-bottom: 1px solid #BEBEBE;	
-        margin-top: 15px;
+	margin-top: 15px;
 }
 
 .open-hardware_image_1
@@ -23,7 +30,7 @@
 	position: relative;
 	background-image: url(../images/OH_img_1.png);
 	background-size: contain;
-        background-repeat: no-repeat;
+   background-repeat: no-repeat;
 	width: 65%;
 	height: auto;
 	margin-right: 10px;

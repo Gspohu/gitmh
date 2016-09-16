@@ -1,3 +1,10 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+	header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 /*Barre de navigation hors connexion */
 
 .nav
@@ -8,7 +15,7 @@
 	align-items: center;
 	background-color: #23282D;
 	height: 65px;
-        width: 100%;
+	width: 100%;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7); 
 	z-index: 2000;
 }
@@ -71,11 +78,11 @@
 	height: 28px;
 	color: #171B1D;
 	background-color: #4BBC3A;
-        border-radius: 2px;
-        padding-top: 7px;
-        border: solid #4BBC3A 1px;
-        text-decoration: none;
-        text-align: center
+	border-radius: 2px;
+   padding-top: 7px;
+   border: solid #4BBC3A 1px;
+   text-decoration: none;
+   text-align: center
 }
 
 .bouton_inscription:hover
@@ -202,4 +209,67 @@
 {
 	width: 55px;
 	height: 55px;
+}
+
+.mobile_button
+{
+	display: none;
+}
+
+.nav_link_mobile
+{
+	display: none;
+}
+
+.nav_mobile_extend
+{
+	display: none;
+}
+
+/*Media_Queries*/
+
+@media screen and (max-device-width: 480px)
+{
+	.nav_link_div
+	{
+		display: none;
+	}
+
+	.nav_link_mobile
+	{
+		width: 80%;
+		margin-left: 10%;
+		flex-direction: column;
+	}
+
+	.mobile_button a
+	{
+		display: initial;
+		width: 30px;
+		height: 55px;
+		margin-top: 5px;
+		font-weight: bold;
+		font-size: 15px;
+		border-radius: 2px;
+		border: solid 1px grey;
+		background-color: #EBEBEB;
+		text-decoration: none;
+	}
+
+   .div_button
+	{
+		display: none;
+	}
+
+	.div_button_mobile
+	{
+		display: initial;
+	}
+
+	.nav_mobile_extend:visited
+	{
+		background-color: #23282D;
+		height: 150px;
+		width: 100%;
+	}
 }

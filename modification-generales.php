@@ -8,8 +8,8 @@
         <head>
                 <meta charset="utf-8" />
                 <title>CairnGit</title>
-                <link href="css/style.css" rel="stylesheet" />
-		<link href="css/modification-generales.css" rel="stylesheet" />
+                <link href="css/style" rel="stylesheet" />
+		<link href="css/modification-generales" rel="stylesheet" />
         </head>
 
 	<div class="conteneur" >

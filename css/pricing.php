@@ -1,3 +1,10 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+   header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 .pricing
 {
 	padding-top: 30px;
@@ -22,7 +29,7 @@
 	height: 520px;
 	background: #E8E8E8;
 	box-shadow: 1px 1px 3px #000000;
-	border-radius: 3px 3px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
 	padding: 0; 
         list-style: none;
 	margin-bottom: 50px;
@@ -269,7 +276,7 @@
 	font-weight: 500;
 	font-size: 15px;
 	letter-spacing: 1px;
-	border-radius: 5px;
+	border-radius: 2px;
 	border: 1px solid #298A0D;
 	background: linear-gradient(#3ED315, #2D990E);
 }
@@ -349,17 +356,19 @@ th
 	background: #4B124E;
 	color: #fff;
 	text-align: left;
+	border-right: 1px solid #55145A ;
+	border-left: 1px solid rgba(0,0,0,0);
 }
 
 tr:first-child th:first-child 
 {
 	height: 31px;
-	border-radius: 3px 0px 0px 0px;
+	border-radius: 2px 0px 0px 0px;
 }
 
 tr:first-child th:last-child 
 {
-	border-radius: 0px 3px 0px 0px;
+	border-radius: 0px 2px 0px 0px;
 }
 
 td 
@@ -381,12 +390,12 @@ tr:nth-child(even) td
 
 tr:last-child td:first-child 
 {
-	border-radius: 0px 0px 0px 3px;
+	border-radius: 0px 0px 0px 2px;
 }
 
 tr:last-child td:last-child
 {
-	border-radius: 0px 0px 3px 0px;
+	border-radius: 0px 0px 2px 0px;
 }
 
 .center
@@ -413,7 +422,7 @@ tr:last-child td:last-child
         font-weight: 500;
         font-size: 15px;
         letter-spacing: 1px;
-        border-radius: 5px;
+        border-radius: 2px;
         border: 1px solid #298A0D;
         background: linear-gradient(#16CF22, #0F9218);
 	cursor: pointer;
@@ -423,7 +432,7 @@ tr:last-child td:last-child
 {
 	width: 40px;
 	height: 25px;
-	border-radius: 3px;
+	border-radius: 2px;
 	border: 1px solid #D5CFDC;
 }
 
@@ -456,6 +465,7 @@ tr:last-child td:last-child
 .pricing_download_description
 {
 	margin-top: 35px;
+	margin-bottom: 50px;
 	font-size: large;
 	font-weight: bold;
 	text-align: center;
@@ -464,7 +474,15 @@ tr:last-child td:last-child
 
 .pricing_download_logo
 {
-        position: relative;
-        width: 40px;
+   position: relative;
+   width: 40px;
 	margin-top: -80px;
+}
+
+.pricing_links
+{
+	margin-top: 10px;
+	margin-left: 60px;
+	color: #414141;
+	font-weight: bold;
 }

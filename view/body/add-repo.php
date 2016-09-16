@@ -66,7 +66,7 @@
 			</div>
 
 			<p class="title_form_add">Description</p>
-			<textarea class="field_add_textarea" name="repo_description" id="repo_description"></textarea>
+			<textarea class="field_add_textarea" name="repo_description" id="repo_description" maxlength="590"></textarea>
 
                                 <p class="title_form_add">License</p>
                                 <select class="select_add" name="repo_license" id="repo_licence" required>

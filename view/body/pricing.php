@@ -206,7 +206,7 @@
                                         </tr>   
 					<tr>
 						<td>Private project encryption</td>
-						<td></td>
+						<td>Only for private project</td>
 						<td class="center">7€</td>
 						<td><input class="pricing_tab_select" type="checkbox" name="bugT" id="bugT" /></td>
 					</tr>
@@ -245,29 +245,29 @@
 			
 		<div class="pricing_download_all">
 
-                	<div class="pricing_download">
-               	        	<img class="pricing_download_img" src="images/Download.png"/>
-				<img class="pricing_download_logo" src="images/logo/Ubuntu.png"/>
-               	         	<div class="pricing_download_description">Ubuntu</div>
-        		 </div>
+                	 <a href="/download/ubuntu" class="pricing_download">
+              	        	<img class="pricing_download_img" src="images/Download.png"/>
+								<img class="pricing_download_logo" src="images/logo/Ubuntu.png"/>
+               	      <div class="pricing_download_description">Ubuntu</div>
+        		 </a>
 
 	
-			<div class="pricing_download">
+			<a href="/download/debian" class="pricing_download">
 				<img class="pricing_download_img" src="images/Download.png"/>
 				<img class="pricing_download_logo" src="images/logo/Debian.png"/>
 				<div class="pricing_download_description">Debian</div>
-			</div>
+			</a>
 
-                        <div class="pricing_download">
+            <a href="/download/source" class="pricing_download">
                                 <img class="pricing_download_img" src="images/Download.png"/>
                                 <img class="pricing_download_logo" src="images/logo/Source.png"/>
                                 <div class="pricing_download_description">Source</div>
-                        </div>
+            </a>
 
 		</div>		
 
-		You need Support ?</br>
-		You want to contribut to CairnGit ?</br>
+	<a href="support" class="pricing_links">You need Support ?</a>
+	<a href="contribute" class="pricing_links">You want to contribute to CairnGit ?</a>
 
 	</div>
 </div>

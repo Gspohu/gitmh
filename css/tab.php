@@ -1,3 +1,10 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+   header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 .tab_container
 {
 	display: block;
@@ -19,7 +26,7 @@
 	position: relative;
 	width: 250px;
 	height: 350px;
-        border-radius: 5px;
+        border-radius: 2px;
         border: solid grey 1px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	background:
@@ -37,7 +44,7 @@
         width: 250px;
         height: 350px;
         background-image: url(../images/texture_nav.png);
-        border-radius: 5px;
+        border-radius: 2px;
         border: solid grey 1px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
         overflow: hidden;
@@ -55,7 +62,7 @@
 	linear-gradient(90deg, rgba(190,190,190,.3) 1px, transparent 1px);
 	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 	background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
-	border-radius: 5px;
+	border-radius: 2px;
         border: solid grey 1px;
         box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
         overflow: hidden;
@@ -85,7 +92,7 @@
 	width: 50%;
 	height: 20px;
 	background-image: url(../images/texture_inscription.png);
-	border-radius: 0px 5px 5px 0px;
+	border-radius: 0px 2px 2px 0px;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);		
 }
 

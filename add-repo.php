@@ -8,11 +8,11 @@
         <head>
                 <meta charset="utf-8" />
                 <title>CairnGit</title>
-                <link href="css/style.css" rel="stylesheet" />
-		<link href="css/modification.css" rel="stylesheet" />
-		<link href="css/nav_bar_no_log.css" rel="stylesheet" />
-		<link href="css/add-repo.css" rel="stylesheet" />
-		<link href="css/footer.css" rel="stylesheet" />
+                <link href="css/style" rel="stylesheet" />
+		<link href="css/modification" rel="stylesheet" />
+		<link href="css/nav_bar_no_log" rel="stylesheet" />
+		<link href="css/add-repo" rel="stylesheet" />
+		<link href="css/footer" rel="stylesheet" />
 		<script src="js/add-repo.js"></script>
         </head>
 

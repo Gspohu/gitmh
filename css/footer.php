@@ -1,12 +1,19 @@
+<?php
+   header('content-type: text/css');
+   ob_start('ob_gzhandler');
+   header('Cache-Control: max-age=31536000, must-revalidate');
+?>
+
+
 footer
 {
 	position: relative;
 	display: block;
 	background-color: #23282D;
 	box-shadow: 5px 0px 5px 1px rgba(0, 0, 0, 0.7);	
+	margin-top: 100px;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	margin-top: 100px;
 }
 
 .footer_logo

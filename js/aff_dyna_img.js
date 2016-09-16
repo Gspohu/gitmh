@@ -22,7 +22,7 @@
 
         }
 
-        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif', 'svg'],
+        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'PNG', 'JPG', 'JPEG', 'GIF', 'SVG'],
             fileInput = document.querySelector('#file'),
             prev = document.querySelector('#prev'),
 	    logo_base = document.getElementById("logo_base");
