@@ -8,12 +8,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>CairnGit</title>
-		<link href="/css/error" rel="stylesheet" />
+		<link href="/css/setting" rel="stylesheet" />
 	</head>
-
 	<div class="conteneur" >
 		<?php
-			include_once('controller/erreur403.php');
+			include_once('controller/setting.php');
 		?>
 	</div>
 <html>

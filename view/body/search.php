@@ -61,7 +61,7 @@
 		<a href="/search?searchbar=<?php echo htmlspecialchars($_GET['searchbar']); ?>&sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=🚹🚹" class="aside_searchbar_tab<?php if($_SESSION['in'] == "🚹🚹" ) { echo "_active"; } ?>" >
 			<div class="aside_temoin<?php if( $_SESSION['in'] == "🚹🚹" ) { echo "_active"; } ?>" ></div>
 			<div class="aside_logo" >
-				🚹
+				🚹🚹
 				<div class="aside_text" >
 					Groups
 				</div>
@@ -118,7 +118,7 @@
 			{
 				echo '
 				<div class="repo_list_result">
-					<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/"class="project_logo" > <img src="repository/'.$data['Owner'].'_repo/'.$data['Name'].'/.cairn/repo_logo'.$data['logo'].'" /></a>
+					<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/"class="project_logo" > <img src="/repository/'.$data['Owner'].'_repo/'.$data['Name'].'/.cairn/repo_logo'.$data['logo'].'" /></a>
 					<div class="project_name_description">
 						<a class="title_repo" href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/">'.$data['Name'].'</a>
 						<a href="'.$data['Owner'].'🜉" class="sub_title_repo">'.$data['Owner'].'</a>

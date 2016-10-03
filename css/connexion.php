@@ -1,23 +1,33 @@
 <?php
-   header('content-type: text/css');
-   ob_start('ob_gzhandler');
-   header('Cache-Control: max-age=31536000, must-revalidate');
+	header('content-type: text/css');
+	ob_start('ob_gzhandler');
+	header('Cache-Control: max-age=31536000, must-revalidate');
+
+	include_once('../model/connexion_sql.php');
+
+	include_once('../model/design.php');
+
+	include_once('style.php');
+
+	include_once('modification.php');
+
+	include_once('nav_bar_no_log.php');
 ?>
 
 
 .connexion
 {
-        position: relative;
+	position: relative;
 	width: 30%;
 	min-width: 200px;
-	color: #DFDCD5;
-	background-color: #23282D;
+	color: <?php echo $color['text_color']; ?>;
+	background-color: <?php echo $color['background_element']; ?>;
 	margin-top: 40px;
-        margin-left: 35%;
+	margin-left: 35%;
 	border-radius: 2px;
-        padding: 0px 15px 10px 10px;
-        border: solid #282622 1px;
-        text-decoration: none;
+	padding: 0px 15px 10px 10px;
+	border: solid <?php echo $color['background_element']; ?> 1px;
+	text-decoration: none;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
@@ -47,7 +57,7 @@
 	bottom: -16px;
 	width: 50%;
 	min-width: 120px;
-	background-color: #69499C;
+	background-color: <?php echo $color['background_1']; ?>;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 	border-radius: 2px 2px 0px 0px;
 	padding: 5px 5px 5px 5px;
@@ -60,11 +70,11 @@
 	left: -10px;
 	bottom: -10px;
 	height: 30px;
-	background-color: #69499C;	
+	background-color: <?php echo $color['background_1']; ?>;	
 	content: '||||||';
 	border-radius: 2px;
 	border: solid black 1px;
-	color: #DDD9D1; 
+	color: <?php echo $color['text_color']; ?>; 
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -77,7 +87,7 @@
 
 .text_connexion 
 {
-	color: #DFDCD5;
+	color: <?php echo $color['text_color']; ?>;
 	text-decoration: none;
 }
 
@@ -85,3 +95,7 @@
 {
 	color: white;
 }
+
+<?php
+	include_once('footer.php');
+?>

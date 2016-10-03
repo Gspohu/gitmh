@@ -5,19 +5,15 @@
 
 <!DOCTYPE html>
 <html>
-        <head>
-                <meta charset="utf-8" />
-                <title>CairnGit</title>
-                <link href="css/style" rel="stylesheet" />
-		<link href="css/modification" rel="stylesheet" />
-		<link href="css/nav_bar_no_log" rel="stylesheet" />
+	<head>
+		<meta charset="utf-8" />
+		<title>CairnGit</title>
 		<link href="css/inscription" rel="stylesheet" />
-		<link href="css/footer" rel="stylesheet" />
-        </head>
+	</head>
 
 	<div class="conteneur" >
-<?php
-	include_once('controller/inscription.php');
-?>
+		<?php
+			include_once('controller/inscription.php');
+		?>
 	</div>
 <html>

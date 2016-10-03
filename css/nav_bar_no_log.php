@@ -1,6 +1,6 @@
 <?php
-   header('content-type: text/css');
-   ob_start('ob_gzhandler');
+	header('content-type: text/css');
+	ob_start('ob_gzhandler');
 	header('Cache-Control: max-age=31536000, must-revalidate');
 ?>
 
@@ -13,7 +13,7 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	background-color: #23282D;
+	background-color: <?php echo $color['background_element']; ?>;
 	height: 65px;
 	width: 100%;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7); 
@@ -31,12 +31,12 @@
 
 .nav_link
 {
-	color: #DFDCD5;
+	color: <?php echo $color['text_color']; ?>;
 }
 
 .nav_link:hover
 {
-	color: #FFFFFF;
+	color: white;
 }
 
 .nav_logo
@@ -49,18 +49,18 @@
 	width: 20%;
 	max-width: 270px;
 	min-width: 190px;
-        display: flex;
-        justify-content: space-around;	
+	display: flex;
+	justify-content: space-around;
 }
 
 .bouton_connexion
 {
-        min-width: 75px;
+	min-width: 75px;
 	height: 28px;
 	color: #171B1D;
 	background-color: #8748E6;
 	border-radius: 2px;
-        padding-top: 7px;
+	padding-top: 7px;
 	border: solid #8748E6 1px;
 	text-decoration: none;
 	text-align: center
@@ -68,7 +68,7 @@
 
 .bouton_connexion:hover
 {
-        background-color: #23282D;
+	background-color: <?php echo $color['background_element']; ?>;
 	color: #8748E6;
 }
 
@@ -79,23 +79,23 @@
 	color: #171B1D;
 	background-color: #4BBC3A;
 	border-radius: 2px;
-   padding-top: 7px;
-   border: solid #4BBC3A 1px;
-   text-decoration: none;
-   text-align: center
+	padding-top: 7px;
+	border: solid #4BBC3A 1px;
+	text-decoration: none;
+	text-align: center
 }
 
 .bouton_inscription:hover
 {
-        background-color: #23282D;
-        color: #4BBC3A;
+	background-color: <?php echo $color['background_element']; ?>;
+	color: #4BBC3A;
 }
 
 .div_searchbar
 {
 	width: 30%;
-        margin-left: 10%;
-        margin-right: 5%;
+	margin-left: 10%;
+	margin-right: 5%;
 }
 
 .searchbar
@@ -117,8 +117,8 @@
 	position: relative;
 	cursor: default;
 	box-shadow: 
-		inset 0 0 0 8px rgba(255,255,255,0.25),
-		0 1px 2px rgba(0,0,0,0.1);
+					inset 0 0 0 8px rgba(255,255,255,0.25),
+					0 1px 2px rgba(0,0,0,0.1);
 	transition: all 0.4s ease-in-out;
 }
 
@@ -148,8 +148,8 @@
 	font-size: 10px;
 	height: 0px;
 	text-shadow: 
-		0 0 1px #fff, 
-		0 1px 2px rgba(0,0,0,0.3);
+					0 0 1px #fff, 
+					0 1px 2px rgba(0,0,0,0.3);
 	text-decoration: none;
 }
 
@@ -171,8 +171,8 @@
 .nav_profil_Wcircle:hover 
 {
 	box-shadow: 
-		inset 0 0 0 1px rgba(255,255,255,0.1),
-		0 1px 2px rgba(0,0,0,0.1);
+					inset 0 0 0 1px rgba(255,255,255,0.1),
+					0 1px 2px rgba(0,0,0,0.1);
 }
 .nav_profil_Wcircle:hover .nav_profil_link 
 {
@@ -197,7 +197,7 @@
 .nav_profil_Wcircle:before 
 {
 	content: '';
-    display: table;
+	display: table;
 }
 
 .nav_profil:after 
@@ -241,7 +241,7 @@
 		margin-left: 10%;
 		flex-direction: column;
 	}
-
+		
 	.mobile_button a
 	{
 		display: initial;
@@ -252,23 +252,23 @@
 		font-size: 15px;
 		border-radius: 2px;
 		border: solid 1px grey;
-		background-color: #EBEBEB;
+		background-color: <?php echo $color['text_color']; ?>;
 		text-decoration: none;
 	}
-
-   .div_button
+	
+	.div_button
 	{
 		display: none;
 	}
-
+	
 	.div_button_mobile
 	{
 		display: initial;
 	}
-
+	
 	.nav_mobile_extend:visited
 	{
-		background-color: #23282D;
+		background-color: <?php echo $color['background_element']; ?>;
 		height: 150px;
 		width: 100%;
 	}

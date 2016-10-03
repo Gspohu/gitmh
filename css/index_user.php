@@ -1,12 +1,19 @@
 <?php
-   header('content-type: text/css');
-   ob_start('ob_gzhandler');
-   header('Cache-Control: max-age=31536000, must-revalidate');
+	header('content-type: text/css');
+	ob_start('ob_gzhandler');
+	header('Cache-Control: max-age=31536000, must-revalidate');
+
+	include_once('../model/connexion_sql.php');
+
+	include_once('../model/design.php');
+
+	include_once('style.php');
+
+	include_once('modification.php');
+
+	include_once('nav_bar_no_log.php');
 ?>
 
-<?php
-	   $background_color='#353E46';
-?> 
 .repoperso_body
 {
 	display: flex;
@@ -19,39 +26,68 @@
 {
 	position: relative;
 	width: 150px;
-	background-color: <?php echo $background_color; ?>;
+	background-color: <?php echo $color['background_2']; ?>;
 	z-index: 2000;
 	border-right: 1px solid grey;
 	padding-bottom: 100px;
 	margin-bottom: -100px;
 }
 
+.aside_repoperso_profil_img
+{
+	position relative;
+	width: 118px;
+	height: auto;
+	max-height: 250px;
+	padding: 5px;
+	margin: 10px;
+	border-radius: 2px;
+   box-shadow: inset 0 0 3px #000, 0 0 2px rgba(255, 255, 255, .1);
+   background-color: rgba(0, 0, 0, .25)
+}
+
+.aside_repoperso_choix_container
+{
+	display: flex;	
+   box-shadow: inset 0 0 3px #000, 0 0 2px rgba(255, 255, 255, .1);
+	margin-bottom: 20px;
+}
+
 .aside_repoperso_title
 {
-	position: relative;
-	width: 60%;
-	height: 20px; 
-	margin-top: 10px;
-	background-image: url(../images/texture_inscription.png);
-	border-radius: 0px 5px 5px 0px;
-	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+   position: relative;
+   width: 100%;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   font-size: 20px;
+	color: <?php echo $color['text_color']; ?>;
+   text-align: center;
+	background-color: <?php echo $color['background_2']; ?>;
 }
 
-.aside_repoperso_title_text
+.aside_repoperso_title a
 {
-	margin-left: 10px;
-	color: #DDD9D1;
+	position: relative;
+	width: 100%; 
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 20px;
+	color: <?php echo $color['text_color']; ?>;
+	text-align: center;
+	background-color: <?php echo $color['background_2']; ?>;
+	text-decoration: none;
 }
-
+								
 .aside_repoperso_choix
 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	position: relative;
-	width: 82%;
-	height: 20px;
-	margin-top: 10px;
-	margin-left: 18%;
+	height: 35px;
+	width: 30px;
+   background-color: rgba(0, 0, 0, .25);	
 }
-
 
 .aside_repoperso_choix_active
 {
@@ -60,99 +96,59 @@
 	height: 20px;
 	margin-top: 10px;
 	margin-left: 18%;
-	background-image: url(../images/texture_connexion.png);
+	background-color: #93827;
 	border-radius: 5px 0px 0px 5px;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
-.aside_repoperso_choix_text
+.aside_repoperso_choix a
 {
-	margin-right: 10px;
-	margin-left: 5px;
-	color: #DDD9D1;
-}
-
-.repo_list
-{
-	position: relative;
-	width: calc(85% - 200px);
-	margin-top: 30px;
-	margin-right: 7.5%;
-}
-
-.repo_list_title
-{
-	position: relative;
-	color: black;
-	font-size: xx-large;
-	margin-bottom: 10px;
-}
-
-.repo_list_add_repo
-{
-	position: relative;
-	left: calc(99% - 130px);
-	height: 25px;
-	color: #F5F1E9;
-	background-color: #3FA031;
-	border: 1px solid #388C2A;
-	border-radius: 2px;
-	padding: 10px 20px 10px 20px;
-	text-decoration: none;	
+	display: flex;
+	justify-content: center;
+	font-size: 25px;
 	text-align: center;
+	text-decoration: none;
 }
 
-.repo_list_add_repo:hover
+.aside_repoperso_choix_temoin
 {
-	color: white;
-}	
-
-.project_logo
-{
-	position: relative;
-	width: auto;
-	height: 100px;
+	height: 3px;
+	width: 29px;
+	background-color: <?php echo $color['color_temoin']; ?>;
 }
 
-.project_name_description
+.aside_repoperso_choix_temoin_active
 {
-	position: relative;
+
+}
+
+.aside_repoperso_todo
+{
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	margin-left: 20px;
-	width: 80%;
+	justify-content: space-around;
+	width: 150px;
+   box-shadow: inset 0 0 3px #000, 0 0 2px rgba(255, 255, 255, .1);
+   background-color: rgba(0, 0, 0, .25);
 }
 
-.repo_list_result
+.aside_repoperso_todo a
 {
-	position: relative;
-	display:flex;
-	justify-content: flex-start;
-	width: 100%;
-	border-bottom: 1px #DCDCDC solid;
-	margin-top: 25px;
-	color: black;
-	padding-bottom: 10px;
+	color: <?php echo $color['text_color']; ?>;
+   text-decoration: none;
+	margin: 5px;
 }
 
-.repo_list_result a
+.aside_repoperso_todo a:nth-child(3)
 {
+	align-self: flex-end;
 	text-decoration: none;
-	color: black;
-}
-
-.description
-{
-	width: 100%;
-	font-size: small;	
-	word-wrap: break-word;
 }
 
 .aside_repoperso_space 
 {
 	position: relative;
-	margin-top: 20px;
+	margin-top: 30px;
 	margin-left: 10px;
 	width: 122px;
 	height: 24px;
@@ -189,22 +185,22 @@
 
 .aside_repoperso_space[data-color="green"]:before
 {
-	background: linear-gradient(#00C000, #009900);
+	background: linear-gradient(<?php echo $color['degrade_0_p0']; ?>, <?php echo $color['degrade_0_p1']; ?>);
 }
 
 .aside_repoperso_space[data-color="blue"]:before 
 { 
-	background: linear-gradient(#5fb6e1, #207ba9);
+	background: linear-gradient(<?php echo $color['degrade_1_p0']; ?>, <?php echo $color['degrade_1_p1']; ?>);
 }
 
 .aside_repoperso_space[data-color="orange"]:before 
 { 
-	background: #f28518;
+	background: linear-gradient(<?php echo $color['degrade_2_p0']; ?>, <?php echo $color['degrade_2_p0']; ?>);
 }
 
 .aside_repoperso_space[data-color="red"]:before
 {
-	background: #B90000;
+	background: linear-gradient(<?php echo $color['degrade_3_p0']; ?>, <?php echo $color['degrade_3_p0']; ?>);
 }
 
 .aside_repoperso_work_track
@@ -214,6 +210,123 @@
 	margin-left: 10px;
 	width: 130px;
 	height: 150px;	
-	background: black;
-	border-radius: 5px;
+   background-color: rgba(0, 0, 0, .25);
+   border-radius: 2px; 
+   box-shadow: inset 0 0 3px #000, 0 0 2px rgba(255, 255, 255, .1);
 }
+
+.aside_repoperso_edit_profil
+{
+	display: flex;
+	flex-direction: column;
+   justify-content: center;
+	margin-top: 30px;
+	margin-left: 10px;
+	width: 130px;
+	height: 25px;
+	text-align: center;
+   position: relative;
+	background-color: #69499C;
+	color: <?php echo $color['text_color']; ?>; 
+	cursor: pointer;
+	border-radius: 2px;
+	box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.7);
+}
+
+.aside_repoperso_edit_profil a
+{ 
+	color: <?php echo $color['text_color']; ?>;
+   text-decoration: none;
+}
+
+.aside_repoperso_edit_profil a:hover
+{
+	color: white;
+}
+
+.repo_list_add_repo
+{
+   position: relative;
+   left: calc(99% - 130px);
+   height: 25px;
+	color: <?php echo $color['text_color']; ?>;
+	background-color: <?php echo $color['background_3']; ?>;
+	border-radius: 2px;
+   padding: 10px 20px 10px 20px;
+   text-decoration: none;
+   text-align: center;
+}
+
+.repo_list_add_repo:hover
+{
+   color: white;
+}
+
+.repo_list
+{
+	position: relative;
+	width: calc(85% - 200px);
+	margin-top: 30px;
+	margin-right: 7.5%;
+}
+
+.repo_list_result
+{
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	height: 138px;
+	margin-top: 25px;
+	color: black;
+	border-radius: 2px;
+	box-shadow: 0px 0px 3px 1px grey;	
+	background-color: <?php echo $color['background_4']; ?>;
+}
+
+.description
+{
+	width: calc(100% - 12px);
+	font-size: small;	
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+.project_logo img
+{
+	position: relative;
+	width: auto;
+	height: 132px;
+	margin: 3px;
+}
+
+.project_name_description
+{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-left: 20px;
+	margin-bottom: 5px;
+	width: 80%;
+}
+
+.title_repo 
+{
+	font-size: large;
+	word-wrap: break-word;
+	text-decoration: none;
+	color: black;
+}
+
+.sub_title_repo 
+{
+	font-size: small;
+	color: <?php echo $color['text_color_sub']; ?>;
+	word-wrap: break-word;
+	text-decoration: none;
+}
+
+<?php
+	include_once('footer.php');
+?>

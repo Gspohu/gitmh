@@ -54,7 +54,7 @@
                                         <img id="logo_base" class="logo_repo_add" src="images/logo/logo_base_proj.png"/>
                                 </div>
 
-                                <div class="inputfile">
+										  <div class="inputfile">
                                         <input type="file" class="file" name="repo_logo" id="file"/>
                                         <div class="mask">
                                                 <input class="button_file" type="button" value="Add a logo" />

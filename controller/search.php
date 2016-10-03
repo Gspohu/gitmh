@@ -17,17 +17,6 @@ while($data = $data_sql->fetch())
 $data_sql->closeCursor();
 
 
-if (htmlspecialchars($_POST['reducebutton']) == 'reduce' || $_SESSION['reduce_search_option'] == 'OK' && $_SESSION['oneredirection'] == 'NO') 
-{
-	$_SESSION['reduce_search_option'] = 'OK';
-	$_SESSION['oneredirection']= 'YES';	
-	header('Location: '.$_SERVER['REQUEST_URI'].'#reduce');
-}
-else if ($_SESSION['oneredirection'] == 'YES')
-{
-	$_SESSION['oneredirection']= 'NO';
-}
-
 if(isset($_SESSION['pseudo']))
 {
 	if(isset($_GET['sort']) && isset($_GET['in']))

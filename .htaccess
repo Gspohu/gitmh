@@ -7,11 +7,12 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^(.*)$ $1.php [L]
-
+RewriteRule ^secure_access$ erreur403.php [L]
 RewriteRule ^(.*)🜉$  index_user.php?owner=$1 [L]
 RewriteRule ^(.*)🜉/$  index_user.php?owner=$1 [L]
 RewriteRule ^(.*)🜉/(.*)📂$  repo.php?owner=$1&repo=$2 [L]
 RewriteRule ^(.*)🜉/(.*)📂/$  repo.php?owner=$1&repo=$2 [L]
+RewriteRule ^(.*)🜉/(.*)📂(.*)$  $3.php?owner=$1&repo=$2 [L]
 RewriteRule ^(.*)🜉/(.*)📂/(.*)⚙$  repo.php?owner=$1&repo=$2&tab=$3 [L]
 RewriteRule ^(.*)🜉/(.*)📂/(.*)⚙/$  repo.php?owner=$1&repo=$2&tab=$3 [L]
 RewriteRule ^(.*)🜉/(.*)📂/(.*)⏵$  repo.php?owner=$1&repo=$2&file=$3 [L]

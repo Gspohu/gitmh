@@ -8,13 +8,12 @@
         <head>
                 <meta charset="utf-8" />
                 <title>CairnGit</title>
-                <link href="css/style" rel="stylesheet" />
-		<link href="css/modification-generales" rel="stylesheet" />
+                <link href="css/admin-interface" rel="stylesheet" />
         </head>
 
 	<div class="conteneur" >
 <?php
-	include_once('controller/modification-generales.php');
+	include_once('controller/admin-interface.php');
 ?>
 	</div>
 <html>

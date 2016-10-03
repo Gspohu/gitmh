@@ -1,7 +1,7 @@
 <?php
-   header('content-type: text/css');
-   ob_start('ob_gzhandler');
-   header('Cache-Control: max-age=31536000, must-revalidate');
+	header('content-type: text/css');
+	ob_start('ob_gzhandler');
+	header('Cache-Control: max-age=31536000, must-revalidate');
 ?>
 
 
@@ -33,9 +33,9 @@ body
 
 .conteneur
 {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	min-height: 100%;
 }
 
@@ -58,40 +58,40 @@ body
 
 .error403401
 {
-        width: 85%;
+	width: 85%;
 	margin-right: 15%;
 	flex: 1;
 }
 
 .title_classic
 {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        font-size: 38px;
-        color: #434343;
-        text-align: center;
-        margin: 60px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	font-size: 38px;
+	color: #434343;
+	text-align: center;
+	margin: 60px;
 }
 
 .emph_border
 {
-        height: 1px;
-        width: 140px;
+	height: 1px;
+	width: 140px;
 	margin-top: 25px;
-        margin-left: 15px;
+	margin-left: 15px;
 	margin-right: 15px;
-        background-color: #BEBEBE;
+	background-color: #BEBEBE;
 }
 
 .under_title
 {
-        width: 60%;
-        margin-left: 20%;
-        margin-bottom: 50px;
-        text-align: center;
-        font-size: large;
-        color: #414141;
+	width: 60%;
+	margin-left: 20%;
+	margin-bottom: 50px;
+	text-align: center;
+	font-size: large;
+	color: #414141;
 }
 
 .hidden
@@ -108,25 +108,50 @@ body
 
 .inline-between
 {
-        display: flex;
-        justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
+}
+
+.text_white
+{
+	color: #DDD9D1;
+}
+
+.text_green
+{
+   color: #009E00;
+}
+
+.text_red
+{
+   color: #9E0002;
+}
+
+.text_blue
+{
+	color: #085D9E;
+}
+
+.text_purple
+{
+	color: #69499C;
 }
 
 ::-moz-selection
 {
 	color: white;
-        background: #2E8C8C;
+	background: #2E8C8C;
 }
 
 ::selection
 {
-        color: white;
-        background: #2E8C8C;
+	color: white;
+	background: #2E8C8C;
 }
 
 a:active
 {
-        text-shadow: 0px 1px 0px #000000;
+	text-shadow: 0px 1px 0px #000000;
 	outline: none;
 }
 
@@ -138,10 +163,10 @@ a:focus
 
 @font-face 
 {
-  font-family: 'Ubuntu';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Ubuntu'), url(https://fonts.gstatic.com/s/ubuntu/v9/sDGTilo5QRsfWu6Yc11AXg.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+font-family: 'Ubuntu';
+font-style: normal;
+font-weight: 400;
+src: local('Ubuntu'), url(https://fonts.gstatic.com/s/ubuntu/v9/sDGTilo5QRsfWu6Yc11AXg.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
