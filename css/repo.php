@@ -11,7 +11,7 @@
 
 	include_once('modification.php');
 
-	include_once('nav_bar_no_log.php');
+	include_once('nav.php');
 ?>
 
 
@@ -34,50 +34,33 @@
    margin-bottom: -100px;
 }
 
-.aside_repo_title
-{
-	position: relative;
-	width: 60%;
-	height: 20px; 
-	margin-top: 10px;
-	background-image: url(../images/texture_inscription.png);
-	border-radius: 0px 5px 5px 0px;
-	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
-}
-
-.aside_repo_title_text
-{
-	margin-left: 10px;
-	color: #DDD9D1;
-}
-
 .aside_repo_choix
 {
+	display: flex;
 	position: relative;
-	width: 82%;
 	height: 30px;
 	margin-top: 10px;
-	margin-left: 18%;
 }
 
-
-.aside_repo_choix_active
+.aside_repo_choix_logo
 {
 	position: relative;
-	width: 82%;
-	height: 20px;
-	margin-top: 10px;
-	margin-left: 18%;
-	background-image: url(../images/texture_connexion.png);
-	border-radius: 5px 0px 0px 5px;
-	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.7);
+	width: 55px;
+	height: 25px;
+	text-align: center;
+	font-size: 23px;
+	letter-spacing: -3px;
+	text-decoration: none;
+   color: #DDD9D1;
 }
 
 .aside_repo_choix_text
 {
-	margin-right: 10px;
-	margin-left: 5px;
+	height: 25px;
+	margin-left: 10px;
+	font-size: 14px;
 	color: #DDD9D1;
+	align-self: flex-end;
 }
 
 .repo_list_title
@@ -88,19 +71,82 @@
 	margin-bottom: 10px;
 }
 
+.repo_body_2
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: calc(90% - 150px);
+	margin: 0;
+}
+
+.repo_button
+{
+	display: flex;
+	position: relative;
+	margin-right: 11%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	height: 25px;
+	align-self: flex-end;
+}
+
+.repo_button_rating
+{
+   background-color: #FF6200;
+   margin-right: 10px;
+   border-top: solid 1px grey;
+   border-left: solid 1px grey;
+   border-right: solid 1px grey;
+   border-radius: 2px 2px 0px 0px;
+}
+
+.repo_button_fork
+{
+   background-color: #5A1082;
+   border-top: solid 1px grey;
+   border-left: solid 1px grey;
+   border-right: solid 1px grey;
+   border-radius: 2px 2px 0px 0px;
+}
+
+.repo_button_text
+{
+	display: flex;
+   font-size: 17px;
+   text-decoration: none;
+   color: #141414;
+	background-color: #EBEBEB;
+	padding-right: 2px;
+}
+
+.repo_button_nombre
+{
+	background-color: rgba(0,0,0,0.2);
+	color: #282828;
+	font-size: 15px;
+	padding-right: 2px;
+	padding-left: 2px;
+	border-right: solid 1px grey;
+	margin-right: 2px;
+}
+
+.repo_button_design
+{
+	height: 3px;
+}
+
 .repo_list_contain
 {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	width: calc(80% - 236px);
-	min-width: 200px;
 	color: #DDD9D1;
 	margin-top: 40px;
-	margin-right: 10%;
+	margin-right: 11%;
 	text-decoration: none;
-	border-radius: 3px;
+	border-radius: 2px;
 	border: 1px solid #BEBEBE;
 	overflow: hidden;
 }
@@ -110,7 +156,7 @@
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	background-color: rgba(38, 142, 156, 0.3);
+	background-color: rgba(0, 0, 0, 0.3);
 	border-bottom: 1px solid rgba(38, 142, 156, 0.5);
 	overflow: hidden;
 }
@@ -124,7 +170,7 @@
 .title_repo_list_contain_a a
 {
 	text-decoration: none;
-	color: #68777d;
+	color: #DDD9D1;
 	margin-top: 15px;
 	font-size: 20px;
 	font-weight: normal;
@@ -164,7 +210,7 @@
 	width: 100%;
 	flex: 1;
 	margin-top: -1px; 
-	border-radius: 0px 0px 3px 3px;
+	border-radius: 0px 0px 2px 2px;
 	border-top: 1px solid black;
 	color: #323232;
 }
@@ -188,42 +234,55 @@
 	margin-top: 20px;
 }
 
+.repo_button_bar_newfolder
+{
+   height: 4px;
+   background-color: #EE6B00;
+   margin-top: 3px;
+}
+
+.repo_button_bar_git
+{
+   height: 4px;
+   background-color: #E10D1F;
+	margin-top: 3px;
+}
+
 .button_git
 {
 	width: 120px;
-	height: 18px;
-	border-radius: 3px;
-	border: 1px solid #7D171F;
-	background: linear-gradient(#E72B3A, #A51E29);	
-	margin-top: -3px;
-	color: white;
+	height: 20px;
+	border-radius: 2px 2px 0px 0px;
+	border: 1px solid grey;
+	background-color: #EBEBEB;	
+	color: #1E1E1E;
 	text-align: center;
 	font-size: small;
+   align-self: flex-end;
 }
 
 .button_upload
 {
-	width: 60px;
 	height: 22px;
-	border-radius: 3px;
-	border: 1px solid #7D171F;
-	background: linear-gradient(#00E700, #00A500);
-	color:white;
+	border-radius: 2px 2px 0px 0px;
+	border: 1px solid grey;
+	background-color: #EBEBEB;
+	color: #1E1E1E;
 	text-align: center;
 	font-size: small;
-	margin-top: -4px;
+   align-self: flex-end;
 }
 
 .button_file
 {
-	width: 60px;
-	height: 18px;
-	border-radius: 3px;
-	border: 1px solid #7D171F;
-	background: linear-gradient(#E77300, #A55200);
-	color:white;
+	width: 23px;
+	height: 20px;
+	border-radius: 2px;
+	border: 1px solid #2C007A;
+	background-color: #664798;
+	color: #1E1E1E;
 	text-align: center;
-	font-size: small;
+	font-size: 15px;
 }
 
 div.inputfile
@@ -273,14 +332,14 @@ input.file
 .button_new_folder
 {
 	width: 120px;
-	height: 18px;
-	border-radius: 3px;
-	border: 1px solid #7D171F;
-	background: linear-gradient(#24ADE7, #197BA5);
-	margin-top: -3px;
-	color: white;
+	height: 20px;
+	border-radius: 2px;
+	border: 1px solid grey;
+	background-color: #EBEBEB;
+	color: #1E1E1E;
 	text-align: center;
 	font-size: small;
+	align-self: flex-end;
 }
 
 #GitLink
@@ -297,7 +356,7 @@ input.file
 	height: 50px;
 	width: 500px;
 	background: white;
-	border-radius: 0px 0px 0px 3px;
+	border-radius: 0px 0px 0px 2px;
 	border-left: 1px solid #BEBEBE;
 	border-bottom: 1px solid #BEBEBE;
 	padding: 5px;
@@ -316,7 +375,7 @@ input.file
 
 .lien_git
 {
-	border-radius: 3px;
+	border-radius: 2px;
 	border: 1px solid #C9C9C9;
 	padding: 3px;
 	resize: none;

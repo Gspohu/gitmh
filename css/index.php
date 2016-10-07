@@ -11,7 +11,7 @@
 
 	include_once('modification.php');
   
-	include_once('nav_bar_no_log.php');
+	include_once('nav.php');
 
    include_once('slideshow.php');
 

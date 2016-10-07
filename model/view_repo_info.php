@@ -11,9 +11,7 @@ function view_repo_info_name($bdd, $view_what, $view_value)
         $req->closeCursor();
         return $result;
 }
-?>
 
-<?php
 function view_repo_info_table($bdd, $view_value)
 {
         $req = $bdd->prepare('SELECT Name, Description, logo, Owner FROM Projects WHERE Owner = :view_value');
@@ -22,9 +20,7 @@ function view_repo_info_table($bdd, $view_value)
 
         return $req;
 }
-?>
 
-<?php
 function view_repo_info_sort($bdd, $view_value, $view_sort)
 {
         $req = $bdd->prepare('SELECT Name, Description, logo, Owner FROM Projects WHERE Name LIKE :view_value');
@@ -34,9 +30,7 @@ function view_repo_info_sort($bdd, $view_value, $view_sort)
 
         return $req;
 }
-?>
 
-<?php
 function view_repo_info_ext($bdd, $name, $owner)
 {
         $req = $bdd->prepare('SELECT logo FROM Projects WHERE Name = :Name AND Owner = :Owner');
@@ -47,5 +41,14 @@ function view_repo_info_ext($bdd, $name, $owner)
 
         return $req;
 }
+
+function view_repo_info_explore($bdd)
+{
+	$req = $bdd->prepare('SELECT Name, Publpriv, Description, logo, Owner, Rating, Fork FROM Projects ORDER BY Rating, Name');
+	$req->execute();
+
+	return $req;
+}
+
 ?>
 

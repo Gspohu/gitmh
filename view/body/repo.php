@@ -1,35 +1,86 @@
 <div class="repo_body">
 	<div class="aside_repo" >
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/sources.png"/> <a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repo_choix_text" >Sources</a>
-		</div>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				&#60;&#47;&#62;
+			</div>
+			<div class="aside_repo_choix_text" >
+				Sources
+			</div>
+		</a>
 
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/bug_track.png"/> <a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=project" class="aside_repo_choix_text" >Bug track</a>
-		</div>
-
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "user" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/wiki.png"/> <a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=user" class="aside_repo_choix_text" >Wiki</a>
-		</div>
-
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-			<a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repo_choix_text" >⇆ Collab tools</a>
-		</div>
-
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/progest.png"/> <a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repo_choix_text" >Progest</a>
-		</div>
-
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "group" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/edu.png"/> <a href="/<?php echo $_SERVER['REQUEST_URI']; ?>?sort=<?php echo htmlspecialchars($_GET['sort']); ?>&in=group" class="aside_repo_choix_text" >Edu tools</a>
-		</div>
-
-		<div class="aside_repo_choix<?php if(htmlspecialchars($_GET['in']) == "project" ){ echo "_active"; } ?>" >
-			<img class="aside_icon" src="/images/pictogrammes/setting.png"/> <a href="/<?php echo $owner.'🜉/'.$repo.'📂/setting'; ?>" class="aside_repo_choix_text" >Setting</a>
-		</div>
-
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/bugtrack'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				⎇
+			</div>
+         <div class="aside_repo_choix_text" >
+				Bug track
+         </div>
+		</a>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/wiki'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				W
+			</div>
+         <div class="aside_repo_choix_text" >
+				Wiki
+         </div>
+		</a>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/wiki'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				⇋ 
+         </div>
+         <div class="aside_repo_choix_text" >
+				Collab tools
+         </div>
+		</a>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/progest'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				←⧰⬎
+         </div>
+         <div class="aside_repo_choix_text" >
+				Progest
+         </div>
+		</a>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/edu'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				&#x1f393;
+         </div>
+         <div class="aside_repo_choix_text" >
+				Edu tools
+         </div>
+		</a>
+		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/setting'; ?>" class="aside_repo_choix">
+			<div class="aside_repo_choix_logo" >
+				⚙
+			</div>
+         <div class="aside_repo_choix_text" >
+				Setting
+         </div>
+		</a>
 	</div>
 
+<div class="repo_body_2">
+	<div class="repo_button">
+		<a href="&button=rating" class="repo_button_rating">
+			<div class="repo_button_text">
+				<div class="repo_button_nombre">
+		         42
+			   </div>
+				✩ Rating
+			</div>
+			<div class="repo_button_design"></div>
+		</a>
+
+		<a href="&button=fork" class="repo_button_fork">
+         <div class="repo_button_text">
+				<div class="repo_button_nombre">
+		         0
+			   </div>
+				⑂ Fork
+         </div>
+         <div class="repo_button_design"></div>
+		</a>
+	</div>
 
 	<div class="repo_list_contain">
 		<div class="title_repo_list_contain">
@@ -54,29 +105,36 @@
 						<div class="inputfile">
 							<input type="file" class="file" name="folder[]" id="folder" directory="" webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" multiple="" onchange="selectFolder(event)">
 							<div class="mask">
-								<input class="button_file" type="button" value="Folder">
+								<input class="button_file" type="button" value="📂">
 							</div>
 						</div>
 
 						<div class="inputfile">
 							<input type="file" class="file" name="files[]" id="files" multiple="">
 							<div class="mask">
-								<input class="button_file" type="button" value="File" />
+								<input class="button_file" type="button" value="&#x1f4c4;" />
 							</div>
 						</div>
 					</div>
 					<input name="folder_name" type="hidden" value="">
 					<input class="button_upload" type="submit" value="Upload" />
-				</form> 
-			<a href="/<?php echo $owner."🜉".$repo."📂new-folder"; ?>" class="button_new_folder">Create new folder</a> 
-			<a href="/<?php echo $owner."🜉".$repo."📂#GitLink"; ?>" class="button_git" >Git link</a>
+					<div class="repo_button_bar_upload"></div>
+				</form>
+			<a href="/<?php echo $owner."🜉/".$repo."📂/new-folder"; ?>" class="button_new_folder">
+				Create new folder
+				<div class="repo_button_bar_newfolder"></div>
+			</a>
+			<a href="/<?php echo $owner."🜉/".$repo."📂/#GitLink"; ?>" class="button_git" >
+				Git link
+				<div class="repo_button_bar_git"></div>
+			</a>
 			</div>
 		</div>
 
 		<div id="GitLink">
 			<div class="inline-between">
 				<h3 onclick="document.getElementById('link').select();">Clone this project using Git :</h3>
-				<a href="/<?php echo $owner."🜉".$repo."📂"; ?>#">Close</a>
+				<a href="/<?php echo $owner."🜉/".$repo."📂/"; ?>#">Close</a>
 			</div>
 			<textarea id="link" class="lien_git"><?php echo "http://".$_SERVER['HTTP_HOST']."/repository/".$owner."_repo/".$repo.".git"; ?></textarea>
 		</div>
@@ -212,7 +270,7 @@ echo '</div>';
 
  ?>
 </div>
-
+</div>
 </div>
 
 </div>
