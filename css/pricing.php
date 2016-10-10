@@ -15,6 +15,21 @@
 ?>
 
 
+.transition, .pricing_service_container,.details_box i:before, .details_box i:after 
+{
+	transition: all 0.25s ease-out;
+}
+
+.flip, .details_box 
+{
+	animation: flipdown 0.5s ease both;
+}
+
+.unselect, .h2 
+{
+	user-select: none;
+}
+
 .pricing
 {
 	padding-top: 30px;
@@ -31,29 +46,29 @@
 	flex-direction: row;
 	justify-content: space-around;
 	flex-wrap: wrap;
+	margin-bottom: 70px;
 }
 
 .price_bulle
 {
 	width: 270px;
-	height: 520px;
+	height: 300px;
 	background: #E8E8E8;
-	box-shadow: 1px 1px 3px #000000;
+	box-shadow: 1px 1px 3px rgba(0,0,0, 0.5);
 	border-radius: 2px 2px 2px 2px;
 	padding: 0; 
 	list-style: none;
-	margin-bottom: 50px;
 	border: 1px solid grey;
 }
 
-@media screen and (max-width: 1024px)
+@media screen and (max-width: 1197px)
 {
-	.price_bulle
+	.price_bulle_align > div
 	{
-	margin-right: 7%;
-	margin-left: 7%;
+		margin-right: 10%;
+		margin-left: 10%;
 	}
-}
+}														
 
 .price_bulle_1 
 {
@@ -65,7 +80,7 @@
 	border-radius: 2px 2px 0px 0px;
 	background: linear-gradient(#53C035, #46A22D);
 	padding-top: 10px;
-	margin-bottom: 130px;
+	margin-bottom: 115px;
 	border-bottom: 1px solid grey;
 }
 
@@ -78,7 +93,7 @@
 	height: 115px; 
 	border-radius: 2px 2px 0px 0px;
 	padding-top: 10px;
-	margin-bottom: 130px;
+	margin-bottom: 115px;
 	background: linear-gradient(#46B2C0, #3B96A2);
 	border-bottom: 1px solid grey;
 }
@@ -92,7 +107,7 @@
 	height: 115px; 
 	border-radius: 2px 2px 0px 0px;
 	padding-top: 10px;
-	margin-bottom: 130px;
+	margin-bottom: 115px;
 	background: linear-gradient(#488CD4, #3E78B6);
 	border-bottom: 1px solid grey;
 }
@@ -106,7 +121,7 @@
 	height: 115px; 
 	border-radius: 2px 2px 0px 0px;
 	padding-top: 10px;
-	margin-bottom: 130px;
+	margin-bottom: 115px;
 	background: linear-gradient(#6E3BB6, #562E8E);
 	border-bottom: 1px solid grey;
 }
@@ -148,7 +163,7 @@
 	height: 220px;
 	display: inline-block;
 	margin: 0px;
-	margin-top: 15px;
+	margin-top: 0px;
 }
 
 .price_bulle_3:after
@@ -310,11 +325,161 @@
 	transform: scale(1);	
 }
 
+.h2 
+{
+	color: #646464;
+	font-size: 26px;
+	font-weight: 300;
+	display: block;
+	background-color: #E8E8E8;
+	margin: 0;
+	cursor: pointer;
+	padding-left: 16px;
+	border-radius: 2px;
+	border-top: 1px solid grey;
+	height: 35px;
+	padding-top: 5px;
+}
+
+.pricing_service_container 
+{
+	position: relative;
+	width: 270px;
+	height: 250px;
+	color: #646464;
+	overflow: hidden;
+	opacity: 1;
+	transform: translate(0, 0);
+	margin-top: 0px;
+	z-index: 2;
+	background-color: #E8E8E8;
+	border-radius: 0px 0px 2px 2px;
+	border: 1px solid grey;
+	box-shadow: 1px 1px 3px rgba(0,0,0, 0.5);
+	margin-left: -1px;
+}
+
+.details_box 
+{
+	width: 270px;
+	position: relative;
+	padding: 0;
+	margin-left: 1px;
+	margin-top: -76px;
+	padding-bottom: 4px;
+	padding-top: 18px;
+}
+
+.details_box:nth-of-type(1) 
+{
+	animation-delay: 0.5s;
+}
+
+.details_box:nth-of-type(2) 
+{
+	animation-delay: 0.75s;
+}
+
+.details_box:nth-of-type(3) 
+{
+	animation-delay: 1s;
+}
+
+.details_box:last-of-type 
+{
+	padding-bottom: 0;
+}
+
+.details_box i 
+{
+	position: absolute;
+	transform: translate(-6px, 0);
+	margin-top: 16px;
+	right: 16px;
+}
+
+.details_box i:before, .details_box i:after 
+{
+	content: "";
+	position: absolute;
+	background-color: #646464;
+	width: 3px;
+	height: 9px;
+}
+
+.details_box i:before 
+{
+	transform: translate(-2px, 0) rotate(45deg);
+}
+
+.details_box i:after 
+{
+	transform: translate(2px, 0) rotate(-45deg);
+}
+
+.details_box input[type=checkbox] 
+{
+	position: absolute;
+	cursor: pointer;
+	width: 100%;
+	height: 41px;
+	z-index: 1;
+	opacity: 0;
+	margin: 0px;
+}
+.details_box input[type=checkbox]:checked ~ .pricing_service_container 
+{
+	margin-top: 0;
+	max-height: 0;
+	opacity: 0;
+	transform: translate(0, -20%);
+}
+
+.details_box input[type=checkbox]:checked ~ i:before 
+{
+	transform: translate(2px, 0) rotate(45deg);
+}
+
+.details_box input[type=checkbox]:checked ~ i:after 
+{
+	transform: translate(-2px, 0) rotate(-45deg);
+}
+
+@keyframes flipdown {
+	0% 
+	{
+		opacity: 0;
+		transform-origin: top center;
+		transform: rotateX(-90deg);
+	}
+	5%
+	{
+		opacity: 1;
+	}
+	80% 
+	{
+		transform: rotateX(8deg);
+	}
+	83% 
+	{
+		transform: rotateX(6deg);
+	}
+	92% 
+	{
+		transform: rotateX(-3deg);
+	}
+	100% 
+	{
+		transform-origin: top center;
+		transform: rotateX(0deg);
+	}
+}
+
 .pricing_service
 {
 	width: 90%;
 	height: 15px;
-	margin-top: 20px;
+	margin-top: 18px;
 	margin-left: 5%;
 	font-size: 15px;
 	color: #646464;

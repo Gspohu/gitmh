@@ -43,7 +43,7 @@
 	margin: 10px;
 	border-radius: 2px;
    box-shadow: inset 0 0 3px #000, 0 0 2px rgba(255, 255, 255, .1);
-   background-color: rgba(0, 0, 0, .25)
+   background-color: rgba(0, 0, 0, .25);
 }
 
 .aside_repoperso_choix_container

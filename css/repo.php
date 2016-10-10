@@ -75,7 +75,7 @@
 {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-around;
 	width: calc(90% - 150px);
 	margin: 0;
 }
@@ -149,6 +149,7 @@
 	border-radius: 2px;
 	border: 1px solid #BEBEBE;
 	overflow: hidden;
+	min-height: 300px;
 }
 
 .title_repo_list_contain

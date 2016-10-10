@@ -10,31 +10,33 @@
 				{
 					echo '
 						<div class="project">'.PHP_EOL
-							.'<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/" class="project_logo">'.PHP_EOL
-								.'<img src="/repository/'.$data['Owner'].'_repo/'.$data['Name'].'/.cairn/repo_logo'.$data['logo'].'"/>'.PHP_EOL
-								.'<div class="title">'.$data['Name'].'</div>'.PHP_EOL
-								.'<div class="owner">'.$data['Owner'].'</div>'.PHP_EOL
-							.'</a>'.PHP_EOL
-							.'<div class="repo_button">'.PHP_EOL
-								.'<a href="&button=rating" class="repo_button_rating">'.PHP_EOL
-									.'<div class="repo_button_text">'.PHP_EOL
-										.'<div class="repo_button_nombre">'.PHP_EOL
-											.'42'.PHP_EOL
-										.'</div>'.PHP_EOL
-										.'✩ Rating'.PHP_EOL
-									.'</div>'.PHP_EOL
-									.'<div class="repo_button_design"></div>'.PHP_EOL
+							.'<div class="project_logo">'.PHP_EOL
+								.'<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/">'.PHP_EOL
+									.'<img src="/repository/'.$data['Owner'].'_repo/'.$data['Name'].'/.cairn/repo_logo'.$data['logo'].'"/>'.PHP_EOL
 								.'</a>'.PHP_EOL
-								.'<a href="&button=fork" class="repo_button_fork">'.PHP_EOL
-									.'<div class="repo_button_text">'.PHP_EOL
-										.'<div class="repo_button_nombre">'.PHP_EOL
-											.'0'.PHP_EOL
+							.'</div>'.PHP_EOL	
+							.'<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/" class="title">'.$data['Name'].'</a>'.PHP_EOL
+							.'<div class="inline_explore">'.PHP_EOL
+							   .'<a href="'.$data['Owner'].'🜉/'.$data['Name'].'📂/" class="owner">'.$data['Owner'].'</a>'.PHP_EOL
+								.'<div class="inline_explore">'.PHP_EOL
+									.'<a href="&button=rating" class="button_fork_rate">'.PHP_EOL
+										.'<div class="button_text">'.PHP_EOL
+											.'<div class="button_nombre">'.PHP_EOL
+												.$data['Rating'].PHP_EOL
+											.'</div>'.PHP_EOL
+											.'✩'.PHP_EOL
 										.'</div>'.PHP_EOL
-										.'⑂ Fork'.PHP_EOL
-									.'</div>'.PHP_EOL
-									.'<div class="repo_button_design"></div>'.PHP_EOL
-					         .'</a>'.PHP_EOL
-                     .'</div>'.PHP_EOL
+									.'</a>'.PHP_EOL
+									.'<a href="&button=fork" class="button_fork_rate">'.PHP_EOL
+										.'<div class="button_text">'.PHP_EOL
+											.'<div class="button_nombre">'.PHP_EOL
+												.$data['Fork'].PHP_EOL
+											.'</div>'.PHP_EOL
+											.'⑂'.PHP_EOL
+										.'</div>'.PHP_EOL
+						         .'</a>'.PHP_EOL
+								.'</div>'.PHP_EOL
+                  	.'</div>'.PHP_EOL
 							.'<div class="description">'.$data['Description'].'</div>'.PHP_EOL
 						.'</div>'.PHP_EOL;
 				}

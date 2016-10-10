@@ -24,6 +24,7 @@
 	width: 80%;
 	margin-left: 10%;
 	margin-top: 10px;
+	margin-bottom: 150px;
 }
 
 .open-hardware_part
@@ -133,6 +134,8 @@
 	width: 80%;
 	margin: 10px auto 30px auto;
 	text-align: left;
+	border-radius: 2px;
+	background-color: #2B2422;
 }
 
 .tools_container label
@@ -150,6 +153,7 @@
 	background: #ffffff;
 	background-image: url(../images/texture_nav.png); 
 	border: 1px solid #45403F;
+   border-radius: 2px;
 }
 
 .tools_container label:hover
@@ -190,7 +194,7 @@
 
 .tools_container article
 {
-	background: rgba(255, 255, 255, 0.5);
+	background: #F5F5F5;
 	margin-top: -1px;
 	overflow: hidden;
 	height: 0px;

@@ -23,7 +23,7 @@ function view_repo_info_table($bdd, $view_value)
 
 function view_repo_info_sort($bdd, $view_value, $view_sort)
 {
-        $req = $bdd->prepare('SELECT Name, Description, logo, Owner FROM Projects WHERE Name LIKE :view_value');
+        $req = $bdd->prepare('SELECT Name, Publpriv, Description, logo, Owner, Rating, Fork FROM Projects WHERE Name LIKE :view_value');
         $req->execute(array(
            'view_value' => '%'.$view_value.'%'
 	   ));

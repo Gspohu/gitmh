@@ -144,19 +144,56 @@
 	display: flex;
 	justify-content: flex-start;
 	width: 100%;
-	height: 138px;
+	height: 132px;
 	margin-top: 25px;
 	color: black;
 	border-radius: 2px;
 	box-shadow: 0px 0px 3px 1px grey;	
 	background-color: #F0F0F0;
+	padding: 3px;
 }
+
+.inline_search
+{
+	display: flex;
+	justify-content: space-between;
+}
+
+.button_fork_rate
+{
+	border: solid 1px grey;
+	border-radius: 2px 2px 2px 2px;
+	margin-right: 20px;
+	height: 20px;
+}
+
+.button_text
+	{
+	display: flex;
+	font-size: 17px;
+	text-decoration: none;
+	color: #141414;
+	padding-right: 2px;
+}
+
+.button_nombre
+{
+	background-color: rgba(0,0,0,0.05);
+	color: #282828;
+	font-size: 15px;
+	border-right: solid 1px grey;
+	padding-right: 2px;
+	padding-left: 2px;
+	margin-right: 2px;
+	height: 20px;
+}
+
 
 .description
 {
 	width: calc(100% - 12px);
 	font-size: small;	
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 	overflow: hidden;
 }
 
@@ -165,7 +202,6 @@
 	position: relative;
 	width: auto;
 	height: 132px;
-	margin: 3px;
 }
 
 .project_name_description
@@ -176,13 +212,13 @@
 	justify-content: space-between;
 	margin-left: 20px;
 	margin-bottom: 5px;
-	width: 80%;
+	width: 100%;
 }
 
 .title_repo 
 {
 	font-size: large;
-	word-wrap: break-word;
+	overflow-wrap:break-word;
 	text-decoration: none;
 	color: black;
 }
@@ -196,5 +232,5 @@
 }
 
 <?php
-	   include_once('footer.php');
+include_once('footer.php');
 ?>
