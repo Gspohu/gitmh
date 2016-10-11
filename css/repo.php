@@ -149,7 +149,7 @@
 	border-radius: 2px;
 	border: 1px solid #BEBEBE;
 	overflow: hidden;
-	min-height: 300px;
+	flex: 1;
 }
 
 .title_repo_list_contain
