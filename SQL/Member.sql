@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 12 Septembre 2016 à 16:21
--- Version du serveur :  5.7.13-0ubuntu0.16.04.2
--- Version de PHP :  7.0.8-0ubuntu0.16.04.2
+-- Généré le :  Mer 12 Octobre 2016 à 15:55
+-- Version du serveur :  5.7.15-0ubuntu0.16.04.1
+-- Version de PHP :  7.0.8-0ubuntu0.16.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -43,16 +43,9 @@ CREATE TABLE `Member` (
   `Support` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `Option_search_sort` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `Option_search_in` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `Option_search_reduce` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+  `Option_search_reduce` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `Stars` int(11) DEFAULT '10'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `Member`
---
-
-INSERT INTO `Member` (`Pseudo`, `Email`, `Password`, `ID`, `Timestamp`, `Droits`, `Space`, `Tips_button`, `Tips_button_unlimited`, `Private_project`, `Private_project_unlimited`, `Encryption`, `Tech_intelligence`, `Support`, `Option_search_sort`, `Option_search_in`, `Option_search_reduce`) VALUES
-('Admin', 'admin@adm.in', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 0, 'qq', '0', '1', 'none', 'none', 0, 'none', 'none', 'none', 'none', 'none', 'none', 'none'),
-('Gspohu', 'pohuvalentin@gmail.com', '5d94619b4745374691d18063784a50d3ffce0a0ab172b275005eb485e7b1a0aa', NULL, 'Friday 2nd of September 2016 06:08:44 PM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '🕒', '📁', NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

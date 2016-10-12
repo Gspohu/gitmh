@@ -23,26 +23,38 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Projects`
+-- Structure de la table `Colors`
 --
 
-CREATE TABLE `Projects` (
-  `Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Publpriv` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Encryption` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Type` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Description` varchar(2048) CHARACTER SET utf8 DEFAULT NULL,
-  `License` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Tag` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Owner` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Contributor` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Admin` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `Contributor_group` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `logo` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `id` text CHARACTER SET utf8,
-  `Rating` int(11) DEFAULT '0',
-  `Fork` int(11) DEFAULT '0'
+CREATE TABLE `Colors` (
+  `Item` text CHARACTER SET utf8,
+  `Design_0` text CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `Colors`
+--
+
+INSERT INTO `Colors` (`Item`, `Design_0`) VALUES
+('background_1', '#69499C'),
+('background_2', '#353E46'),
+('background_3', '#00C000'),
+('background_4', '#F0F0F0'),
+('background_5', '#377A2E'),
+('background_element', '#23282D'),
+('color_temoin', '#454F5A'),
+('degrade_0_p0', '#00C000'),
+('degrade_0_p1', '#009900'),
+('degrade_1_p0', '#5fb6e1'),
+('degrade_1_p1', '#207ba9'),
+('degrade_2_p0', '#f28518'),
+('degrade_2_p1', '#CB6F13'),
+('degrade_3_p0', '#B90000'),
+('degrade_3_p1', '#920000'),
+('nav_admininterface_gradiant_0', '#087BFF'),
+('nav_admininterface_gradiant_1', '#3191FF'),
+('text_color', '#EDEAE3'),
+('text_color_sub', '#626968');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

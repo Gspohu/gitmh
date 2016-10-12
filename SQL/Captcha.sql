@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 12 Septembre 2016 à 16:21
--- Version du serveur :  5.7.13-0ubuntu0.16.04.2
--- Version de PHP :  7.0.8-0ubuntu0.16.04.2
+-- Généré le :  Mer 12 Octobre 2016 à 15:54
+-- Version du serveur :  5.7.15-0ubuntu0.16.04.1
+-- Version de PHP :  7.0.8-0ubuntu0.16.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
