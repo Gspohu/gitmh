@@ -23,12 +23,12 @@
 
 if [ "$choix" = "Dedicated" ]
 then
+	echo -e "Mise à jour.......\033[32mFait\033[00m"
+
 	# Password for installation (Mysql, etc)
 	echo "Choose the password for the installation"
 	read -s -p "Password : " passnohash
 	pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
-
-	echo -e "Mise à jour.......\033[32mFait\033[00m"
 
 	# Install apache2
 	apt install apache2
@@ -37,11 +37,12 @@ then
 	echo -e "Installation d'apache2.......\033[32mFait\033[00m"
 
 	# Install Mysql
-	apt install mysql-server
 	echo "mysql-server mysql-server/root_password password $pass" | sudo debconf-set-selections
 	echo "mysql-server mysql-server/root_password_again password $pass" | sudo debconf-set-selections
 	apt-get -y install mysql-server
-	mysql_secure_installation
+	mysql -u root -p${pass} -e "DELETE FROM mysql.user WHERE User=''"
+	mysql -u root -p${pass} -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
+	mysql -u root -p${pass} -e "FLUSH PRIVILEGES"
 	systemctl restart apache2
 	echo -e "Installation de MySQL.......\033[32mFait\033[00m"
 
@@ -51,7 +52,13 @@ then
 	echo -e "Installation de PHP.......\033[32mFait\033[00m"
 
 	# Install phpmyadmin
-	apt install phpmyadmin php-mbstring php-gettext
+	apt install php-mbstring php-gettext
+	echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
+	echo "phpmyadmin phpmyadmin/app-password-confirm password $pass" | sudo debconf-set-selections
+	echo "phpmyadmin phpmyadmin/mysql/admin-pass password $pass" | sudo debconf-set-selections
+	echo "phpmyadmin phpmyadmin/mysql/app-pass password $pass" | sudo debconf-set-selections
+	echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | sudo debconf-set-selections
+	apt-get -y install phpmyadmin
 	phpenmod mcrypt
 	phpenmod mbstring
 	systemctl restart apache2
@@ -74,9 +81,8 @@ then
 
 		# Create mattermost user
 		USER="mattermost"
-		HOME_BASE="/home/"
 		echo "Creation of mattermost user"
-		useradd -p ${pass} -M -r -U ${HOME_BASE}${USER} ${USER}
+		useradd -p $pass -M -r -U $USER
 		echo "Creation of ".${USER}." user" OK
 
 		# Copie of the system file of Mattermost
@@ -150,9 +156,8 @@ then
 
 		#Create user framadate
 		USER="mattermost"
-		HOME_BASE="/home/"
 		echo "Creation of mattermost user"
-		useradd -p ${pass} -M -r -U ${HOME_BASE}${USER} ${USER}
+		useradd -p $pass -M -r -U $USER
 		echo "Creation of ".${USER}." user" OK
 
 		# Install framadate
@@ -261,9 +266,8 @@ then
 
 	# Creation of CairnGit user
 	USER="CairnGit"
-	HOME_BASE="/home/"
 	echo "Creation of CairnGit user"
-	useradd -p ${pass} -m -d ${HOME_BASE}${USER} ${USER}
+	useradd -p $pass -M -r -U $USER
 	echo "Creation of ".${USER}." user" OK
 
 	# Ajout de l'acces sécurisé
