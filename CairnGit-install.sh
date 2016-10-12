@@ -23,6 +23,11 @@
 
 if [ "$choix" = "Dedicated" ]
 then
+	# Password for installation (Mysql, etc)
+	echo "Choose the password for the installation"
+	read -s -p "Password : " passnohash
+	pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
+
 	echo -e "Mise à jour.......\033[32mFait\033[00m"
 
 	# Install apache2
@@ -33,6 +38,9 @@ then
 
 	# Install Mysql
 	apt install mysql-server
+	echo "mysql-server mysql-server/root_password password $pass" | sudo debconf-set-selections
+	echo "mysql-server mysql-server/root_password_again password $pass" | sudo debconf-set-selections
+	apt-get -y install mysql-server
 	mysql_secure_installation
 	systemctl restart apache2
 	echo -e "Installation de MySQL.......\033[32mFait\033[00m"
@@ -49,10 +57,156 @@ then
 	systemctl restart apache2
 	echo -e "Installation de PHPmyadmin.......\033[32mFait\033[00m"
 
+	# Install Kanboard
+	apt install unzip
+	wget https://kanboard.net/kanboard-1.0.33.zip
+	unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
+	rm kanboard-1.0.33.zip
+
+	# Install Mattermost
+	
+		# Create database
+		mysql -u root -p${pass} -e "CREATE DATABASE mattermost;"
+		mysql -u root -p${pass} -e "CREATE USER 'mattermost'@'localhost' IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'mattermost'@'localhost';"
+		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON mattermost.* TO mattermost@localhost IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "FLUSH PRIVILEGES;"
+
+		# Create mattermost user
+		USER="mattermost"
+		HOME_BASE="/home/"
+		echo "Creation of mattermost user"
+		useradd -p ${pass} -M -r -U ${HOME_BASE}${USER} ${USER}
+		echo "Creation of ".${USER}." user" OK
+
+		# Copie of the system file of Mattermost
+		wget https://releases.mattermost.com/3.4.0/mattermost-team-3.4.0-linux-amd64.tar.gz
+		tar -xvzf mattermost-team-3.4.0-linux-amd64.tar.gz
+		mv mattermost* /var/www
+		mkdir  /var/www/mattermost/data
+		chown -R mattermost:mattermost /var/www/mattermost/
+		rm mattermost-team-3.4.0-linux-amd64.tar.gz
+
+		# Configuration of mattermost
+		sed -ie 's/"DataSource": "mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8",/"DataSource": "mattermost:mattermost_password@tcp(localhost:3306)\/mattermost?charset=utf8",/g' /var/www/mattermost/config/config.json
+
+		# Add Mattermost to systemd
+		echo "[Unit]" > /etc/systemd/system/mattermost.service
+		echo "Description=Mattermost is an open source, self-hosted Slack-alternative" >> /etc/systemd/system/mattermost.service
+		echo "After=syslog.target network.target" >> /etc/systemd/system/mattermost.service
+
+		echo "[Service]" >> /etc/systemd/system/mattermost.service
+		echo "Type=simple" >> /etc/systemd/system/mattermost.service
+		echo "User=mattermost" >> /etc/systemd/system/mattermost.service
+		echo "Group=mattermost" >> /etc/systemd/system/mattermost.service
+		echo "ExecStart=/var/www/mattermost/bin/platform" >> /etc/systemd/system/mattermost.service
+		echo "PrivateTmp=yes" >> /etc/systemd/system/mattermost.service
+		echo "WorkingDirectory=/var/www/mattermost" >> /etc/systemd/system/mattermost.service
+		echo "Restart=always" >> /etc/systemd/system/mattermost.service
+		echo "RestartSec=30" >> /etc/systemd/system/mattermost.service
+
+		echo "[Install]" >> /etc/systemd/system/mattermost.service
+		echo "WantedBy=multi-user.target" >> /etc/systemd/system/mattermost.service
+
+		# Configuration Apache2 for Mattermost
+		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerName  cairngit.eu/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAlias  cairngit.eu/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "Redirect permanent / https://cairngit.eu/discuss" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
+		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerName  cairngit.eu/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAlias  cairngit.eu/discuss" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "ProxyPass / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ProxyPassReverse / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "SSLEngine on" >> /etc/apache2/sites-available/mattermost.conf
+		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/mattermost.conf
+		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/mattermost.conf
+		echo "SSLCertificateFile /etc/letsencrypt/live/cairngit.eu/cert.pem" >> /etc/apache2/sites-available/mattermost.conf
+		echo "SSLCertificateKeyFile /etc/letsencrypt/live/cairngit.eu/privkey.pem" >> /etc/apache2/sites-available/mattermost.conf
+		echo "SSLCertificateChainFile /etc/letsencrypt/live/cairngit.eu/fullchain.pem" >> /etc/apache2/sites-available/mattermost.conf
+
+		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
+		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
+
+		systemctl restart apache2
+
+	# Install framadate
+		# Install dependency
+		apt install php7.0-intl
+
+		#Create user framadate
+		USER="mattermost"
+		HOME_BASE="/home/"
+		echo "Creation of mattermost user"
+		useradd -p ${pass} -M -r -U ${HOME_BASE}${USER} ${USER}
+		echo "Creation of ".${USER}." user" OK
+
+		# Install framadate
+		mkdir /var/www/framadate
+		cd /var/www/framadate
+		git clone https://git.framasoft.org/framasoft/framadate.git .
+		git checkout 0.9.6
+		chown framadate:framadate -R /var/www/framadate
+	
+		#Install composer
+		php -r "readfile('https://getcomposer.org/installer');" | php
+		./composer.phar install
+		./composer.phar update
+
+		# Create MySQL database for framadate
+		mysql -u root -p${pass} -e "CREATE DATABASE framadate;"
+		mysql -u root -p${pass} -e "CREATE USER 'framadate'@'localhost' IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'framadate'@'localhost';"
+		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON framadate.* TO framadate@localhost IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "FLUSH PRIVILEGES;"
+
+		# Configuration Apache2
+		
+
+		# Configuration framadate		
+
+
+	# Install Jitsi Meet
+		# Install dependency
+		apt install apt-transport-https	
+
+		# Add repository
+		echo 'deb https://download.jitsi.org stable/' >> /etc/apt/sources.list.d/jitsi-stable.list
+		wget -qO -  https://download.jitsi.org/jitsi-key.gpg.key | apt-key add -
+		apt update
+
+		# Install Jitsi Meet
+		apt install jitsi-meet
+
+		# Certif
+		systemctl restart prosody
+
+		# Configuration of Jitsi Meet
+		echo "disableThirdPartyRequests: true," >> /etc/jitsi/meet/*-config.js
+
+		# Configuration Apache2
+
+	# Install Wisemapping
+
+	# Install Scrumblr
+
 	# Install CairnGit
 	wget https://github.com/Gspohu/gitmh/archive/master.zip
 	mkdir /var/www/CairnGit/
-	apt install unzip
 	unzip master.zip -d /var/www/CairnGit/
 	rsync -a /var/www/CairnGit/gitmh-master/ /var/www/CairnGit/ 
 	chmod -R 777 /var/www/CairnGit
@@ -109,18 +263,13 @@ then
 	USER="CairnGit"
 	HOME_BASE="/home/"
 	echo "Creation of CairnGit user"
-	read -s -p "Password :" PASSWORD
-	useradd -p ${PASSWORD} -m -d ${HOME_BASE}${USER} ${USER}
+	useradd -p ${pass} -m -d ${HOME_BASE}${USER} ${USER}
 	echo "Creation of ".${USER}." user" OK
 
 	# Ajout de l'acces sécurisé
-	echo "#Identification :" > /var/www/CairnGit/secure_access
-	echo "cairngit" >> /var/www/CairnGit/secure_access
-	echo "#Password :" >> /var/www/CairnGit/secure_access
-	echo "MySQL Password :"
-	read -s pass
-	echo $pass >> /var/www/CairnGit/secure_access
-	chmod 777 /var/www/CairnGit/secure_access
+	echo "cairngit" >> /var/www/CairnGit/.htpasswd
+	echo $pass >> /var/www/CairnGit/.htpasswd
+	chmod 777 /var/www/CairnGit/.htpasswd
 
 	# Ajout des bases de données
 	mysql -u root -p${pass} -e "CREATE DATABASE cairngit;"
@@ -146,3 +295,4 @@ then
 	echo "Pas encore implémenté"
 
 fi
+
