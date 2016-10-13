@@ -8,6 +8,9 @@ $password = fgets($secureAccess);
  
 fclose($secureAccess);
 
+#Nettoyage des valeurs récupéré
+$identification = preg_replace("/(\r\n|\n|\r)/", "", $identification);
+$password = preg_replace("/(\r\n|\n|\r)/", "", $password);
 
 #Connexion à la base sql
 try

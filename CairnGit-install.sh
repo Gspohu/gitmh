@@ -34,7 +34,7 @@ then
         do
                 read -s -p "Password : " passnohash
                 echo ""
-                read -s -p "RE -Password : " repassnohash
+                read -s -p "RE-Password : " repassnohash
                 echo ""
                 if [ "$passnohash" != "$repassnohash" ]
                 then
@@ -169,8 +169,8 @@ then
 		apt-get -y install php7.0-intl
 
 		#Create user framadate
-		USER="mattermost"
-		echo "Creation of mattermost user"
+		USER="framadate"
+		echo "Creation of framadate user"
 		useradd -p $pass -M -r -U $USER
 		echo "Creation of ".${USER}." user" OK
 
@@ -183,9 +183,9 @@ then
 		cd ~
 	
 		#Install composer
-		php -r "readfile('https://getcomposer.org/installer');" | php
-		./composer.phar install
-		./composer.phar update
+		su framadate -c php -r "readfile('https://getcomposer.org/installer');" | php
+		su framadate -c ./composer.phar install
+		su framadate -c ./composer.phar update
 
 		# Create MySQL database for framadate
 		mysql -u root -p${pass} -e "CREATE DATABASE framadate;"
@@ -221,7 +221,7 @@ then
 
 	# Install Wisemapping
 		# Install dependency
-		apt-get -y install openjdk-7-jdk
+		apt-get -y install openjdk-9-jdk
 
 		# Create wisemapping user
 		useradd wisemapping
