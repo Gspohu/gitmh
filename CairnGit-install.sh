@@ -77,6 +77,8 @@ then
 	systemctl restart apache2
 	echo -e "Installation de PHPmyadmin.......\033[32mFait\033[00m"
 
+	# Install mail server
+
 	# Install Kanboard
 	apt-get -y install unzip
 	wget https://kanboard.net/kanboard-1.0.33.zip
@@ -90,7 +92,6 @@ then
 		mysql -u root -p${pass} -e "CREATE USER 'mattermost'@'localhost' IDENTIFIED BY '$pass';"
 		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'mattermost'@'localhost';"
 		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON mattermost.* TO mattermost@localhost IDENTIFIED BY '$pass';"
-		mysql -u root -p${pass} -e "FLUSH PRIVILEGES;"
 
 		# Create mattermost user
 		USER="mattermost"
@@ -179,6 +180,7 @@ then
 		git clone https://git.framasoft.org/framasoft/framadate.git .
 		git checkout 0.9.6
 		chown framadate:framadate -R /var/www/framadate
+		cd ~
 	
 		#Install composer
 		php -r "readfile('https://getcomposer.org/installer');" | php
@@ -190,7 +192,6 @@ then
 		mysql -u root -p${pass} -e "CREATE USER 'framadate'@'localhost' IDENTIFIED BY '$pass';"
 		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'framadate'@'localhost';"
 		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON framadate.* TO framadate@localhost IDENTIFIED BY '$pass';"
-		mysql -u root -p${pass} -e "FLUSH PRIVILEGES;"
 
 		# Configuration Apache2
 		
@@ -208,8 +209,6 @@ then
 		apt update
 
 		# Install Jitsi Meet
-		echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
-		echo "phpmyadmin phpmyadmin/app-password-confirm password $pass" | sudo debconf-set-selections
 		apt-get -y  install jitsi-meet
 
 		# Certif
@@ -221,8 +220,96 @@ then
 		# Configuration Apache2
 
 	# Install Wisemapping
+		# Install dependency
+		apt-get -y install openjdk-7-jdk
+
+		# Create wisemapping user
+		useradd wisemapping
+		groupadd wisemapping
+		mkdir /var/www/wisemapping
+		chown wisemapping:wisemapping -R /var/www/wisemapping
+
+		# Download Wisemapping
+		cd /var/www/wisemapping
+		wget https://bitbucket.org/wisemapping/wisemapping-open-source/downloads/wisemapping-v4.0.3.zip
+		unzip wisemapping-v4.0.3.zip
+		mv wisemapping-v4.0.3/* . && rmdir wisemapping-v4.0.3 && rm wisemapping-v4.0.3.zip
+		cd ~
+
+		# Configuration MySQL
+		sed -ie "s/PASSWORD(".*")/PASSWORD('$pass')/g" /var/www/wisemapping/config/database/mysql/create-database.sql
+		mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/wisemapping/config/database/mysql/create-database.sql
+		mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/wisemapping/config/database/mysql/create-schemas.sql
+
+		# Configuration Wisemapping
+		sed -ie '6,12 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+                sed -ie '26,32 s/^./#d/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+                sed -ie "10 s/password=password/password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -ie '95 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -ie '95 s/8080/8082/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		# Ajouter la configuration mail une fois le serveur installé
+
+		# Configuration Apache2
+		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerName  cairngit.eu/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAlias  cairngit.eu/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "Redirect permanent / https://cairngit.eu/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerName  cairngit.eu/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAlias  cairngit.eu/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ProxyPassReverse / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "SSLEngine on" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "SSLCertificateFile /etc/letsencrypt/live/cairngit.eu/cert.pem" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "SSLCertificateKeyFile /etc/letsencrypt/live/cairngit.eu/privkey.pem" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "SSLCertificateChainFile /etc/letsencrypt/live/cairngit.eu/fullchain.pem" >> /etc/apache2/sites-available/wisemapping.conf
+
+		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
+
+		systemctl restart apache2
+
+
+		# Launch Wisemapping
+		./var/www/wisemapping/start.sh &
+
+		# Add  Wisemapping to systemd
+		echo "[Unit]" > /etc/systemd/system/wisemapping.service
+		echo "Description=wisemapping" >> /etc/systemd/system/wisemapping.service
+		echo "After=syslog.target network.target" >> /etc/systemd/system/wisemapping.service
+
+		echo "[Service]" >> /etc/systemd/system/wisemapping.service
+		echo "Type=simple" >> /etc/systemd/system/wisemapping.service
+		echo "User=wisemapping" >> /etc/systemd/system/wisemapping.service
+		echo "Group=wisemapping" >> /etc/systemd/system/wisemapping.service
+		echo "ExecStart=/var/www/wisemapping/start.sh" >> /etc/systemd/system/wisemapping.service
+		echo "PrivateTmp=yes" >> /etc/systemd/system/wisemapping.service
+		echo "WorkingDirectory=/var/www/wisemapping" >> /etc/systemd/system/wisemapping.service
+		echo "Restart=always" >> /etc/systemd/system/wisemapping.service
+		echo "RestartSec=30" >> /etc/systemd/system/wisemapping.service
+
+		echo "[Install]" >> /etc/systemd/system/wisemapping.service
+		echo "WantedBy=multi-user.target" >> /etc/systemd/system/wisemapping.service
+
 
 	# Install Scrumblr
+
 
 	# Install CairnGit
 	wget https://github.com/Gspohu/gitmh/archive/master.zip
@@ -286,7 +373,7 @@ then
 	echo "Creation of ".${USER}." user" OK
 
 	# Ajout de l'acces sécurisé
-	echo "cairngit" >> /var/www/CairnGit/.htpasswd
+	echo "cairngit" > /var/www/CairnGit/.htpasswd
 	echo $pass >> /var/www/CairnGit/.htpasswd
 	chmod 777 /var/www/CairnGit/.htpasswd
 
@@ -294,9 +381,11 @@ then
 	mysql -u root -p${pass} -e "CREATE DATABASE cairngit;"
 	mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON cairngit.* TO cairngit@localhost IDENTIFIED BY '$pass';"
 	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Captcha.sql
-	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Content_EN.sql
+	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Text_content.sql
 	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Member.sql
 	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Projects.sql
+	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Colors.sql
+	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Project_types.sql
 
 	echo -e "Ajout des bases de données.......\033[32mFait\033[00m"
 
