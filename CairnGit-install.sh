@@ -2,7 +2,9 @@
 
 	apt update
 	apt upgrade
-	apt install dialog
+	echo -e "Mise à jour.......\033[32mFait\033[00m"
+
+	apt-get -y install dialog
 
 	DIALOG=${DIALOG=dialog}
 	fichtemp=`tempfile 2>/dev/null` || fichtemp=/tmp/test$$
@@ -23,15 +25,26 @@
 
 if [ "$choix" = "Dedicated" ]
 then
-	echo -e "Mise à jour.......\033[32mFait\033[00m"
 
 	# Password for installation (Mysql, etc)
-	echo "Choose the password for the installation"
-	read -s -p "Password : " passnohash
-	pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
+        echo "Choose the password for the installation"
+        passnohash="0"
+        repassnohash="1"
+        while [ "$passnohash" != "$repassnohash" ]      
+        do
+                read -s -p "Password : " passnohash
+                echo ""
+                read -s -p "RE -Password : " repassnohash
+                echo ""
+                if [ "$passnohash" != "$repassnohash" ]
+                then
+                        echo "Passwords does not match"
+                fi
+        done
+        pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
 
 	# Install apache2
-	apt install apache2
+	apt-get -y install apache2
 	a2enmod ssl
 	systemctl restart apache2
 	echo -e "Installation d'apache2.......\033[32mFait\033[00m"
@@ -47,12 +60,12 @@ then
 	echo -e "Installation de MySQL.......\033[32mFait\033[00m"
 
 	# Install PHP
-	apt install php libapache2-mod-php php-mcrypt php-mysql php-cli
+	apt-get -y install php libapache2-mod-php php-mcrypt php-mysql php-cli
 	systemctl restart apache2
 	echo -e "Installation de PHP.......\033[32mFait\033[00m"
 
 	# Install phpmyadmin
-	apt install php-mbstring php-gettext
+	apt-get -y install php-mbstring php-gettext
 	echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
 	echo "phpmyadmin phpmyadmin/app-password-confirm password $pass" | sudo debconf-set-selections
 	echo "phpmyadmin phpmyadmin/mysql/admin-pass password $pass" | sudo debconf-set-selections
@@ -65,7 +78,7 @@ then
 	echo -e "Installation de PHPmyadmin.......\033[32mFait\033[00m"
 
 	# Install Kanboard
-	apt install unzip
+	apt-get -y install unzip
 	wget https://kanboard.net/kanboard-1.0.33.zip
 	unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
 	rm kanboard-1.0.33.zip
@@ -152,7 +165,7 @@ then
 
 	# Install framadate
 		# Install dependency
-		apt install php7.0-intl
+		apt-get -y install php7.0-intl
 
 		#Create user framadate
 		USER="mattermost"
@@ -187,7 +200,7 @@ then
 
 	# Install Jitsi Meet
 		# Install dependency
-		apt install apt-transport-https	
+		apt-get -y  install apt-transport-https	
 
 		# Add repository
 		echo 'deb https://download.jitsi.org stable/' >> /etc/apt/sources.list.d/jitsi-stable.list
@@ -195,7 +208,9 @@ then
 		apt update
 
 		# Install Jitsi Meet
-		apt install jitsi-meet
+		echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
+		echo "phpmyadmin phpmyadmin/app-password-confirm password $pass" | sudo debconf-set-selections
+		apt-get -y  install jitsi-meet
 
 		# Certif
 		systemctl restart prosody
@@ -254,7 +269,7 @@ then
 	echo -e "Configuration d'apache2.......\033[32mFait\033[00m"
 
 	# Configuration letsencrypt cerbot
-	apt install python-letsencrypt-apache
+	apt-get -y install python-letsencrypt-apache
 	letsencrypt --apache
 	a2ensite CairnGit.conf
 	echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
