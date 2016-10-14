@@ -4,7 +4,9 @@
 	apt upgrade
 	echo -e "Mise à jour.......\033[32mFait\033[00m"
 
-	apt-get -y install dialog
+	apt-get -y install dialog 
+	apt-get -y install git
+	apt-get -y install unzip
 
 	DIALOG=${DIALOG=dialog}
 	fichtemp=`tempfile 2>/dev/null` || fichtemp=/tmp/test$$
@@ -42,10 +44,12 @@ then
                 fi
         done
         pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
+	passnohash="0"
 
 	# Install apache2
 	apt-get -y install apache2
 	a2enmod ssl
+	a2enmod rewrite
 	systemctl restart apache2
 	echo -e "Installation d'apache2.......\033[32mFait\033[00m"
 
@@ -78,12 +82,119 @@ then
 	echo -e "Installation de PHPmyadmin.......\033[32mFait\033[00m"
 
 	# Install mail server
+		# Install dependency
+		apt-get -y install php7.0-imap
+
+		# DNS
+		echo "Consider to update your DNS like this :"
+		echo "hostname			IN			A				ipv4 of your server"
+		echo "hostname			IN			AAAA			ipv6 of your server"
+
+		echo "mail				IN			A				ipv4 of your server"
+		echo "mail				IN			AAAA			ipv6 of your server"
+	
+		echo "postfixadmin		IN			CNAME			hostname"
+		echo "rainloop			IN			CNAME			hostname"
+
+		echo "@				IN			MX	10			mail.domain.tld."
+	
+		echo "smtp				IN			CNAME			hostname"
+		echo "imap				IN			CNAME			hostname"
+
+
+		# Install Postfix
+		apt-get -y install postfix postfix-mysql postfix-policyd-spf-python
+
+		# Create database
+		mysql -u root -p${pass} -e "CREATE DATABASE postfix;"
+		mysql -u root -p${pass} -e "CREATE USER 'postfix'@'localhost' IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'postfix'@'localhost';"
+		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON postfix.* TO 'postfix'@'localhost';"
+
+		# Install Postfixadmin
+		wget https://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-3.0/postfixadmin-3.0.tar.gz
+		tar -xzf postfixadmin-3.0.tar.gz
+		mv postfixadmin-3.0 /var/www/postfixadmin
+		rm postfixadmin-2.92.tar.gz
+		chown -R www-data:www-data /var/www/postfixadmin
+
+		# Configuration of Postfixadmin
+		sed -ie "25 s/false/true/g" /var/www/postfixadmin/config.inc.php
+		sed -ie "87 s/postfixadmin/$pass/g" /var/www/postfixadmin/config.inc.php
+
+		# Configuration of Apache2
+		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerName  postfixadmin.cairngit.eu" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerAlias  postfixadmin.cairngit.eu" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "Redirect permanent / https://postfixadmin.cairngit.eu/" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "ErrorLog /var/www/postfixadmin/logs/error.log" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "CustomLog /var/www/postfixadmin/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerName  postfixadmin.cairngit.eu" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "ServerAlias  postfixadmin.cairngit.eu/" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "<Directory /var/www/postfixadmin/>" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "AllowOverride all" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "Order allow,deny" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "allow from all" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "</Directory>" >> /etc/apache2/sites-available/postfixadmin.conf
+
+
+		echo "SSLEngine on" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "SSLCertificateFile /etc/letsencrypt/live/cairngit.eu/cert.pem" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "SSLCertificateKeyFile /etc/letsencrypt/live/cairngit.eu/privkey.pem" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "SSLCertificateChainFile /etc/letsencrypt/live/cairngit.eu/fullchain.pem" >> /etc/apache2/sites-available/postfixadmin.conf
+
+		echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
+
+	systemctl restart apache2
+
+		# Configuration of main.cf
+
+		
+		#  SSL
+
+	
+		# Configuration of Postfix in order to interact with MySQL
+
+
+		# Configuration of master.cf
+
+
+		# Installation of Dovecot
+		apt-get -y install dovecot-core dovecot-imapd dovecot-lmtpd dovecot-mysql dovecot-sieve dovecot-managesieved
+
+
+		# Configuration of Dovecot
+
+
+		# Installation of DKIMProxy
+		apt-get -y install dkimproxy 	
+
 
 	# Install Kanboard
-	apt-get -y install unzip
-	wget https://kanboard.net/kanboard-1.0.33.zip
-	unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
-	rm kanboard-1.0.33.zip
+		# Dependency
+		apt-get -y install php7.0-sqlite3
+
+		# Download and extract kanboard
+		wget https://kanboard.net/kanboard-1.0.34.zip
+		unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
+		rm kanboard-1.0.33.zip
+
 
 	# Install Mattermost
 	
@@ -105,7 +216,7 @@ then
 		mv mattermost* /var/www
 		mkdir  /var/www/mattermost/data
 		chown -R mattermost:mattermost /var/www/mattermost/
-		rm mattermost-team-3.4.0-linux-amd64.tar.gz
+		rm /var/www/mattermost-team-3.4.0-linux-amd64.tar.gz
 
 		# Configuration of mattermost
 		sed -ie 's/"DataSource": "mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8",/"DataSource": "mattermost:mattermost_password@tcp(localhost:3306)\/mattermost?charset=utf8",/g' /var/www/mattermost/config/config.json
@@ -309,7 +420,78 @@ then
 
 
 	# Install Scrumblr
+		# Install dependency
+		apt-get -y install nodejs
 
+		# Create scrumblr user
+		useradd scrumblr
+		groupadd scrumblr		
+
+		# Install Scrumblr
+		cd /var/www/
+		git clone https://github.com/aliasaria/scrumblr.git
+		chown scrumblr:scrumblr -R /var/www/scrumblr
+
+		# Install dependency
+		su scrumblr -s npm install
+
+		# Add Scrumblr to systemd
+		echo "[Unit]" > /etc/systemd/system/scrumblr.service
+		echo "Description=Scrumblr service" >> /etc/systemd/system/scrumblr.service
+		echo "Documentation=https://github.com/aliasaria/scrumblr/" >> /etc/systemd/system/scrumblr.service
+		echo "Requires=network.target" >> /etc/systemd/system/scrumblr.service
+		echo "Requires=redis-server.service" >> /etc/systemd/system/scrumblr.service
+		echo "After=network.target" >> /etc/systemd/system/scrumblr.service
+		echo "After=redis-server.service" >> /etc/systemd/system/scrumblr.service
+
+		echo "[Service]" >> /etc/systemd/system/scrumblr.service
+		echo "Type=simple" >> /etc/systemd/system/scrumblr.service
+		echo "User=scrumblr" >> /etc/systemd/system/scrumblr.service
+		echo "WorkingDirectory=/var/www/scrumblr" >> /etc/systemd/system/scrumblr.service
+		echo "ExecStart=/usr/bin/node server.js --port 4242" >> /etc/systemd/system/scrumblr.service
+
+		echo "[Install]" >> /etc/systemd/system/scrumblr.service
+		echo "WantedBy=multi-user.target" >> /etc/systemd/system/scrumblr.service
+
+		systemctl daemon-reload
+		systemctl enable scrumblr.service
+		systemctl start scrumblr.service
+
+		# Configuration Apache
+		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerName  cairngit.eu/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAlias  cairngit.eu/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "Redirect permanent / https://cairngit.eu/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAdmin postmaster@cairn-devices.eu" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerName  cairngit.eu/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAlias  cairngit.eu/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ProxyPassReverse / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "SSLEngine on" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "SSLCertificateFile /etc/letsencrypt/live/cairngit.eu/cert.pem" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "SSLCertificateKeyFile /etc/letsencrypt/live/cairngit.eu/privkey.pem" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "SSLCertificateChainFile /etc/letsencrypt/live/cairngit.eu/fullchain.pem" >> /etc/apache2/sites-available/scrumblr.conf
+
+		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
+
+		systemctl restart apache2
 
 	# Install CairnGit
 	wget https://github.com/Gspohu/gitmh/archive/master.zip
@@ -340,6 +522,14 @@ then
 	echo "ServerAlias  cairngit.eu/" >> /etc/apache2/sites-available/CairnGit.conf
 
 	echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/CairnGit.conf
+
+	echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/CairnGit.conf
+	echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/CairnGit.conf
+	echo "AllowOverride all" >> /etc/apache2/sites-available/CairnGit.conf
+	echo "Order allow,deny" >> /etc/apache2/sites-available/CairnGit.conf
+	echo "allow from all" >> /etc/apache2/sites-available/CairnGit.conf
+	echo "</Directory>" >> /etc/apache2/sites-available/CairnGit.conf
+
 
 	echo "SSLEngine on" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/CairnGit.conf
@@ -388,6 +578,8 @@ then
 	mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/CairnGit/SQL/Project_types.sql
 
 	echo -e "Ajout des bases de données.......\033[32mFait\033[00m"
+
+	reboot
 
 
 elif [ "$choix" = "Cohabitation" ]
