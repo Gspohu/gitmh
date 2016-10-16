@@ -170,6 +170,23 @@ then
 
 	
 		# Configuration of Postfix in order to interact with MySQL
+		echo "hosts = 127.0.0.1" > /etc/postfix/mysql-virtual-mailbox-domains.cf
+		echo "user = postfix" >> /etc/postfix/mysql-virtual-mailbox-domains.cf
+		echo "password = $pass" >> /etc/postfix/mysql-virtual-mailbox-domains.cf
+		echo "dbname = postfix" >> /etc/postfix/mysql-virtual-mailbox-domains.cf
+		echo "query = SELECT domain FROM domain WHERE domain='%s' and backupmx = 0 and active = 1" >> /etc/postfix/mysql-virtual-mailbox-domains.cf
+
+		echo "hosts = 127.0.0.1" > /etc/postfix/mysql-virtual-mailbox-maps.cf
+		echo "user = postfix" >> /etc/postfix/mysql-virtual-mailbox-maps.cf
+		echo "password = $pass" >> /etc/postfix/mysql-virtual-mailbox-maps.cf
+		echo "dbname = postfix" >> /etc/postfix/mysql-virtual-mailbox-maps.cf
+		echo "query = SELECT maildir FROM mailbox WHERE username='%s' AND active = 1" >> /etc/postfix/mysql-virtual-mailbox-maps.cf
+
+		echo "hosts = 127.0.0.1" > /etc/postfix/mysql-virtual-alias-maps.cf
+		echo "user = postfix" >> /etc/postfix/mysql-virtual-alias-maps.cf
+		echo "password = $pass" >> /etc/postfix/mysql-virtual-alias-maps.cf
+		echo "dbname = postfix" >> /etc/postfix/mysql-virtual-alias-maps.cf
+		echo "query = SELECT goto FROM alias WHERE address='%s' AND active = 1" >> /etc/postfix/mysql-virtual-alias-maps.cf
 
 
 		# Configuration of master.cf
