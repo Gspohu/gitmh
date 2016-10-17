@@ -101,7 +101,7 @@ then
 		echo "postfixadmin		IN			CNAME			hostname"
 		echo "rainloop			IN			CNAME			hostname"
 
-		echo "@				IN			MX	10			mail.domain.tld."
+		echo "@				IN			MX	10			mail.$domainName."
 	
 		echo "smtp				IN			CNAME			hostname"
 		echo "imap				IN			CNAME			hostname"
@@ -166,6 +166,7 @@ then
 		echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
 
+		a2ensite postfixadmin.conf
 		systemctl restart apache2
 		
 		# Generation of cert
@@ -1233,6 +1234,9 @@ then
                 echo "CustomLog /var/www/rainloop/logs/access.log combined" >> /etc/apache2/sites-available/rainloop.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/rainloop.conf
 
+		a2ensite rainloop.conf
+		systemctl restart apache2
+
 
 		# Installation of Postgrey
 		apt-get -y install postgrey
@@ -1321,11 +1325,11 @@ then
 		# Configuration Apache2 for Mattermost
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/mattermost.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerName  $domainName/discuss" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerAlias  $domainName/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerName  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAlias  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
 
-		echo "Redirect permanent / https://$domainName/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "Redirect permanent / https://discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 
 		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
 		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
@@ -1333,8 +1337,8 @@ then
 
 		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerName  $domainName/discuss" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerAlias  $domainName/discuss" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerName  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
+		echo "ServerAlias  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 
 		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
 
@@ -1352,6 +1356,7 @@ then
 		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
 
+		a2ensite mattermost.conf
 		systemctl restart apache2
 
 	# Install framadate
@@ -1386,21 +1391,21 @@ then
 		# Configuration Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/framadate.conf
                 echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerName $domainName/framadate" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerAlias $domainName/framadate" >> /etc/apache2/sites-available/framadate.conf
+                echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
+                echo "ServerAlias framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
                 echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
                 echo "<Directory /var/www/framadate/ >" >> /etc/apache2/sites-available/framadate.conf
                 echo "AllowOverride All" >> /etc/apache2/sites-available/framadate.conf
                 echo "</Directory>" >> /etc/apache2/sites-available/framadate.conf
                 echo "" >> /etc/apache2/sites-available/framadate.conf
-                echo "Redirect permanent / https://$domainName/framadate/" >> /etc/apache2/sites-available/framadate.conf
+                echo "Redirect permanent / https://framadate.$domainName/" >> /etc/apache2/sites-available/framadate.conf
                 echo "" >> /etc/apache2/sites-available/framadate.conf
                 echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
                 echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
                 echo "" >> /etc/apache2/sites-available/framadate.conf
                 echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerName $domainName/framadate" >> /etc/apache2/sites-available/framadate.conf
+                echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
                 echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
                 echo "SSLEngine on" >> /etc/apache2/sites-available/framadate.conf
                 echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/framadate.conf
@@ -1414,6 +1419,9 @@ then
                 echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
                 echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
+
+		a2ensite framadate.conf
+		systemctl restart apache2
 
 		# Configuration framadate		
 
@@ -1437,6 +1445,28 @@ then
 		echo "disableThirdPartyRequests: true," >> /etc/jitsi/meet/*-config.js
 
 		# Configuration Apache2
+                echo "NameVirtualHost 127.0.0.1:80" > /etc/apache2/sites-available/jitsimeet.conf
+                echo "" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "<VirtualHost 127.0.0.1:80>" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  DocumentRoot \"/etc/jitsi/meet/\"" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  ServerName jitsimeet.$domainName" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  <Directory \"/etc/jitsi/meet/\">" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "    Options Indexes MultiViews" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "    AllowOverride All" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "    Order allow,deny" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "    Allow from all" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  </Directory>" >> /etc/apache2/sites-available/jitsimeet.conf
+
+                echo "  ProxyPass /http-bind http://127.0.0.1:7070/http-bind/" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  ProxyPassReverse /http-bind http://127.0.0.1:7070/http-bind/" >> /etc/apache2/sites-available/jitsimeet.conf
+
+                echo "  RewriteEngine on" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "  RewriteRule ^/([a-zA-Z0-9]+)$ /index.html" >> /etc/apache2/sites-available/jitsimeet.conf
+                echo "</VirtualHost>" >> /etc/apache2/sites-available/jitsimeet.conf
+
+		a2ensite jitsimeet
+		systemctl restart apache2
 
 	# Install Wisemapping
 		# Install dependency
@@ -1471,11 +1501,11 @@ then
 		# Configuration Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/wisemapping.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerName  $domainName/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerAlias  $domainName/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerName  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAlias  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
 
-		echo "Redirect permanent / https://$domainName/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "Redirect permanent / https://mindmap.$domainName/" >> /etc/apache2/sites-available/wisemapping.conf
 
 		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
@@ -1483,8 +1513,8 @@ then
 
 		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerName  $domainName/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerAlias  $domainName/mindmap" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerName  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
+		echo "ServerAlias  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 
 		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
 
@@ -1502,7 +1532,9 @@ then
 		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
 
+		a2ensite wisemapping.conf
 		systemctl restart apache2
+
 
 
 		# Launch Wisemapping
@@ -1568,11 +1600,11 @@ then
 		# Configuration Apache
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/scrumblr.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerName  $domainName/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerAlias  $domainName/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerName  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAlias  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
 
-		echo "Redirect permanent / https://$domainName/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "Redirect permanent / https://brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 
 		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
@@ -1580,12 +1612,12 @@ then
 
 		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerName  $domainName/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerAlias  $domainName/brainstorming" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerName  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ServerAlias  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 
 		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
 
-		echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/scrumblr.conf
+		echo "ProxyPass / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ProxyPassReverse / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
 
 		echo "SSLEngine on" >> /etc/apache2/sites-available/scrumblr.conf
@@ -1599,6 +1631,7 @@ then
 		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
 
+		a2ensite scrumblr
 		systemctl restart apache2
 
 	# Install CairnGit
@@ -1650,6 +1683,7 @@ then
 	echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "</VirtualHost>" >> /etc/apache2/sites-available/CairnGit.conf
 
+	a2ensite CairnGit.conf
 	systemctl restart apache2
 	echo -e "Configuration d'apache2.......\033[32mFait\033[00m"
 
@@ -1703,4 +1737,3 @@ then
 	echo "Pas encore implémenté"
 
 fi
-
