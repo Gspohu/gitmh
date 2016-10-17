@@ -1,7 +1,7 @@
 #!/bin/bash
 
-	apt update
-	apt upgrade
+	apt-get -y update
+	apt-get -y upgrade
 	echo -e "Mise à jour.......\033[32mFait\033[00m"
 
 	apt-get -y install dialog 
@@ -170,11 +170,9 @@ then
 		systemctl restart apache2
 		
 		# Generation of cert
-		cd /tmp
-		git clone https://github.com/letsencrypt/letsencrypt
-		cd letsencrypt
-		./letsencrypt-auto certonly --rsa-key-size 4096 -d mail.$domainName --email admin@$domainName --agree-tos
-		cd ~
+		apt-get -y install python-letsencrypt-apache
+		letsencrypt --apache
+		echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
 
 		# Configuration of main.cf
 		echo "# The first text sent to a connecting process." > /etc/postfix/main.cf
@@ -1683,7 +1681,6 @@ then
 	echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "</VirtualHost>" >> /etc/apache2/sites-available/CairnGit.conf
 
-	a2ensite CairnGit.conf
 	systemctl restart apache2
 	echo -e "Configuration d'apache2.......\033[32mFait\033[00m"
 
@@ -1691,7 +1688,7 @@ then
 	apt-get -y install python-letsencrypt-apache
 	letsencrypt --apache
 	a2ensite CairnGit.conf
-	echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
+	echo -e "Application de let's encrypt.......\033[32mFait\033[00m"
 
 	# Ajout d'une règle cron pour renouveller automatique le certificat
 	echo "* * * 2 * letsencrypt renew" > /tmp/crontab.tmp
@@ -1721,6 +1718,7 @@ then
 
 	echo -e "Ajout des bases de données.......\033[32mFait\033[00m"
 
+	apt autoremove
 	reboot
 
 
