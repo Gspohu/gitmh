@@ -11,7 +11,7 @@
 	DIALOG=${DIALOG=dialog}
 	fichtemp=`tempfile 2>/dev/null` || fichtemp=/tmp/test$$
 	trap "rm -f $fichtemp" 0 1 2 5 15
-	$DIALOG --clear --title "Installation CairnGit" \
+	$DIALOG --clear --title "Installation of CairnGit" \
 		--menu "Bonjour, choisissez votre type d'installation :" 15 80 5 \
 		 "Dedicated" "Installation dédié à CairnGit uniquement" \
 		 "Cohabitation" "Installation de CairnGit a côté d'autres services" \
@@ -55,6 +55,7 @@ then
 	apt-get -y install apache2
 	a2enmod ssl
 	a2enmod rewrite
+	a2enmod proxy
 	systemctl restart apache2
 	echo -e "Installation d'apache2.......\033[32mFait\033[00m"
 
@@ -92,19 +93,19 @@ then
 
 		# DNS
 		echo "Consider to update your DNS like this :"
-		echo "hostname			IN			A				ipv4 of your server"
-		echo "hostname			IN			AAAA			ipv6 of your server"
+		echo "hostname        IN   A              ipv4 of your server"
+		echo "hostname        IN   AAAA     ipv6 of your server"
 
-		echo "mail				IN			A				ipv4 of your server"
-		echo "mail				IN			AAAA			ipv6 of your server"
+		echo "mail                  IN   A               ipv4 of your server"
+		echo "mail                  IN   AAAA      ipv6 of your server"
 	
-		echo "postfixadmin		IN			CNAME			hostname"
-		echo "rainloop			IN			CNAME			hostname"
+		echo "postfixadmin  IN   CNAME    hostname"
+		echo "rainloop           IN   CNAME    hostname"
 
-		echo "@				IN			MX	10			mail.$domainName."
+		echo "@                      IN   MX 10       mail.$domainName."
 	
-		echo "smtp				IN			CNAME			hostname"
-		echo "imap				IN			CNAME			hostname"
+		echo "smtp                IN   CNAME    hostname"
+		echo "imap                IN   CNAME    hostname"
 
 
 		# Install Postfix
@@ -120,7 +121,8 @@ then
 		wget https://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-3.0/postfixadmin-3.0.tar.gz
 		tar -xzf postfixadmin-3.0.tar.gz
 		mv postfixadmin-3.0 /var/www/postfixadmin
-		rm postfixadmin-2.92.tar.gz
+		mkdir /var/www/postfixadmin/logs
+		rm postfixadmin-3.0.tar.gz
 		chown -R www-data:www-data /var/www/postfixadmin
 
 		# Configuration of Postfixadmin
@@ -133,46 +135,12 @@ then
 		echo "ServerName  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "ServerAlias  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
-
-		echo "Redirect permanent / https://postfixadmin.$domainName/" >> /etc/apache2/sites-available/postfixadmin.conf
-
 		echo "ErrorLog /var/www/postfixadmin/logs/error.log" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "CustomLog /var/www/postfixadmin/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
 
-		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "ServerName  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "ServerAlias  postfixadmin.$domainName/" >> /etc/apache2/sites-available/postfixadmin.conf
-
-		echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
-
-		echo "<Directory /var/www/postfixadmin/>" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "AllowOverride all" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "Order allow,deny" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "allow from all" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "</Directory>" >> /etc/apache2/sites-available/postfixadmin.conf
-
-
-		echo "SSLEngine on" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/postfixadmin.conf
-
-		echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
-		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
-
 		a2ensite postfixadmin.conf
 		systemctl restart apache2
-		
-		# Generation of cert
-		apt-get -y install python-letsencrypt-apache
-		letsencrypt --apache
-		echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
 
 		# Configuration of main.cf
 		echo "# The first text sent to a connecting process." > /etc/postfix/main.cf
@@ -199,9 +167,8 @@ then
 		echo "# ---------------------------------" >> /etc/postfix/main.cf
 		echo " " >> /etc/postfix/main.cf
 		echo "# Replace this with your SSL certificate path if you are using one." >> /etc/postfix/main.cf
-		echo "smtpd_tls_CAfile = /etc/letsencrypt/live/mail.$domainName/chain.pem" >> /etc/postfix/main.cf
-		echo "smtpd_tls_cert_file = /etc/letsencrypt/live/mail.$domainName/cert.pem" >> /etc/postfix/main.cf
-		echo "smtpd_tls_key_file = /etc/letsencrypt/live/mail.$domainName/privkey.pem" >> /etc/postfix/main.cf
+		echo "smtpd_tls_cert_file = /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/postfix/main.cf
+		echo "smtpd_tls_key_file = /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/postfix/main.cf
 		echo "# The snakeoil self-signed certificate has no need for a CA file. But" >> /etc/postfix/main.cf
 		echo "# if you are using your own SSL certificate, then you probably have" >> /etc/postfix/main.cf
 		echo "# a CA certificate bundle from your provider. The path to that goes" >> /etc/postfix/main.cf
@@ -574,7 +541,7 @@ then
 		echo "# plugins. The dictionary can be accessed either directly or though a" >> /etc/dovecot/dovecot.conf
 		echo "# dictionary server. The following dict block maps dictionary names to URIs" >> /etc/dovecot/dovecot.conf
 		echo "# when the server is used. These can then be referenced using URIs in format" >> /etc/dovecot/dovecot.conf
-		echo "# "proxy::<name>"." >> /etc/dovecot/dovecot.conf
+		echo "# \"proxy::<name>\"." >> /etc/dovecot/dovecot.conf
 		echo "" >> /etc/dovecot/dovecot.conf
 		echo "dict {" >> /etc/dovecot/dovecot.conf
 		echo "  #quota = mysql:/etc/dovecot/dovecot-dict-sql.conf.ext" >> /etc/dovecot/dovecot.conf
@@ -982,9 +949,9 @@ then
 		# Configuration of dovecot-sql.conf.ext
 		echo "driver = mysql" > /etc/dovecot/dovecot-sql.conf.ext
 		echo "connect = host=127.0.0.1 dbname=postfix user=postfix password=$pass" >> /etc/dovecot/dovecot-sql.conf.ext
-		echo "" >> /etc/dovecot/dovecot-sql.conf.ext" >> /etc/dovecot/dovecot-sql.conf.ext
+		echo "" >> /etc/dovecot/dovecot-sql.conf.ext
 		echo "default_pass_scheme = MD5-CRYPT" >> /etc/dovecot/dovecot-sql.conf.ext
-		echo "" >> /etc/dovecot/dovecot-sql.conf.ext" >> /etc/dovecot/dovecot-sql.conf.ext
+		echo "" >> /etc/dovecot/dovecot-sql.conf.ext
 		echo "password_query = SELECT password FROM mailbox WHERE username = '%u'" >> /etc/dovecot/dovecot-sql.conf.ext
 
 		# Change permission on /etc/dovecot
@@ -1035,8 +1002,8 @@ then
 		# Configuration of 10-ssl.conf
 		echo "ssl = required" > /etc/dovecot/conf.d/10-ssl.conf
 		echo "" >> /etc/dovecot/conf.d/10-ssl.conf
-		echo "ssl_cert = </etc/letsencrypt/live/mail.domain.tld/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
-		echo "ssl_key = </etc/letsencrypt/live/mail.domain.tld/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+		echo "ssl_cert = </etc/letsencrypt/live/mail.$domainName/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+		echo "ssl_key = </etc/letsencrypt/live/mail.$domainName/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "ssl_cipher_list = AES128+EECDH:AES128+EDH" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "ssl_prefer_server_ciphers = yes" >> /etc/dovecot/conf.d/10-ssl.conf
@@ -1059,9 +1026,9 @@ then
 		mkdir -p /var/lib/dovecot/sieve/
 		touch /var/lib/dovecot/sieve/default.sieve &&  chown -R vmail:vmail /var/lib/dovecot/sieve/
 
-		echo "require "fileinto";" > /var/lib/dovecot/sieve/default.sieve
-		echo "if header :contains "X-Spam-Flag" "YES" {" >> /var/lib/dovecot/sieve/default.sieve
-		echo "  fileinto "Spam";" >> /var/lib/dovecot/sieve/default.sieve
+		echo "require \"fileinto\";" > /var/lib/dovecot/sieve/default.sieve
+		echo "if header :contains \"X-Spam-Flag\" \"YES\" {" >> /var/lib/dovecot/sieve/default.sieve
+		echo "  fileinto \"Spam\";" >> /var/lib/dovecot/sieve/default.sieve
 		echo "}" >> /var/lib/dovecot/sieve/default.sieve
 
 		# Launch Sieve
@@ -1193,6 +1160,7 @@ then
 		mkdir /var/www/rainloop
 		unzip rainloop-latest.zip -d /var/www/rainloop
 		rm -rf rainloop-latest.zip
+		mkdir /var/www/rainloop/logs/
 
 		cd /var/www/rainloop
 		find . -type d -exec chmod 755 {} \;
@@ -1212,22 +1180,6 @@ then
                 echo "" >> /etc/apache2/sites-available/rainloop.conf
                 echo "Redirect permanent / https://rainloop.$domainName/" >> /etc/apache2/sites-available/rainloop.conf
                 echo "" >> /etc/apache2/sites-available/rainloop.conf
-                echo "ErrorLog /var/www/rainloop/logs/error.log" >> /etc/apache2/sites-available/rainloop.conf
-                echo "CustomLog /var/www/rainloop/logs/access.log combined" >> /etc/apache2/sites-available/rainloop.conf
-                echo "</VirtualHost>" >> /etc/apache2/sites-available/rainloop.conf
-                echo "" >> /etc/apache2/sites-available/rainloop.conf
-                echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/rainloop.conf
-                echo "ServerName rainloop.$domainName" >> /etc/apache2/sites-available/rainloop.conf
-                echo "DocumentRoot /var/www/rainloop/" >> /etc/apache2/sites-available/rainloop.conf
-                echo "SSLEngine on" >> /etc/apache2/sites-available/rainloop.conf
-                echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/rainloop.conf
-                echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/rainloop.conf
-                echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/rainloop.conf            
-                echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/rainloop.conf      
-                echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/rainloop.conf  
-                echo "<Directory /var/www/rainloop/ >" >> /etc/apache2/sites-available/rainloop.conf
-                echo "AllowOverride All" >> /etc/apache2/sites-available/rainloop.conf
-                echo "</Directory>" >> /etc/apache2/sites-available/rainloop.conf
                 echo "ErrorLog /var/www/rainloop/logs/error.log" >> /etc/apache2/sites-available/rainloop.conf
                 echo "CustomLog /var/www/rainloop/logs/access.log combined" >> /etc/apache2/sites-available/rainloop.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/rainloop.conf
@@ -1274,7 +1226,7 @@ then
 		# Download and extract kanboard
 		wget https://kanboard.net/kanboard-1.0.34.zip
 		unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
-		rm kanboard-1.0.33.zip
+		rm kanboard-1.0.34.zip
 
 
 	# Install Mattermost
@@ -1326,30 +1278,9 @@ then
 		echo "ServerName  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ServerAlias  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
-
-		echo "Redirect permanent / https://discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
-
-		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
-		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
-		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
-
-		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerName  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
-		echo "ServerAlias  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
-
-		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
-
 		echo "ProxyPass / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ProxyPassReverse / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
-
-		echo "SSLEngine on" >> /etc/apache2/sites-available/mattermost.conf
-		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/mattermost.conf
-		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/mattermost.conf
-		echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/mattermost.conf
-		echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/mattermost.conf
-		echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/mattermost.conf
-
+		echo "Redirect permanent / https://discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
 		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
@@ -1372,13 +1303,14 @@ then
 		cd /var/www/framadate
 		git clone https://git.framasoft.org/framasoft/framadate.git .
 		git checkout 0.9.6
+		mkdir /var/www/framadate/logs
 		chown framadate:framadate -R /var/www/framadate
 		cd ~
 	
 		#Install composer
-		su framadate -c php -r "readfile('https://getcomposer.org/installer');" | php
-		su framadate -c ./composer.phar install
-		su framadate -c ./composer.phar update
+		su -c framadate php -r "readfile('https://getcomposer.org/installer');" | php
+		su -c framadate ./composer.phar install
+		su -c framadate ./composer.phar update
 
 		# Create MySQL database for framadate
 		mysql -u root -p${pass} -e "CREATE DATABASE framadate;"
@@ -1398,22 +1330,6 @@ then
                 echo "" >> /etc/apache2/sites-available/framadate.conf
                 echo "Redirect permanent / https://framadate.$domainName/" >> /etc/apache2/sites-available/framadate.conf
                 echo "" >> /etc/apache2/sites-available/framadate.conf
-                echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
-                echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
-                echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
-                echo "" >> /etc/apache2/sites-available/framadate.conf
-                echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
-                echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
-                echo "SSLEngine on" >> /etc/apache2/sites-available/framadate.conf
-                echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/framadate.conf
-                echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/framadate.conf
-                echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/framadate.conf            
-                echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/framadate.conf      
-                echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/framadate.conf  
-                echo "<Directory /var/www/framadate/ >" >> /etc/apache2/sites-available/framadate.conf
-                echo "AllowOverride All" >> /etc/apache2/sites-available/framadate.conf
-                echo "</Directory>" >> /etc/apache2/sites-available/framadate.conf
                 echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
                 echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
@@ -1494,7 +1410,7 @@ then
                 sed -ie "10 s/password=password/password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
 		sed -ie '95 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
 		sed -ie '95 s/8080/8082/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-		# Ajouter la configuration mail une fois le serveur installé
+		sed -ie "44 s/mail.password=/mail.password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
 
 		# Configuration Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/wisemapping.conf
@@ -1502,30 +1418,9 @@ then
 		echo "ServerName  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ServerAlias  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
-
-		echo "Redirect permanent / https://mindmap.$domainName/" >> /etc/apache2/sites-available/wisemapping.conf
-
-		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
-
-		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerName  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "ServerAlias  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
-
-		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
-
 		echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ProxyPassReverse / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
-
-		echo "SSLEngine on" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/wisemapping.conf
-
+		echo "Redirect permanent / https://mindmap.$domainName/" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
@@ -1559,7 +1454,7 @@ then
 
 	# Install Scrumblr
 		# Install dependency
-		apt-get -y install nodejs
+		apt-get -y install nodejs redis-server
 
 		# Create scrumblr user
 		useradd scrumblr
@@ -1569,9 +1464,10 @@ then
 		cd /var/www/
 		git clone https://github.com/aliasaria/scrumblr.git
 		chown scrumblr:scrumblr -R /var/www/scrumblr
+		mkdir /var/www/scrumblr/logs/
 
 		# Install dependency
-		su scrumblr -s npm install
+		su -c scrumblr -s npm install
 
 		# Add Scrumblr to systemd
 		echo "[Unit]" > /etc/systemd/system/scrumblr.service
@@ -1601,30 +1497,9 @@ then
 		echo "ServerName  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ServerAlias  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
-
-		echo "Redirect permanent / https://brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-
-		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
-
-		echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerName  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "ServerAlias  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
-
-		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
-
 		echo "ProxyPass / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ProxyPassReverse / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
-
-		echo "SSLEngine on" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/scrumblr.conf
-
+		echo "Redirect permanent / https://brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
@@ -1648,35 +1523,12 @@ then
 	echo "ServerName  $domainName" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/CairnGit.conf
-
-	echo "Redirect permanent / https://$domainName/" >> /etc/apache2/sites-available/CairnGit.conf
-
-	echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "</VirtualHost>" >> /etc/apache2/sites-available/CairnGit.conf
-
-	echo "<VirtualHost *:443>" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "ServerName  $domainName" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "ServerAlias  $domainName/" >> /etc/apache2/sites-available/CairnGit.conf
-
-	echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/CairnGit.conf
-
 	echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "AllowOverride all" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "Order allow,deny" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "allow from all" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "</Directory>" >> /etc/apache2/sites-available/CairnGit.conf
-
-
-	echo "SSLEngine on" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "SSLProtocol -all -SSLv3 +TLSv1.2" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "SSLCertificateFile /etc/letsencrypt/live/$domainName/cert.pem" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "SSLCertificateKeyFile /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/apache2/sites-available/CairnGit.conf
-	echo "SSLCertificateChainFile /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/apache2/sites-available/CairnGit.conf
-
 	echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/CairnGit.conf
 	echo "</VirtualHost>" >> /etc/apache2/sites-available/CairnGit.conf
@@ -1684,11 +1536,16 @@ then
 	systemctl restart apache2
 	echo -e "Configuration d'apache2.......\033[32mFait\033[00m"
 
+	a2ensite CairnGit.conf
+
 	# Configuration letsencrypt cerbot
 	apt-get -y install python-letsencrypt-apache
 	letsencrypt --apache
-	a2ensite CairnGit.conf
-	echo -e "Application de let's encrypt.......\033[32mFait\033[00m"
+	echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
+
+	# Redirect all http
+	sed -ie "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/$domainName\//g" /etc/apache2/sites-available/CairnGit.conf
+	sed -ie "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/postfixadmin.$domainName\//g" /etc/apache2/sites-available/postfixadmin.conf
 
 	# Ajout d'une règle cron pour renouveller automatique le certificat
 	echo "* * * 2 * letsencrypt renew" > /tmp/crontab.tmp
@@ -1718,7 +1575,9 @@ then
 
 	echo -e "Ajout des bases de données.......\033[32mFait\033[00m"
 
-	apt autoremove
+	# Cleanning
+	apt-get -y autoremove
+	echo "Cleaning .............\033[32mDone\033[00m"
 	reboot
 
 
