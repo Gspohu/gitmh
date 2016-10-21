@@ -89,7 +89,7 @@ then
 
 	# Install mail server
 		# Install dependency
-		apt-get -y install php7.0-imap
+		apt-get -y install php7.0-imap php7.0-curl
 
 		# DNS
 		echo "Consider to update your DNS like this :"
@@ -104,8 +104,8 @@ then
 
 		echo "@                      IN   MX 10       mail.$domainName."
 	
-		echo "smtp                IN   CNAME    hostname"
-		echo "imap                IN   CNAME    hostname"
+		echo "smtp                 IN   CNAME    hostname"
+		echo "imap                 IN   CNAME    hostname"
 
 
 		# Install Postfix
@@ -126,8 +126,21 @@ then
 		chown -R www-data:www-data /var/www/postfixadmin
 
 		# Configuration of Postfixadmin
-		sed -ie "25 s/false/true/g" /var/www/postfixadmin/config.inc.php
-		sed -ie "87 s/postfixadmin/$pass/g" /var/www/postfixadmin/config.inc.php
+		sed -i "25 s/false/true/g" /var/www/postfixadmin/config.inc.php
+		pass_MD5=$(echo -n $pass | md5sum | sed 's/  -//g')
+		pass_SHA1=$(echo -n $pass_MD5:$pass | sha1sum | sed 's/  -//g')
+		sed -i "30 s/changeme/$pass_MD5:$pass_SHA1/g" /var/www/postfixadmin/config.inc.php
+		sed -i "87 s/postfixadmin/$pass/g" /var/www/postfixadmin/config.inc.php
+		sed -i "120 s/\'\'/\'admin@$domainName\'/g" /var/www/postfixadmin/config.inc.php
+		sed -i "198 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+		sed -i "199 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+		sed -i "200 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+		sed -i "201 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+		sed -i "420 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+		sed -i "421 s/change-this-to-your.domain.tld/$domainName/g" /var/www/postfixadmin/config.inc.php
+
+
+
 
 		# Configuration of Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/postfixadmin.conf
@@ -135,12 +148,24 @@ then
 		echo "ServerName  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "ServerAlias  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "<Directory /var/www/postfixadmin/>" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "AllowOverride all" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "Order allow,deny" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "allow from all" >> /etc/apache2/sites-available/postfixadmin.conf
+		echo "</Directory>" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "ErrorLog /var/www/postfixadmin/logs/error.log" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "CustomLog /var/www/postfixadmin/logs/access.log combined" >> /etc/apache2/sites-available/postfixadmin.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
 
 		a2ensite postfixadmin.conf
 		systemctl restart apache2
+
+		sed -i "1 s/<?php/<?php\nif (\!isset(\$_SERVER[\"HTTP_HOST\"]))\n{\n    parse_str(\$argv[1], \$_POST);\n}/g" /var/www/postfixadmin/setup.php
+
+		php -f /var/www/postfixadmin/setup.php "form=createadmin&setup_password=$pass&username=admin@$domainName&password=$pass&password2=$pass"
+
+		sed -i "2,5d " /var/www/postfixadmin/setup.php
 
 		# Configuration of main.cf
 		echo "# The first text sent to a connecting process." > /etc/postfix/main.cf
@@ -1002,8 +1027,8 @@ then
 		# Configuration of 10-ssl.conf
 		echo "ssl = required" > /etc/dovecot/conf.d/10-ssl.conf
 		echo "" >> /etc/dovecot/conf.d/10-ssl.conf
-		echo "ssl_cert = </etc/letsencrypt/live/mail.$domainName/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
-		echo "ssl_key = </etc/letsencrypt/live/mail.$domainName/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+		echo "ssl_cert = </etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+		echo "ssl_key = </etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "ssl_cipher_list = AES128+EECDH:AES128+EDH" >> /etc/dovecot/conf.d/10-ssl.conf
 		echo "ssl_prefer_server_ciphers = yes" >> /etc/dovecot/conf.d/10-ssl.conf
@@ -1097,17 +1122,7 @@ then
                 echo "InternalHosts /etc/opendkim/TrustedHosts" >> /etc/opendkim/opendkim.conf
                 echo "#ATPSDomains              example.com" >> /etc/opendkim/opendkim.conf
 
-                echo "# Command-line options specified here will override the contents of" > /etc/default/opendkim
-                echo "# /etc/opendkim.conf. See opendkim(8) for a complete list of options." >> /etc/default/opendkim
-                echo "#DAEMON_OPTS=""" >> /etc/default/opendkim
-                echo "#" >> /etc/default/opendkim
-                echo "# Uncomment to specify an alternate socket" >> /etc/default/opendkim
-                echo "# Note that setting this will override any Socket value in opendkim.conf" >> /etc/default/opendkim
-                echo "#SOCKET="local:/var/run/opendkim/opendkim.sock" # default" >> /etc/default/opendkim
-                echo "#SOCKET="inet:54321" # listen on all interfaces on port 54321" >> /etc/default/opendkim
-                echo "#SOCKET="inet:12345@localhost" # listen on loopback on port 12345" >> /etc/default/opendkim
-                echo "SOCKET="inet:12345@localhost" # listen on loopback on port 12345" >> /etc/default/opendkim
-                echo "#SOCKET="inet:12345@192.0.2.1" # listen on 192.0.2.1 on port 12345" >> /etc/default/opendkim
+                echo "SOCKET=\"inet:12345@localhost\"" >> /etc/default/opendkim
 
 		echo "$domainName	$domainName:dkim:/etc/opendkim/opendkim.key" > /etc/opendkim/KeyTable
 
@@ -1168,7 +1183,7 @@ then
 		chown -R www-data:www-data .
 		cd ~
 
-		# Apache2 configuration for Rainloop		
+		        # Apache2 configuration for Rainloop		
                 echo "<VirtualHost *:80>" > /etc/apache2/sites-available/rainloop.conf
                 echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/rainloop.conf
                 echo "ServerName rainloop.$domainName" >> /etc/apache2/sites-available/rainloop.conf
@@ -1177,9 +1192,6 @@ then
                 echo "<Directory /var/www/rainloop/ >" >> /etc/apache2/sites-available/rainloop.conf
                 echo "AllowOverride All" >> /etc/apache2/sites-available/rainloop.conf
                 echo "</Directory>" >> /etc/apache2/sites-available/rainloop.conf
-                echo "" >> /etc/apache2/sites-available/rainloop.conf
-                echo "Redirect permanent / https://rainloop.$domainName/" >> /etc/apache2/sites-available/rainloop.conf
-                echo "" >> /etc/apache2/sites-available/rainloop.conf
                 echo "ErrorLog /var/www/rainloop/logs/error.log" >> /etc/apache2/sites-available/rainloop.conf
                 echo "CustomLog /var/www/rainloop/logs/access.log combined" >> /etc/apache2/sites-available/rainloop.conf
                 echo "</VirtualHost>" >> /etc/apache2/sites-available/rainloop.conf
@@ -1192,15 +1204,15 @@ then
 		apt-get -y install postgrey
 		
 		# Configuration of Postgrey
-		echo "# postgrey startup options, created for Debian" > /etc/default/postgrey
+		        echo "# postgrey startup options, created for Debian" > /etc/default/postgrey
                 echo "# you may want to set" > /etc/default/postgrey
                 echo "#   --delay=N   how long to greylist, seconds (default: 300)" >> /etc/default/postgrey
                 echo "#   --max-age=N delete old entries after N days (default: 35)" >> /etc/default/postgrey
                 echo "# see also the postgrey(8) manpage" >> /etc/default/postgrey
-		echo "" >> /etc/default/postgrey
+		        echo "" >> /etc/default/postgrey
                 echo "POSTGREY_OPTS=\"--inet=10023\"" >> /etc/default/postgrey
                 echo "POSTGREY_TEXT=\"Server overload, try again later\"" >> /etc/default/postgrey
-		echo "" >> /etc/default/postgrey
+		        echo "" >> /etc/default/postgrey
                 echo "# the --greylist-text commandline argument can not be easily passed through" >> /etc/default/postgrey
                 echo "# POSTGREY_OPTS when it contains spaces.  So, insert your text here:" >> /etc/default/postgrey
                 echo "#POSTGREY_TEXT=\"Your customized rejection message here\"" >> /etc/default/postgrey
@@ -1212,12 +1224,7 @@ then
 
 
 		# Restart services
-		systemctl restart postfix
-		systemctl restart dovecot
-		systemctl restart opendkim
-		systemctl restart opendmarc
 		systemctl restart apache2
-		systemctl restart postgrey
 
 	# Install Kanboard
 		# Dependency
@@ -1252,7 +1259,7 @@ then
 		rm /var/www/mattermost-team-3.4.0-linux-amd64.tar.gz
 
 		# Configuration of mattermost
-		sed -ie 's/"DataSource": "mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8",/"DataSource": "mattermost:mattermost_password@tcp(localhost:3306)\/mattermost?charset=utf8",/g' /var/www/mattermost/config/config.json
+		sed -i 's/"DataSource": "mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8",/"DataSource": "mattermost:'$pass'@tcp(localhost:3306)\/mattermost?charset=utf8",/g' /var/www/mattermost/config/config.json
 
 		# Add Mattermost to systemd
 		echo "[Unit]" > /etc/systemd/system/mattermost.service
@@ -1272,6 +1279,10 @@ then
 		echo "[Install]" >> /etc/systemd/system/mattermost.service
 		echo "WantedBy=multi-user.target" >> /etc/systemd/system/mattermost.service
 
+		systemctl daemon-reload
+		systemctl enable mattermost.service
+		systemctl start mattermost.service
+
 		# Configuration Apache2 for Mattermost
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/mattermost.conf
 		echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/mattermost.conf
@@ -1280,7 +1291,6 @@ then
 		echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ProxyPass / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ProxyPassReverse / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
-		echo "Redirect permanent / https://discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 		echo "ErrorLog /var/www/mattermost/logs/error.log" >> /etc/apache2/sites-available/mattermost.conf
 		echo "CustomLog /var/www/mattermost/logs/access.log combined" >> /etc/apache2/sites-available/mattermost.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/mattermost.conf
@@ -1295,50 +1305,146 @@ then
 		#Create user framadate
 		USER="framadate"
 		echo "Creation of framadate user"
-		useradd -p $pass -M -r -U $USER
+		useradd -p $pass  -U -m $USER
 		echo "Creation of ".${USER}." user" OK
 
-		# Install framadate
-		mkdir /var/www/framadate
-		cd /var/www/framadate
-		git clone https://git.framasoft.org/framasoft/framadate.git .
-		git checkout 0.9.6
-		mkdir /var/www/framadate/logs
-		chown framadate:framadate -R /var/www/framadate
-		cd ~
-	
-		#Install composer
-		su -c framadate php -r "readfile('https://getcomposer.org/installer');" | php
-		su -c framadate ./composer.phar install
-		su -c framadate ./composer.phar update
+         # Install framadate
+         cd /var/www/
+         git clone https://git.framasoft.org/framasoft/framadate.git
+         cd /var/www/framadate/
+         mkdir /var/www/framadate/logs
+         chown framadate:framadate -R /var/www/framadate
+         su -c "git checkout 0.9.6" framadate
+
+          #Install composer
+          cd /var/www/framadate/
+          su -c "php -r \"readfile('https://getcomposer.org/installer');\" | php" framadate
+          chmod +x /var/www/framadate/composer.phar
+          su -c "/var/www/framadate/composer.phar install" framadate
+          su -c "/var/www/framadate/composer.phar update" framadate
+          cd ~
+	  chown www-data -R /var/www/framadate
 
 		# Create MySQL database for framadate
 		mysql -u root -p${pass} -e "CREATE DATABASE framadate;"
 		mysql -u root -p${pass} -e "CREATE USER 'framadate'@'localhost' IDENTIFIED BY '$pass';"
 		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'framadate'@'localhost';"
 		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON framadate.* TO framadate@localhost IDENTIFIED BY '$pass';"
+		mysql -u root -p${pass} -e "SELECT @@SESSION.sql_mode session"
+		echo "Auth ZERO_DATE"
+		mysql -u root -p${pass} -e "SET GLOBAL sql_mode = 'ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
+		mysql -u root -p${pass} -e "SELECT @@SESSION.sql_mode session"
 
 		# Configuration Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/framadate.conf
-                echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
-                echo "ServerAlias framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
-                echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
-                echo "<Directory /var/www/framadate/ >" >> /etc/apache2/sites-available/framadate.conf
-                echo "AllowOverride All" >> /etc/apache2/sites-available/framadate.conf
-                echo "</Directory>" >> /etc/apache2/sites-available/framadate.conf
-                echo "" >> /etc/apache2/sites-available/framadate.conf
-                echo "Redirect permanent / https://framadate.$domainName/" >> /etc/apache2/sites-available/framadate.conf
-                echo "" >> /etc/apache2/sites-available/framadate.conf
-                echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
-                echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
-                echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
+        echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/framadate.conf
+        echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
+        echo "ServerAlias framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
+        echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
+        echo "<Directory /var/www/framadate/ >" >> /etc/apache2/sites-available/framadate.conf
+        echo "AllowOverride All" >> /etc/apache2/sites-available/framadate.conf
+        echo "</Directory>" >> /etc/apache2/sites-available/framadate.conf
+        echo "ErrorLog /var/www/framadate/logs/error.log" >> /etc/apache2/sites-available/framadate.conf
+        echo "CustomLog /var/www/framadate/logs/access.log combined" >> /etc/apache2/sites-available/framadate.conf
+        echo "</VirtualHost>" >> /etc/apache2/sites-available/framadate.conf
 
 		a2ensite framadate.conf
 		systemctl restart apache2
 
-		# Configuration framadate		
+		# Configuration framadate
+                echo "<?php" >> /var/www/framadate/app/inc/config.php
+                echo "/**" >> /var/www/framadate/app/inc/config.php
+                echo " * This software is governed by the CeCILL-B license. If a copy of this license" >> /var/www/framadate/app/inc/config.php
+                echo " * is not distributed with this file, you can obtain one at" >> /var/www/framadate/app/inc/config.php
+                echo " * http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt" >> /var/www/framadate/app/inc/config.php
+                echo " *" >> /var/www/framadate/app/inc/config.php
+                echo " * Authors of STUdS (initial project): Guilhem BORGHESI (borghesi@unistra.fr) and Raphaël DROZ" >> /var/www/framadate/app/inc/config.php
+                echo " * Authors of Framadate/OpenSondate: Framasoft (https://github.com/framasoft)" >> /var/www/framadate/app/inc/config.php
+                echo " *" >> /var/www/framadate/app/inc/config.php
+                echo " * =============================" >> /var/www/framadate/app/inc/config.php
+                echo " *" >> /var/www/framadate/app/inc/config.php
+                echo " * Ce logiciel est régi par la licence CeCILL-B. Si une copie de cette licence" >> /var/www/framadate/app/inc/config.php
+                echo " * ne se trouve pas avec ce fichier vous pouvez l'obtenir sur" >> /var/www/framadate/app/inc/config.php
+                echo " * http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt" >> /var/www/framadate/app/inc/config.php
+                echo " *" >> /var/www/framadate/app/inc/config.php
+                echo " * Auteurs de STUdS (projet initial) : Guilhem BORGHESI (borghesi@unistra.fr) et Raphaël DROZ" >> /var/www/framadate/app/inc/config.php
+                echo " * Auteurs de Framadate/OpenSondage : Framasoft (https://github.com/framasoft)" >> /var/www/framadate/app/inc/config.php
+                echo " */" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+echo "// Fully qualified domain name of your webserver." >> /var/www/framadate/app/inc/config.php
+                echo "// If this is unset or empty, the servername is determined automatically." >> /var/www/framadate/app/inc/config.php
+                echo "// You *have to set this* if you are running Framedate behind a reverse proxy." >> /var/www/framadate/app/inc/config.php
+                echo "// const APP_URL = '<www.mydomain.fr>';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Application name" >> /var/www/framadate/app/inc/config.php
+                echo "const NOMAPPLICATION = 'Framadate';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Database administrator email" >> /var/www/framadate/app/inc/config.php
+                echo "const ADRESSEMAILADMIN = 'framadate@$domainName';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Email for automatic responses (you should set it to \"no-reply\")" >> /var/www/framadate/app/inc/config.php
+                echo "const ADRESSEMAILREPONSEAUTO = 'no-reply@$domainName';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Database server name, leave empty to use a socket" >> /var/www/framadate/app/inc/config.php
+                echo "const DB_CONNECTION_STRING = 'mysql:host=localhost;dbname=framadate;port=3306';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Database user" >> /var/www/framadate/app/inc/config.php
+                echo "const DB_USER= 'framadate';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Database password" >> /var/www/framadate/app/inc/config.php
+		echo "const DB_PASSWORD = '$pass';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Table name prefix" >> /var/www/framadate/app/inc/config.php
+                echo "const TABLENAME_PREFIX = 'fd_';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Name of the table that store migration script already executed" >> /var/www/framadate/app/inc/config.php
+                echo "const MIGRATION_TABLE = 'framadate_migration';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Default Language" >> /var/www/framadate/app/inc/config.php
+                echo "const DEFAULT_LANGUAGE = 'en';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// List of supported languages, fake constant as arrays can be used as constants only in PHP >=5.6" >> /var/www/framadate/app/inc/config.php
+                echo "\$ALLOWED_LANGUAGES = [" >> /var/www/framadate/app/inc/config.php
+                echo "    'fr' => 'Français'," >> /var/www/framadate/app/inc/config.php
+                echo "    'en' => 'English'," >> /var/www/framadate/app/inc/config.php
+                echo "    'es' => 'Español'," >> /var/www/framadate/app/inc/config.php
+                echo "    'de' => 'Deutsch'," >> /var/www/framadate/app/inc/config.php
+                echo "    'it' => 'Italiano'," >> /var/www/framadate/app/inc/config.php
+                echo "];" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Nom et emplacement du fichier image contenant le titre" >> /var/www/framadate/app/inc/config.php
+                echo "const IMAGE_TITRE = 'images/logo-framadate.png';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Clean URLs, boolean" >> /var/www/framadate/app/inc/config.php
+                echo "const URL_PROPRE = true;" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Use REMOTE_USER data provided by web server" >> /var/www/framadate/app/inc/config.php
+                echo "const USE_REMOTE_USER =  true;" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Path to the log file" >> /var/www/framadate/app/inc/config.php
+                echo "const LOG_FILE = 'admin/stdout.log';" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Days (after expiration date) before purge a poll" >> /var/www/framadate/app/inc/config.php
+                echo "const PURGE_DELAY = 60;" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php
+                echo "// Config" >> /var/www/framadate/app/inc/config.php
+                echo "\$config = [" >> /var/www/framadate/app/inc/config.php
+                echo "    /* general config */" >> /var/www/framadate/app/inc/config.php
+                echo "    'use_smtp' => true,                     // use email for polls creation/modification/responses notification" >> /var/www/framadate/app/inc/config.php
+                echo "    /* home */" >> /var/www/framadate/app/inc/config.php
+                echo "    'show_what_is_that' => true,            // display \"how to use\" section" >> /var/www/framadate/app/inc/config.php
+                echo "    'show_the_software' => true,            // display technical information about the software" >> /var/www/framadate/app/inc/config.php
+                echo "    'show_cultivate_your_garden' => true,   // display \"developpement and administration\" information" >> /var/www/framadate/app/inc/config.php
+                echo "    /* create_classic_poll.php / create_date_poll.php */" >> /var/www/framadate/app/inc/config.php
+                echo "    'default_poll_duration' => 180,         // default values for the new poll duration (number of days)." >> /var/www/framadate/app/inc/config.php
+                echo "    /* create_classic_poll.php */" >> /var/www/framadate/app/inc/config.php
+                echo "    'user_can_add_img_or_link' => true,     // user can add link or URL when creating his poll." >> /var/www/framadate/app/inc/config.php
+                echo "];" >> /var/www/framadate/app/inc/config.php
+                echo "" >> /var/www/framadate/app/inc/config.php		
 
+		php -f /var/www/framadate/admin/migration.php
+
+		 mv /var/www/framadate/htaccess.txt /var/www/framadate/.htaccess
 
 	# Install Jitsi Meet
 		# Install dependency
@@ -1352,32 +1458,24 @@ then
 		# Install Jitsi Meet
 		apt-get -y  install jitsi-meet
 
-		# Certif
+		# Start service prosody 
 		systemctl restart prosody
 
 		# Configuration of Jitsi Meet
 		echo "disableThirdPartyRequests: true," >> /etc/jitsi/meet/*-config.js
 
 		# Configuration Apache2
-                echo "NameVirtualHost 127.0.0.1:80" > /etc/apache2/sites-available/jitsimeet.conf
-                echo "" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "<VirtualHost 127.0.0.1:80>" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  DocumentRoot \"/etc/jitsi/meet/\"" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  ServerName jitsimeet.$domainName" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  <Directory \"/etc/jitsi/meet/\">" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "    Options Indexes MultiViews" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "    AllowOverride All" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "    Order allow,deny" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "    Allow from all" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  </Directory>" >> /etc/apache2/sites-available/jitsimeet.conf
-
-                echo "  ProxyPass /http-bind http://127.0.0.1:7070/http-bind/" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  ProxyPassReverse /http-bind http://127.0.0.1:7070/http-bind/" >> /etc/apache2/sites-available/jitsimeet.conf
-
-                echo "  RewriteEngine on" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "  RewriteRule ^/([a-zA-Z0-9]+)$ /index.html" >> /etc/apache2/sites-available/jitsimeet.conf
-                echo "</VirtualHost>" >> /etc/apache2/sites-available/jitsimeet.conf
+        echo "<VirtualHost *:80>" > /etc/apache2/sites-available/meet.conf
+        echo "    ServerName meet.$domainName" >> /etc/apache2/sites-available/meet.conf
+        echo "    DocumentRoot "/etc/jitsi/meet/"" >> /etc/apache2/sites-available/meet.conf
+        echo "" >> /etc/apache2/sites-available/meet.conf
+        echo "    SSLProxyEngine On" >> /etc/apache2/sites-available/meet.conf
+        echo "    RewriteEngine On" >> /etc/apache2/sites-available/meet.conf
+        echo "    RewriteCond %{REQUEST_URI} ^/[a-zA-Z0-9]+$" >> /etc/apache2/sites-available/meet.conf
+        echo "    RewriteRule ^/(.*)$ / [PT]" >> /etc/apache2/sites-available/meet.conf
+        echo "    RewriteRule ^/http-bind$ https://meet.$domainName:5281/http-bind [P,L]" >> /etc/apache2/sites-available/meet.conf
+        echo "" >> /etc/apache2/sites-available/meet.conf
+        echo "</Virtualhost>" >> /etc/apache2/sites-available/meet.conf
 
 		a2ensite jitsimeet
 		systemctl restart apache2
@@ -1400,17 +1498,20 @@ then
 		cd ~
 
 		# Configuration MySQL
-		sed -ie "s/PASSWORD(".*")/PASSWORD('$pass')/g" /var/www/wisemapping/config/database/mysql/create-database.sql
-		mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/wisemapping/config/database/mysql/create-database.sql
-		mysql -h localhost -p${pass} -u cairngit cairngit < /var/www/wisemapping/config/database/mysql/create-schemas.sql
+		sed -i "s/PASSWORD(".*")/PASSWORD('$pass')/g" /var/www/wisemapping/config/database/mysql/create-database.sql
+		mysql -u root -p${pass} -e "DROP DATABASE IF EXISTS wisemapping;"
+		mysql -u root -p${pass} -e "CREATE DATABASE IF NOT EXISTS wisemapping"
+		mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'wisemapping'@'localhost';"
+		mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON wisemapping.* TO 'wisemapping'@'localhost' IDENTIFIED BY '$pass';"
+
 
 		# Configuration Wisemapping
-		sed -ie '6,12 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-                sed -ie '26,32 s/^./#d/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-                sed -ie "10 s/password=password/password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-		sed -ie '95 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-		sed -ie '95 s/8080/8082/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
-		sed -ie "44 s/mail.password=/mail.password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -i '6,12 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+	        sed -i '26,32 s/^./#d/g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties		
+        	sed -i "10 s/password=password/password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -i '95 s/^.//g' /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -i "95 s/example.com:8080/$domainName.8082/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
+		sed -i "44 s/mail.password=/mail.password=$pass/g" /var/www/wisemapping/webapps/wisemapping/WEB-INF/app.properties
 
 		# Configuration Apache2
 		echo "<VirtualHost *:80>" > /etc/apache2/sites-available/wisemapping.conf
@@ -1420,7 +1521,6 @@ then
 		echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ProxyPassReverse / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
-		echo "Redirect permanent / https://mindmap.$domainName/" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "ErrorLog /var/www/wisemapping/logs/error.log" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "CustomLog /var/www/wisemapping/logs/access.log combined" >> /etc/apache2/sites-available/wisemapping.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/wisemapping.conf
@@ -1431,7 +1531,7 @@ then
 
 
 		# Launch Wisemapping
-		./var/www/wisemapping/start.sh &
+		/var/www/wisemapping/start.sh &
 
 		# Add  Wisemapping to systemd
 		echo "[Unit]" > /etc/systemd/system/wisemapping.service
@@ -1451,10 +1551,13 @@ then
 		echo "[Install]" >> /etc/systemd/system/wisemapping.service
 		echo "WantedBy=multi-user.target" >> /etc/systemd/system/wisemapping.service
 
+		systemctl daemon-reload
+		systemctl enable wisemapping.service
+		systemctl start wisemapping.service
 
 	# Install Scrumblr
 		# Install dependency
-		apt-get -y install nodejs redis-server
+		apt-get -y install nodejs npm redis-server
 
 		# Create scrumblr user
 		useradd scrumblr
@@ -1463,11 +1566,13 @@ then
 		# Install Scrumblr
 		cd /var/www/
 		git clone https://github.com/aliasaria/scrumblr.git
-		chown scrumblr:scrumblr -R /var/www/scrumblr
 		mkdir /var/www/scrumblr/logs/
+		chown scrumblr:scrumblr -R /var/www/scrumblr
 
 		# Install dependency
-		su -c scrumblr -s npm install
+        	cd /var/www/scrumblr/
+		npm install
+		cd ~
 
 		# Add Scrumblr to systemd
 		echo "[Unit]" > /etc/systemd/system/scrumblr.service
@@ -1482,7 +1587,7 @@ then
 		echo "Type=simple" >> /etc/systemd/system/scrumblr.service
 		echo "User=scrumblr" >> /etc/systemd/system/scrumblr.service
 		echo "WorkingDirectory=/var/www/scrumblr" >> /etc/systemd/system/scrumblr.service
-		echo "ExecStart=/usr/bin/node server.js --port 4242" >> /etc/systemd/system/scrumblr.service
+		echo "ExecStart=/usr/bin/nodejs server.js --port 4242" >> /etc/systemd/system/scrumblr.service
 
 		echo "[Install]" >> /etc/systemd/system/scrumblr.service
 		echo "WantedBy=multi-user.target" >> /etc/systemd/system/scrumblr.service
@@ -1499,7 +1604,6 @@ then
 		echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ProxyPass / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ProxyPassReverse / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
-		echo "Redirect permanent / https://brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "ErrorLog /var/www/scrumblr/logs/error.log" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "CustomLog /var/www/scrumblr/logs/access.log combined" >> /etc/apache2/sites-available/scrumblr.conf
 		echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
@@ -1540,12 +1644,17 @@ then
 
 	# Configuration letsencrypt cerbot
 	apt-get -y install python-letsencrypt-apache
-	letsencrypt --apache
+	letsencrypt --apache -d $domainName -d rainloop.$domainName -d brainstorming.$domainName -d framadate.$domainName -d brainstorming.$domainName -d mindmap.$domainName -d postfixadmin.$domainName
 	echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
 
 	# Redirect all http
-	sed -ie "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/$domainName\//g" /etc/apache2/sites-available/CairnGit.conf
-	sed -ie "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/postfixadmin.$domainName\//g" /etc/apache2/sites-available/postfixadmin.conf
+	sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/$domainName\//g" /etc/apache2/sites-available/CairnGit.conf
+	sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/postfixadmin.$domainName\//g" /etc/apache2/sites-available/postfixadmin.conf
+	sed -i "s/DocumentRoot \/var\/www\/scrumblr\//DocumentRoot \/var\/www\/scrumblr\/\nRedirect permanent \/ https:\/\/brainstorming.$domainName\//g" /etc/apache2/sites-available/scrumblr.conf
+	sed -i "s/DocumentRoot \/var\/www\/wisemapping\//DocumentRoot \/var\/www\/wisemapping\/\nRedirect permanent \/ https:\/\/mindmap.$domainName\//g" /etc/apache2/sites-available/wisemapping.conf
+	sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/framadate.$domainName\//g" /etc/apache2/sites-available/framadate.conf
+	sed -i "s/DocumentRoot \/var\/www\/mattermost\//DocumentRoot \/var\/www\/mattermost\/\nRedirect permanent \/ https:\/\/discuss.$domainName\//g" /etc/apache2/sites-available/mattermost.conf
+	sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/rainloop.$domainName\//g" /etc/apache2/sites-available/rainloop.conf
 
 	# Ajout d'une règle cron pour renouveller automatique le certificat
 	echo "* * * 2 * letsencrypt renew" > /tmp/crontab.tmp
@@ -1578,6 +1687,15 @@ then
 	# Cleanning
 	apt-get -y autoremove
 	echo "Cleaning .............\033[32mDone\033[00m"
+
+	# Restart services
+    systemctl restart apache2
+	systemctl restart postfix
+	systemctl restart dovecot
+	systemctl restart opendkim
+	systemctl restart opendmarc
+	systemctl restart postgrey
+
 	reboot
 
 
