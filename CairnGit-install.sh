@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Error log
-exec 2>&1 /srv/error.log
+exec 2> >(tee -a /srv/error.log)
 
 apt-get -y update
 apt-get -y upgrade
@@ -37,13 +37,13 @@ passnohash="0"
 repassnohash="1"
 while [ "$passnohash" != "$repassnohash" ]      
 do
-  read -s -p "Password : " passnohash
+  read -s -p "Enter password : " passnohash
   echo ""
-  read -s -p "RE-Password : " repassnohash
+  read -s -p "Retype Password : " repassnohash
   echo ""
   if [ "$passnohash" != "$repassnohash" ]
   then
-    echo "Passwords does not match"
+    echo "Sorry, passwords do not match"
   fi
 done
 pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
