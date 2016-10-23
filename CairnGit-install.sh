@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Error log
+exec 2>&1 /srv/error.log
+
 apt-get -y update
 apt-get -y upgrade
 echo -e "Mise à jour.......\033[32mFait\033[00m"
@@ -160,7 +163,11 @@ systemctl restart apache2
 
 sed -i "1 s/<?php/<?php\nif (\!isset(\$_SERVER[\"HTTP_HOST\"]))\n{\n    parse_str(\$argv[1], \$_POST);\n}/g" /var/www/postfixadmin/setup.php
 
+cd /var/www/postfixadmin/
+
 php -f /var/www/postfixadmin/setup.php "form=createadmin&setup_password=$pass&username=admin@$domainName&password=$pass&password2=$pass"
+
+cd ~
 
 sed -i "2,5d " /var/www/postfixadmin/setup.php
 
@@ -1435,7 +1442,11 @@ echo "    'user_can_add_img_or_link' => true,     // user can add link or URL wh
 echo "];" >> /var/www/framadate/app/inc/config.php
 echo "" >> /var/www/framadate/app/inc/config.php		
 
+cd  /var/www/framadate/
+
 php -f /var/www/framadate/admin/migration.php
+
+cd ~
 
 mv /var/www/framadate/htaccess.txt /var/www/framadate/.htaccess
 
@@ -1470,7 +1481,7 @@ echo "    RewriteRule ^/http-bind$ https://meet.$domainName:5281/http-bind [P,L]
 echo "" >> /etc/apache2/sites-available/meet.conf
 echo "</Virtualhost>" >> /etc/apache2/sites-available/meet.conf
 
-a2ensite jitsimeet
+a2ensite meet
 systemctl restart apache2
 
 # Install Wisemapping
@@ -1492,8 +1503,7 @@ cd ~
 
 # Configuration MySQL
 sed -i "s/PASSWORD(".*")/PASSWORD('$pass')/g" /var/www/wisemapping/config/database/mysql/create-database.sql
-mysql -u root -p${pass} -e "DROP DATABASE IF EXISTS wisemapping;"
-mysql -u root -p${pass} -e "CREATE DATABASE IF NOT EXISTS wisemapping"
+mysql -u root -p${pass} -e "CREATE DATABASE wisemapping"
 mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'wisemapping'@'localhost';"
 mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON wisemapping.* TO 'wisemapping'@'localhost' IDENTIFIED BY '$pass';"
 
@@ -1628,14 +1638,34 @@ echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available
 echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/CairnGit.conf
 echo "</VirtualHost>" >> /etc/apache2/sites-available/CairnGit.conf
 
+a2ensite CairnGit
 systemctl restart apache2
 echo -e "Configuration d'apache2.......\033[32mFait\033[00m"
 
-a2ensite CairnGit.conf
+
+# Cheat cert
+echo "<VirtualHost *:80>" > /etc/apache2/sites-available/aCERT.conf
+echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/aCERT.conf
+echo "ServerName  acert.$domainName" >> /etc/apache2/sites-available/aCERT.conf
+echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/aCERT.conf
+echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/aCERT.conf
+echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/aCERT.conf
+echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/aCERT.conf
+echo "AllowOverride all" >> /etc/apache2/sites-available/aCERT.conf
+echo "Order allow,deny" >> /etc/apache2/sites-available/aCERT.conf
+echo "allow from all" >> /etc/apache2/sites-available/aCERT.conf
+echo "</Directory>" >> /etc/apache2/sites-available/aCERT.conf
+echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/aCERT.conf
+echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/aCERT.conf
+echo "</VirtualHost>" >> /etc/apache2/sites-available/aCERT.conf
+
+a2ensite aCERT
+systemctl restart apache2
 
 # Configuration letsencrypt cerbot
 apt-get -y install python-letsencrypt-apache
-letsencrypt --apache -d $domainName -d rainloop.$domainName -d brainstorming.$domainName -d framadate.$domainName -d brainstorming.$domainName -d mindmap.$domainName -d postfixadmin.$domainName
+letsencrypt --apache
+#letsencrypt --apache -d $domainName -d rainloop.$domainName -d brainstorming.$domainName -d framadate.$domainName -d brainstorming.$domainName -d mindmap.$domainName -d postfixadmin.$domainName
 echo -e "Installation de let's encrypt.......\033[32mFait\033[00m"
 
 # Redirect all http
