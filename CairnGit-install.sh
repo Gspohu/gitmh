@@ -1172,7 +1172,7 @@ echo "#SOCKET=\"inet:12345@192.0.2.1\" # listen on 192.0.2.1 on port 12345" >> /
 echo "SOCKET=\"inet:8892:localhost\"" >> /etc/default/opendmarc
 
 # Installation of Rainloop
-wget http://repository.rainloop.net/v2/webmail/rainloop-latest.zip
+wget http://repository.rainloop.net/v2/webmail/rainloop-community-latest.zip
 mkdir /var/www/rainloop
 unzip rainloop-latest.zip -d /var/www/rainloop
 rm -rf rainloop-latest.zip
@@ -1183,6 +1183,12 @@ find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 chown -R www-data:www-data .
 cd ~
+
+# Create database
+mysql -u root -p${pass} -e "CREATE DATABASE rainloop;"
+mysql -u root -p${pass} -e "CREATE USER 'rainloop'@'localhost' IDENTIFIED BY '$pass';"
+mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'rainloop'@'localhost';"
+mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON rainloop.* TO rainloop@localhost IDENTIFIED BY '$pass';"
 
 # Apache2 configuration for Rainloop		
 echo "<VirtualHost *:80>" > /etc/apache2/sites-available/rainloop.conf
@@ -1199,6 +1205,371 @@ echo "</VirtualHost>" >> /etc/apache2/sites-available/rainloop.conf
 
 a2ensite rainloop.conf
 systemctl restart apache2
+
+# Configuration of rainloop
+echo "<?php" > changeAdminPasswd.php
+echo "" >> changeAdminPasswd.php
+echo "\$_ENV['RAINLOOP_INCLUDE_AS_API'] = true;" >> changeAdminPasswd.php
+echo "include '/var/www/rainloop/index.php';" >> changeAdminPasswd.php
+echo "" >> changeAdminPasswd.php
+echo "\$oConfig = \RainLoop\Api::Config();" >> changeAdminPasswd.php
+echo "\$oConfig->SetPassword('$pass');" >> changeAdminPasswd.php
+echo "echo \$oConfig->Save() ? 'Done' : 'Error';" >> changeAdminPasswd.php
+echo "" >> changeAdminPasswd.php
+echo "?>" >> changeAdminPasswd.php
+
+php -f changeAdminPasswd.php
+
+rm changeAdminPasswd.php
+
+echo '; RainLoop Webmail configuration file' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo "; Please don't add custom parameters here, those will be overwritten" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[webmail]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Text displayed as page title' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'title = "RainLoop Webmail"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Text displayed on startup' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'loading_description = "RainLoop"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'favicon_url = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Theme used by default' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'theme = "Default"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Allow theme selection on settings screen' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_themes = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_user_background = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Language used by default' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'language = "en"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Admin Panel interface language' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'language_admin = "en"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Allow language selection on settings screen' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_languages_on_settings = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_additional_accounts = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_additional_identities = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';  Number of messages displayed on page by default' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'messages_per_page = 20' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; File size limit (MB) for file upload on compose screen' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; 0 for unlimited.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'attachment_size_limit = 50' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[interface]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'show_attachment_thumbnail = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_native_scrollbars = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[branding]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_logo = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_background = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_desc = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_css = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_powered = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'user_css = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'user_logo = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'user_logo_title = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'user_logo_message = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'user_iframe_message = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'welcome_page_url = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'welcome_page_display = "none"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[contacts]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enable contacts' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enable = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_sharing = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_sync = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'sync_interval = 20' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'type = "mysql"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'pdo_dsn = "mysql:host=127.0.0.1;port=3306;dbname=rainloop"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'pdo_user = "rainloop"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'pdo_password = "$pass"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'suggestions_limit = 30' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[security]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enable CSRF protection (http://en.wikipedia.org/wiki/Cross-site_request_forgery)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'csrf_protection = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'custom_server_signature = "RainLoop"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'x_frame_options_header = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'openpgp = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Login and password for web admin panel' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'admin_login = "admin"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'admin_password = "699c34b4f3eff95989c156cc6fb018fe"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Access settings' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_admin_panel = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_two_factor_auth = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'force_two_factor_auth = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'admin_panel_host = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'admin_panel_key = "admin"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'content_security_policy = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'core_install_access_domain = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[ssl]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Require verification of SSL certificate used.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'verify_certificate = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Allow self-signed certificates. Requires verify_certificate.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_self_signed = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Location of Certificate Authority file on local filesystem (/etc/ssl/certs/ca-certificates.crt)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'cafile = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; capath must be a correctly hashed certificate directory. (/etc/ssl/certs/)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'capath = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[capa]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'folders = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'composer = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'contacts = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'settings = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'quota = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'help = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'reload = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'search = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'search_adv = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'filters = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'x-templates = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'dangerous_actions = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'message_actions = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'messagelist_actions = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'attachments_actions = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[login]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'default_domain = "$domainName"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Allow language selection on webmail login screen' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_languages_on_login = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'determine_user_language = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'determine_user_domain = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'welcome_page = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'glass_style = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'hide_submit_button = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'forgot_password_link_url = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'registration_link_url = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; This option allows webmail to remember the logged in user' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; once they closed the browser window.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Values:' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   "DefaultOff" - can be used, disabled by default;' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   "DefaultOn"  - can be used, enabled by default;' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   "Unused"     - cannot be used' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'sign_me_auto = "DefaultOff"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[plugins]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enable plugin support' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enable = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; List of enabled plugins' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enabled_list = "black-list"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[defaults]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Editor mode used by default (Plain, Html, HtmlForced or PlainForced)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'view_editor_type = "Html"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; layout: 0 - no preview, 1 - side preview, 2 - bottom preview' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'view_layout = 1' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'view_use_checkboxes = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'autologout = 30' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'show_images = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'contacts_autosave = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'mail_use_threads = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'mail_reply_same_folder = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[logs]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enable logging' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Logs entire request only if error occured (php requred)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'write_on_error_only = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Logs entire request only if php error occured' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'write_on_php_error_only = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Logs entire request only if request timeout (in seconds) occured.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'write_on_timeout_only = 0' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Required for development purposes only.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Disabling this option is not recommended.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'hide_passwords = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'time_offset = 0' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'session_filter = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Log filename.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; For security reasons, some characters are removed from filename.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Allows for pattern-based folder creation (see examples below).' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Patterns:' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   {date:Y-m-d}  - Replaced by pattern-based date' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';                   Detailed info: http://www.php.net/manual/en/function.date.php' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ";   {user:email}  - Replaced by user's email address" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';                   If user is not logged in, value is set to "unknown"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ";   {user:login}  - Replaced by user's login (the user part of an email)" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';                   If user is not logged in, value is set to "unknown"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ";   {user:domain} - Replaced by user's domain name (the domain part of an email)" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';                   If user is not logged in, value is set to "unknown"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ";   {user:uid}    - Replaced by user's UID regardless of account currently used" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   {user:ip}' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ";   {request:ip}  - Replaced by user's IP address" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Others:' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   {imap:login} {imap:host} {imap:port}' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   {smtp:login} {smtp:host} {smtp:port}' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Examples:' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   filename = "log-{date:Y-m-d}.txt"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   filename = "{date:Y-m-d}/{user:domain}/{user:email}_{user:uid}.log"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo ';   filename = "{user:email}-{date:Y-m-d}.txt"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'filename = "log-{date:Y-m-d}.txt"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enable auth logging in a separate file (for fail2ban)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'auth_logging = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'auth_logging_filename = "fail2ban/auth-{date:Y-m-d}.txt"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'auth_logging_format = "[{date:Y-m-d H:i:s}] Auth failed: ip={request:ip} user={imap:login} host={imap:host} port={imap:port}"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[debug]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Special option required for development purposes' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[social]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Google' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_enable_auth = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_enable_auth_fast = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_enable_drive = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_enable_preview = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_client_id = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_client_secret = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'google_api_key = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Facebook' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fb_enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fb_app_id = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fb_app_secret = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Twitter' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'twitter_enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'twitter_consumer_key = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'twitter_consumer_secret = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Dropbox' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'dropbox_enable = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'dropbox_api_key = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[cache]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; The section controls caching of the entire application.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Enables caching in the system' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'enable = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Additional caching key. If changed, cache is purged' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'index = "v1"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Can be: files, APC, memcache, redis (beta)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_driver = "files"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Additional caching key. If changed, fast cache is purged' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_index = "v1"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Browser-level cache. If enabled, caching is maintainted without using files' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'http = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Caching message UIDs when searching and sorting (threading)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'server_uids = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[labs]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; Experimental settings. Handle with care.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; ' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_mobile_version = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'ignore_folders_subscription = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'check_new_password_strength = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'update_channel = "stable"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_gravatar = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_prefetch = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_smart_html_links = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'cache_system_data = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'date_from_headers = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'autocreate_system_folders = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_message_append = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'disable_iconv_if_mbstring_supported = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'login_fault_delay = 1' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'log_ajax_response_write_limit = 300' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_html_editor_source_button = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_html_editor_biti_buttons = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_ctrl_enter_on_compose = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'try_to_detect_hidden_images = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'hide_dangerous_actions = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_app_debug_js = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_app_debug_css = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_sort = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_force_selection = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_list_subscribe = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_thread = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_move = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_imap_expunge_all_on_delete = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_forwarded_flag = "\$Forwarded"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_read_receipt_flag = "\$ReadReceipt"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_body_text_limit = 555000' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_message_list_fast_simple_search = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_message_list_count_limit_trigger = 0' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_message_list_date_filter = 0' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_message_list_permanent_filter = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_message_all_headers = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_large_thread_limit = 50' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_folder_list_limit = 200' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_show_login_alert = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_use_auth_plain = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_use_auth_cram_md5 = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'smtp_show_server_errors = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'smtp_use_auth_plain = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'smtp_use_auth_cram_md5 = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'sieve_allow_raw_script = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'sieve_utf8_folder_name = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'imap_timeout = 300' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'smtp_timeout = 60' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'sieve_timeout = 10' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'domain_list_limit = 99' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'mail_func_clear_headers = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'mail_func_additional_parameters = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'favicon_status = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'folders_spec_limit = 50' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'owncloud_save_folder = "Attachments"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'owncloud_suggestions = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'curl_proxy = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'curl_proxy_auth = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'in_iframe = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'force_https = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'custom_login_link = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'custom_logout_link = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_external_login = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_external_sso = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'external_sso_key = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'http_client_ip_check_proxy = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_memcache_host = "127.0.0.1"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_memcache_port = 11211' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_redis_host = "127.0.0.1"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'fast_cache_redis_port = 6379' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'use_local_proxy_for_external_images = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'detect_image_exif_orientation = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'cookie_default_path = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'cookie_default_secure = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'replace_env_in_configuration = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'startup_url = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'nice_social_redirect = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'strict_html_parser = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'allow_cmd = Off' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'dev_email = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'dev_password = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '[version]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo 'current = "1.10.4.183"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+theDate=$(date)
+echo "saved = \"$thedate\"" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
 
 # Installation of Postgrey
 apt-get -y install postgrey
