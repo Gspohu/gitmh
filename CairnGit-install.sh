@@ -1219,7 +1219,7 @@ php -f changeAdminPasswd.php
 
 rm changeAdminPasswd.php
 
-echo '; RainLoop Webmail configuration file' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+echo '; RainLoop Webmail configuration file' > /var/www/rainloop/data/_data_/_default_/configs/application.ini
 echo "; Please don't add custom parameters here, those will be overwritten" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
 echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
 echo '[webmail]' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
@@ -1987,6 +1987,614 @@ echo "</VirtualHost>" >> /etc/apache2/sites-available/scrumblr.conf
 a2ensite scrumblr
 systemctl restart apache2
 
+# CSS integration of scrumblr
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "body {" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Helvetica Neue Light', arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 13px;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #333;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-color: #ddd;" >> /var/www/scrumblr/client/css/style.css
+echo "	xbackground-image: -webkit-gradient(radial, 265 118, 456, 147 0, 29, from(#DDDDDD), to(#f3f3f3));" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	xheight: 1400px;" >> /var/www/scrumblr/client/css/style.css
+echo "	xwidth: 2000px;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	user-select: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	-o-user-select:none;" >> /var/www/scrumblr/client/css/style.css
+echo "	-moz-user-select: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	-khtml-user-select: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	-webkit-user-select: none;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('bg/concrete_wall_2_2.png');" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	resize: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#board {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: relative;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-color: #dcd5d1;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder: solid silver 8px;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: -webkit-gradient(" >> /var/www/scrumblr/client/css/style.css
+echo "	    linear," >> /var/www/scrumblr/client/css/style.css
+echo "	    left top," >> /var/www/scrumblr/client/css/style.css
+echo "	    right bottom," >> /var/www/scrumblr/client/css/style.css
+echo "	    color-stop(0.49, rgb(214,210,206))," >> /var/www/scrumblr/client/css/style.css
+echo "	    color-stop(0.84, rgb(196,191,182))" >> /var/www/scrumblr/client/css/style.css
+echo "	);" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	xbackground: -moz-linear-gradient(top,  rgb(214,210,206),  #000);" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	-moz-box-shadow:inset 1px 1px 3px #999;" >> /var/www/scrumblr/client/css/style.css
+echo "	box-shadow:inset 1px 1px 3px #999;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".board-outline {" >> /var/www/scrumblr/client/css/style.css
+echo "	border: solid #ccc 8px;" >> /var/www/scrumblr/client/css/style.css
+echo "	display: block;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 97%;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 500px;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-left: auto;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-right: auto;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	box-shadow: 1px 3px 2px #aaa;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	x-webkit-transform:rotate(0.3deg); /*\"is that a little off-level? i feel like it is off-level\"*/" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#board-doodles {" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute;" >> /var/www/scrumblr/client/css/style.css
+echo "	display: inline;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: 0.035;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('scribbles2.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".hover .content {" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder: solid rgba(92, 157, 181,0.5) 3px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".card-icon {" >> /var/www/scrumblr/client/css/style.css
+echo "display:none;" >> /var/www/scrumblr/client/css/style.css
+echo "position: absolute;" >> /var/www/scrumblr/client/css/style.css
+echo "top: 3%; left: 82%;" >> /var/www/scrumblr/client/css/style.css
+echo "opacity: .3;" >> /var/www/scrumblr/client/css/style.css
+echo "width: 16px; height: 16px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".card-icon-hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .9;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".card-edit-form, .card-edit-form input, .card-edit-form textarea {" >> /var/www/scrumblr/client/css/style.css
+echo "	border: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size:inherit;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-weight:inherit;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-color:inherit;" >> /var/www/scrumblr/client/css/style.css
+echo "	xvertical-align: inherit;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: inherit;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	xcolor: #444;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	outline-width:0;" >> /var/www/scrumblr/client/css/style.css
+echo "	overflow: hidden;" >> /var/www/scrumblr/client/css/style.css
+echo "	resize: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #330066;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #666;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".board-table {" >> /var/www/scrumblr/client/css/style.css
+echo "	xz-index: 1;" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute;" >> /var/www/scrumblr/client/css/style.css
+echo "	top: 0px;" >> /var/www/scrumblr/client/css/style.css
+echo "	left: 0px;" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder: solid black 1px;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".board-table .col{" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder-left: dashed #19ba98 5px;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	vertical-align: top;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	xopacity: 1;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/green-board-line.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: repeat-y;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: left top;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".board-table .first{" >> /var/www/scrumblr/client/css/style.css
+echo "	border-left: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	vertical-align: top;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: none;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "h1, h1 a {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #b6b6b6;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-left: 1px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-weight: normal;" >> /var/www/scrumblr/client/css/style.css
+echo "	xtext-shadow: 1px 1px 1px #b6b6b6;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 15px;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-top: 14px;" >> /var/www/scrumblr/client/css/style.css
+echo "	letter-spacing: +1px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family:  \"Helvetica Neue Light\", \"HelveticaNeue-Light\", 'Helvetica Neue', arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-decoration: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "h2 {" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Rock Salt', \"Arial Rounded MT Bold\", arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #5c9db4;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 18px;" >> /var/www/scrumblr/client/css/style.css
+echo "	}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".bottom-icon {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 5px;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .4;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".bottom-icon:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 5px;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .6;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".faded-icon {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .4;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".faded-icon:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .6;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#add-col {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute; right: 3px; top: 200px; display: none; opacity: .15;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#add-col:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .5;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#delete-col {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute; right: 3px; top: 224px; display: none; opacity: .15;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#delete-col:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .5;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#config-dropdown {" >> /var/www/scrumblr/client/css/style.css
+echo "	border: solid #666 5px;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 200px;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 34px;" >> /var/www/scrumblr/client/css/style.css
+echo "	border-radius: 15px;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-color: #888;" >> /var/www/scrumblr/client/css/style.css
+echo "	box-shadow: 0px 0px 10px #444;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "	display: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".config-dropdown-icon {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 5px;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .5;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".buttons {" >> /var/www/scrumblr/client/css/style.css
+echo "	float: left;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-left: 10px;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 980px;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: right;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #bbb;" >> /var/www/scrumblr/client/css/style.css
+echo "	letter-spacing: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family:  \"Helvetica Neue Light\", \"HelveticaNeue-Light\", 'Helvetica Neue', arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 13px;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names p {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0; margin 0;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names ul {" >> /var/www/scrumblr/client/css/style.css
+echo "	list-style: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-top: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-bottom: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#yourname-li {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #888;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names input {" >> /var/www/scrumblr/client/css/style.css
+echo "   padding: 0; //2px 8px 2px 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "    border: none;" >> /var/www/scrumblr/client/css/style.css
+echo "    outline: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "    width: 100px;" >> /var/www/scrumblr/client/css/style.css
+echo "    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));" >> /var/www/scrumblr/client/css/style.css
+echo "    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	background: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	border-radius: 10px;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #666;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: right;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: \"Helvetica Neue Light\", \"HelveticaNeue-Light\", 'Helvetica Neue', arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 13px;" >> /var/www/scrumblr/client/css/style.css
+echo "	letter-spacing: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin:0;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	position: relative;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names input:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "    xpadding: 2px 2px 2px 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "    xborder: solid 1px #E5E5E5;" >> /var/www/scrumblr/client/css/style.css
+echo "    outline: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "    width: 100px;" >> /var/www/scrumblr/client/css/style.css
+echo "    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));" >> /var/www/scrumblr/client/css/style.css
+echo "    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);" >> /var/www/scrumblr/client/css/style.css
+echo "xopacity: .5;" >> /var/www/scrumblr/client/css/style.css
+echo "	background: none;" >> /var/www/scrumblr/client/css/style.css
+echo "    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;" >> /var/www/scrumblr/client/css/style.css
+echo "	border-radius: 10px;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #aaa;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: right;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family:  \"Helvetica Neue Light\", \"HelveticaNeue-Light\", 'Helvetica Neue', arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 13px;" >> /var/www/scrumblr/client/css/style.css
+echo "	letter-spacing: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin:0;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".names .focused {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #444;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".you-text {" >> /var/www/scrumblr/client/css/style.css
+echo "	letter-spacing: 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#user-icon {" >> /var/www/scrumblr/client/css/style.css
+echo "	vertical-align: text-top;" >> /var/www/scrumblr/client/css/style.css
+echo "	position: relative;" >> /var/www/scrumblr/client/css/style.css
+echo "	left: 0px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker {" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-top:  0px;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-left: 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "	xz-index:10;" >> /var/www/scrumblr/client/css/style.css
+echo "	display: inline-block;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 11px;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 11px;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".stickers {" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: right;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-top: 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-red {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-red.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-blue {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-blue.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-yellow {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-yellow.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-green {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-green.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-pink {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-pink.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-lightblue {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-lightblue.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-orange {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-orange.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-purple {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-purple.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-gold {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-gold.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-silverstar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-silverstar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-bluestar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-bluestar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-redstar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-redstar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#addsticker {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/icons/iconic/raster/black/plus_8x8.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: 2px 2px;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: 0.3;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	display: inline-block;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 11px;" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 11px;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#addsticker:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: 0.7;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "#nosticker {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-deletestar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-nostar {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: relative;" >> /var/www/scrumblr/client/css/style.css
+echo "	top: 3px;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .5;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#sticker-redstar {" >> /var/www/scrumblr/client/css/style.css
+echo "	top: 1px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "/*.sticker-red {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-red.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-blue {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-blue.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-yellow {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-yellow.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-green {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-green.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-gold {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-gold.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-bluestar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-bluestar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-silverstar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-silverstar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-redstar {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-redstar.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-pink {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-pink.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-orange {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-orange.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-lightblue {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-lightblue.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".sticker-purple {" >> /var/www/scrumblr/client/css/style.css
+echo "	background-image: url('../images/stickers/sticker-purple.png');" >> /var/www/scrumblr/client/css/style.css
+echo "	background-repeat: no-repeat;" >> /var/www/scrumblr/client/css/style.css
+echo "	background-position: right bottom;" >> /var/www/scrumblr/client/css/style.css
+echo "}*/" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "/* Stuff for landing page */" >> /var/www/scrumblr/client/css/style.css
+echo "h1.home {" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 100px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Covered By Your Grace',\"Arial Rounded MT Bold\", arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #19ba98;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .8;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	xline-height: .9em;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".home {" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 30px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Covered By Your Grace',\"Arial Rounded MT Bold\", arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #19ba98;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #222;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: 1;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	xline-height: .9em;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "p.home a {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #5c9db4;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	text-decoration: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "p.small {" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 22px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#video {" >> /var/www/scrumblr/client/css/style.css
+echo "	height: 450px;" >> /var/www/scrumblr/client/css/style.css
+echo "	width: 1000px;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding-top: 100px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "input.text {" >> /var/www/scrumblr/client/css/style.css
+echo "    width: 230px;" >> /var/www/scrumblr/client/css/style.css
+echo "    background: none;" >> /var/www/scrumblr/client/css/style.css
+echo "    padding: 6px;" >> /var/www/scrumblr/client/css/style.css
+echo "    margin-bottom: 10px;" >> /var/www/scrumblr/client/css/style.css
+echo "    border: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 30px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Covered By Your Grace',\"Arial Rounded MT Bold\", arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #5c9db4;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	border-bottom: dashed 3px #19ba98;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "input:hover {" >> /var/www/scrumblr/client/css/style.css
+echo "    x-webkit-box-shadow: 0px 0px 4px #000;" >> /var/www/scrumblr/client/css/style.css
+echo "    xbackground: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#go {" >> /var/www/scrumblr/client/css/style.css
+echo "	 background: none;" >> /var/www/scrumblr/client/css/style.css
+echo "    margin-bottom: 10px;" >> /var/www/scrumblr/client/css/style.css
+echo "    border: none;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-size: 40px;" >> /var/www/scrumblr/client/css/style.css
+echo "	font-family: 'Covered By Your Grace',"Arial Rounded MT Bold", arial, serif;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #19ba98;" >> /var/www/scrumblr/client/css/style.css
+echo "	color: black;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder: solid 1px;" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".notice-bar {" >> /var/www/scrumblr/client/css/style.css
+echo "	xbackground-color: #ccc;" >> /var/www/scrumblr/client/css/style.css
+echo "	opacity: .2;" >> /var/www/scrumblr/client/css/style.css
+echo "	padding: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	xtext-align: center;" >> /var/www/scrumblr/client/css/style.css
+echo "	margin-left: 300px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".notice-bar a {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #333;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#marker {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute; bottom: 0; right: 200px;" >> /var/www/scrumblr/client/css/style.css
+echo "	z-index: 1;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "#eraser {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute; bottom: 0; right: 70px;" >> /var/www/scrumblr/client/css/style.css
+echo "	z-index: 1;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".card-hover-draggable {" >> /var/www/scrumblr/client/css/style.css
+echo "	xborder: 1px dashed blue;" >> /var/www/scrumblr/client/css/style.css
+echo "	box-shadow:inset 0 0 40px rgba(128, 128, 256,0.2);" >> /var/www/scrumblr/client/css/style.css
+echo "	background-color: rgba(128, 128, 256,0.1)" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "/*img ~ .card-hover-draggable {" >> /var/www/scrumblr/client/css/style.css
+echo "	-webkit-filter: hue-rotate(180deg);" >> /var/www/scrumblr/client/css/style.css
+echo "}*/" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "img {" >> /var/www/scrumblr/client/css/style.css
+echo "	user-drag: none; -moz-user-select: none; -webkit-user-drag: none;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".config {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: fixed;" >> /var/www/scrumblr/client/css/style.css
+echo "	right: 18px;" >> /var/www/scrumblr/client/css/style.css
+echo "	top: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".trash {" >> /var/www/scrumblr/client/css/style.css
+echo "	position: fixed;" >> /var/www/scrumblr/client/css/style.css
+echo "	right: 18px;" >> /var/www/scrumblr/client/css/style.css
+echo "	bottom: 4px;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".filler {" >> /var/www/scrumblr/client/css/style.css
+echo "	xwidth: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	xbackground-color: rgba(255,0,0,0.1);" >> /var/www/scrumblr/client/css/style.css
+echo "	xheight: 100%;" >> /var/www/scrumblr/client/css/style.css
+echo "	right: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	bottom: 0;" >> /var/www/scrumblr/client/css/style.css
+echo "	position: absolute;" >> /var/www/scrumblr/client/css/style.css
+echo "	text-align: right;" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".active-connections {" >> /var/www/scrumblr/client/css/style.css
+echo "	color: #999" >> /var/www/scrumblr/client/css/style.css
+echo "}" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "/* states and images */" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-icon { width: 16px; height: 16px; background-image: url(../images/ui-icons_222222_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-widget-content .ui-icon {background-image: url(../images/ui-icons_222222_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-widget-header .ui-icon {background-image: url(../images/ui-icons_222222_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-state-default .ui-icon { background-image: url(../images/ui-icons_888888_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(../images/ui-icons_454545_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-state-active .ui-icon {background-image: url(../images/ui-icons_454545_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-state-highlight .ui-icon {background-image: url(../images/ui-icons_2e83ff_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(../images/ui-icons_cd0a0a_256x240.png); }" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo "" >> /var/www/scrumblr/client/css/style.css
+echo ".ui-icon-gripsmall-diagonal-se { background-position: -64px -224px; }" >> /var/www/scrumblr/client/css/style.css
+
 # Install CairnGit
 wget https://github.com/Gspohu/gitmh/archive/master.zip
 mkdir /var/www/CairnGit/
@@ -2049,7 +2657,7 @@ sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/postfixad
 sed -i "s/DocumentRoot \/var\/www\/scrumblr\//DocumentRoot \/var\/www\/scrumblr\/\nRedirect permanent \/ https:\/\/brainstorming.$domainName\//g" /etc/apache2/sites-available/scrumblr.conf
 sed -i "s/DocumentRoot \/var\/www\/wisemapping\//DocumentRoot \/var\/www\/wisemapping\/\nRedirect permanent \/ https:\/\/mindmap.$domainName\//g" /etc/apache2/sites-available/wisemapping.conf
 sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/framadate.$domainName\//g" /etc/apache2/sites-available/framadate.conf
-sed -i "s/DocumentRoot \/var\/www\/mattermost\//DocumentRoot \/var\/www\/mattermost\/\nRedirect permanent \/ https:\/\/discuss.$domainName\//g" /etc/apache2/sites-available/mattermost.conf
+#sed -i "s/DocumentRoot \/var\/www\/mattermost\//DocumentRoot \/var\/www\/mattermost\/\nRedirect permanent \/ https:\/\/discuss.$domainName\//g" /etc/apache2/sites-available/mattermost.conf
 sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/rainloop.$domainName\//g" /etc/apache2/sites-available/rainloop.conf
 
 # Ajout d'une règle cron pour renouveller automatique le certificat
