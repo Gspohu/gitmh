@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Error log
-exec 2>&1 /srv/error.log
+exec 2> >(tee -a /srv/error.log)
 
 apt-get -y update
 apt-get -y upgrade
@@ -37,13 +37,13 @@ passnohash="0"
 repassnohash="1"
 while [ "$passnohash" != "$repassnohash" ]      
 do
-  read -s -p "Password : " passnohash
+  read -s -p "Enter password : " passnohash
   echo ""
-  read -s -p "RE-Password : " repassnohash
+  read -s -p "Retype p	assword : " repassnohash
   echo ""
   if [ "$passnohash" != "$repassnohash" ]
   then
-    echo "Passwords does not match"
+    echo "Sorry, passwords do not match"
   fi
 done
 pass=$(echo -n $passnohash | sha256sum | sed 's/  -//g')
@@ -59,6 +59,7 @@ apt-get -y install apache2
 a2enmod ssl
 a2enmod rewrite
 a2enmod proxy
+a2enmod proxy_http
 systemctl restart apache2
 echo -e "Installation d'apache2.......\033[32mFait\033[00m"
 
@@ -96,19 +97,15 @@ apt-get -y install php7.0-imap php7.0-curl
 
 # DNS
 echo "Consider to update your DNS like this :"
-echo "hostname        IN   A              ipv4 of your server"
-echo "hostname        IN   AAAA     ipv6 of your server"
-
-echo "mail                  IN   A               ipv4 of your server"
-echo "mail                  IN   AAAA      ipv6 of your server"
-
-echo "postfixadmin  IN   CNAME    hostname"
-echo "rainloop           IN   CNAME    hostname"
-
-echo "@                      IN   MX 10       mail.$domainName."
-
-echo "smtp                 IN   CNAME    hostname"
-echo "imap                 IN   CNAME    hostname"
+echo "hostname------IN------A----------ipv4 of your server"
+echo "hostname------IN------AAAA-------ipv6 of your server"
+echo "mail----------IN------A----------ipv4 of your server"
+echo "mail----------IN------AAAA-------ipv6 of your server"
+echo "postfixadmin--IN------CNAME------hostname"
+echo "rainloop------IN------CNAME------hostname"
+echo "@-------------IN------MX 10------mail.$domainName."
+echo "smtp----------IN------CNAME------hostname"
+echo "imap----------IN------CNAME------hostname"
 
 
 # Install Postfix
@@ -161,7 +158,7 @@ echo "</VirtualHost>" >> /etc/apache2/sites-available/postfixadmin.conf
 a2ensite postfixadmin.conf
 systemctl restart apache2
 
-sed -i "1 s/<?php/<?php\nif (\!isset(\$_SERVER[\"HTTP_HOST\"]))\n{\n    parse_str(\$argv[1], \$_POST);\n}/g" /var/www/postfixadmin/setup.php
+sed -i "1 s/<?php/<?php\nif (\!isset(\$_SERVER[\"HTTP_HOST\"]))\n{\n    parse_str(\$argv[1], \$_POST);\n}\n\$_SERVER[\'REQUEST_METHOD\']=\'POST\';\n\$_SERVER[\'HTTP_HOST\']=\'$domainName\';/g" /var/www/postfixadmin/setup.php
 
 cd /var/www/postfixadmin/
 
@@ -169,7 +166,7 @@ php -f /var/www/postfixadmin/setup.php "form=createadmin&setup_password=$pass&us
 
 cd ~
 
-sed -i "2,5d " /var/www/postfixadmin/setup.php
+sed -i "2,7d " /var/www/postfixadmin/setup.php
 
 # Configuration of main.cf
 echo "# The first text sent to a connecting process." > /etc/postfix/main.cf
@@ -196,8 +193,8 @@ echo "# TLS parameters" >> /etc/postfix/main.cf
 echo "# ---------------------------------" >> /etc/postfix/main.cf
 echo " " >> /etc/postfix/main.cf
 echo "# Replace this with your SSL certificate path if you are using one." >> /etc/postfix/main.cf
-echo "smtpd_tls_cert_file = /etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/postfix/main.cf
-echo "smtpd_tls_key_file = /etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/postfix/main.cf
+echo "smtpd_tls_cert_file = /etc/letsencrypt/live/acert.$domainName/fullchain.pem" >> /etc/postfix/main.cf
+echo "smtpd_tls_key_file = /etc/letsencrypt/live/acert.$domainName/privkey.pem" >> /etc/postfix/main.cf
 echo "# The snakeoil self-signed certificate has no need for a CA file. But" >> /etc/postfix/main.cf
 echo "# if you are using your own SSL certificate, then you probably have" >> /etc/postfix/main.cf
 echo "# a CA certificate bundle from your provider. The path to that goes" >> /etc/postfix/main.cf
@@ -1029,8 +1026,8 @@ echo "}" >> /etc/dovecot/conf.d/10-master.conf
 # Configuration of 10-ssl.conf
 echo "ssl = required" > /etc/dovecot/conf.d/10-ssl.conf
 echo "" >> /etc/dovecot/conf.d/10-ssl.conf
-echo "ssl_cert = </etc/letsencrypt/live/$domainName/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
-echo "ssl_key = </etc/letsencrypt/live/$domainName/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+echo "ssl_cert = </etc/letsencrypt/live/acert.$domainName/fullchain.pem" >> /etc/dovecot/conf.d/10-ssl.conf
+echo "ssl_key = </etc/letsencrypt/live/acert.$domainName/privkey.pem" >> /etc/dovecot/conf.d/10-ssl.conf
 echo "" >> /etc/dovecot/conf.d/10-ssl.conf
 echo "ssl_cipher_list = AES128+EECDH:AES128+EDH" >> /etc/dovecot/conf.d/10-ssl.conf
 echo "ssl_prefer_server_ciphers = yes" >> /etc/dovecot/conf.d/10-ssl.conf
@@ -1603,7 +1600,7 @@ apt-get -y install php7.0-sqlite3
 
 # Download and extract kanboard
 wget https://kanboard.net/kanboard-1.0.34.zip
-unzip kanboard-1.0.33.zip -d /var/www/CairnGit/
+unzip kanboard-1.0.34.zip -d /var/www/CairnGit/
 rm kanboard-1.0.34.zip
 
 
@@ -1659,6 +1656,8 @@ echo "<VirtualHost *:80>" > /etc/apache2/sites-available/mattermost.conf
 echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/mattermost.conf
 echo "ServerName  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
 echo "ServerAlias  discuss.$domainName" >> /etc/apache2/sites-available/mattermost.conf
+echo "LoadModule proxy_module modules/mod_proxy.so" >> /etc/apache2/sites-available/mattermost.conf
+echo "LoadModule proxy_http_module modules/mod_proxy_http.so" >> /etc/apache2/sites-available/mattermost.conf
 echo "DocumentRoot /var/www/mattermost/" >> /etc/apache2/sites-available/mattermost.conf
 echo "ProxyPass / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
 echo "ProxyPassReverse / http://localhost:8065/" >> /etc/apache2/sites-available/mattermost.conf
@@ -1694,7 +1693,6 @@ chmod +x /var/www/framadate/composer.phar
 su -c "/var/www/framadate/composer.phar install" framadate
 su -c "/var/www/framadate/composer.phar update" framadate
 cd ~
-chown www-data -R /var/www/framadate
 
 # Create MySQL database for framadate
 mysql -u root -p${pass} -e "CREATE DATABASE framadate;"
@@ -1815,11 +1813,13 @@ echo "" >> /var/www/framadate/app/inc/config.php
 
 cd  /var/www/framadate/
 
+sed -i "1 s/<?php/<?php\n\$_SERVER[\'SERVER_NAME\']=\'framadate.$domainName\';\n\$_SERVER[\'SERVER_PORT\']=\'80\';/g" /var/www/framadate/admin/migration.php
 php -f /var/www/framadate/admin/migration.php
-
+sed -i "2,3d " /var/www/framadate/admin/migration.php
 cd ~
 
 mv /var/www/framadate/htaccess.txt /var/www/framadate/.htaccess
+chown www-data -R /var/www/framadate
 
 # Install Jitsi Meet
 # Install dependency
@@ -1861,7 +1861,6 @@ apt-get -y install openjdk-9-jdk
 
 # Create wisemapping user
 useradd wisemapping
-groupadd wisemapping
 mkdir /var/www/wisemapping
 chown wisemapping:wisemapping -R /var/www/wisemapping
 
@@ -1873,8 +1872,8 @@ mv wisemapping-v4.0.3/* . && rmdir wisemapping-v4.0.3 && rm wisemapping-v4.0.3.z
 cd ~
 
 # Configuration MySQL
-sed -i "s/PASSWORD(".*")/PASSWORD('$pass')/g" /var/www/wisemapping/config/database/mysql/create-database.sql
-mysql -u root -p${pass} -e "CREATE DATABASE wisemapping"
+mysql -u root -p${pass} -e "CREATE DATABASE wisemapping;"
+mysql -u root -p${pass} -e "CREATE USER 'wisemapping'@'localhost' IDENTIFIED BY '$pass';"
 mysql -u root -p${pass} -e "GRANT USAGE ON *.* TO 'wisemapping'@'localhost';"
 mysql -u root -p${pass} -e "GRANT ALL PRIVILEGES ON wisemapping.* TO 'wisemapping'@'localhost' IDENTIFIED BY '$pass';"
 
@@ -1891,6 +1890,8 @@ echo "<VirtualHost *:80>" > /etc/apache2/sites-available/wisemapping.conf
 echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 echo "ServerName  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
 echo "ServerAlias  mindmap.$domainName" >> /etc/apache2/sites-available/wisemapping.conf
+echo "LoadModule proxy_module modules/mod_proxy.so" >> /etc/apache2/sites-available/wisemapping.conf
+echo "LoadModule proxy_http_module modules/mod_proxy_http.so" >> /etc/apache2/sites-available/wisemapping.conf
 echo "DocumentRoot /var/www/wisemapping/" >> /etc/apache2/sites-available/wisemapping.conf
 echo "ProxyPass / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
 echo "ProxyPassReverse / http://localhost:8082/" >> /etc/apache2/sites-available/wisemapping.conf
@@ -1903,7 +1904,9 @@ systemctl restart apache2
 
 
 # Launch Wisemapping
+cd /var/www/wisemapping/
 /var/www/wisemapping/start.sh &
+cd ~
 
 # Add  Wisemapping to systemd
 echo "[Unit]" > /etc/systemd/system/wisemapping.service
@@ -1932,8 +1935,7 @@ systemctl start wisemapping.service
 apt-get -y install nodejs npm redis-server
 
 # Create scrumblr user
-useradd scrumblr
-groupadd scrumblr		
+useradd scrumblr		
 
 # Install Scrumblr
 cd /var/www/
@@ -1973,6 +1975,8 @@ echo "<VirtualHost *:80>" > /etc/apache2/sites-available/scrumblr.conf
 echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 echo "ServerName  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
 echo "ServerAlias  brainstorming.$domainName" >> /etc/apache2/sites-available/scrumblr.conf
+echo "LoadModule proxy_module modules/mod_proxy.so" >> /etc/apache2/sites-available/scrumblr.conf
+echo "LoadModule proxy_http_module modules/mod_proxy_http.so" >> /etc/apache2/sites-available/scrumblr.conf
 echo "DocumentRoot /var/www/scrumblr/" >> /etc/apache2/sites-available/scrumblr.conf
 echo "ProxyPass / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
 echo "ProxyPassReverse / http://localhost:4242/" >> /etc/apache2/sites-available/scrumblr.conf
@@ -2078,7 +2082,7 @@ echo -e "Ajout des bases de données.......\033[32mFait\033[00m"
 
 # Cleanning
 apt-get -y autoremove
-echo "Cleaning .............\033[32mDone\033[00m"
+echo -e "Cleaning .............\033[32mDone\033[00m"
 
 # Restart services
 systemctl restart apache2
