@@ -791,7 +791,7 @@ Install_Rainloop()
   echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '; Login and password for web admin panel' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo 'admin_login = "admin"' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
-  echo "$rainloopPassHash" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+  echo "" >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '; Access settings' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo 'allow_admin_panel = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
@@ -809,7 +809,7 @@ Install_Rainloop()
   echo '; Allow self-signed certificates. Requires verify_certificate.' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo 'allow_self_signed = On' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
-  echo '; Location of Certificate Authority file on local filesystem (/etc/ssl/certs/ca-certificates.crt)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
+  echo '; Location of certificate Authority file on local filesystem (/etc/ssl/certs/ca-certificates.crt)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo 'cafile = ""' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
   echo '; capath must be a correctly hashed certificate directory. (/etc/ssl/certs/)' >> /var/www/rainloop/data/_data_/_default_/configs/application.ini
@@ -1197,7 +1197,7 @@ Install_Kanboard()
   echo "define('DB_SSL_KEY', null);" >>  /var/www/CairnGit/kanboard/data/config.php
   echo "" >>  /var/www/CairnGit/kanboard/data/config.php
   echo "// Mysql SSL certificate" >>  /var/www/CairnGit/kanboard/data/config.php
-  echo "define('DB_SSL_CERT', null);" >>  /var/www/CairnGit/kanboard/data/config.php
+  echo "define('DB_SSL_cert', null);" >>  /var/www/CairnGit/kanboard/data/config.php
   echo "" >>  /var/www/CairnGit/kanboard/data/config.php
   echo "// Mysql SSL CA" >>  /var/www/CairnGit/kanboard/data/config.php
   echo "define('DB_SSL_CA', null);" >>  /var/www/CairnGit/kanboard/data/config.php
@@ -1476,19 +1476,19 @@ Install_JitsiMeet()
   echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/meet.conf
   echo "ServerName meet.$domainName" >> /etc/apache2/sites-available/meet.conf
   echo "ServerAlias meet.$domainName" >> /etc/apache2/sites-available/meet.conf
-  echo "DocumentRoot \"/usr/share/jitsi-meet\"" >> /etc/apache2/sites-available/meet.conf
+  echo "DocumentRoot /usr/share/jitsi-meet" >> /etc/apache2/sites-available/meet.conf
   echo "" >> /etc/apache2/sites-available/meet.conf
   echo "SSLProxyEngine On" >> /etc/apache2/sites-available/meet.conf
   echo "RewriteEngine On" >> /etc/apache2/sites-available/meet.conf
   echo "RewriteCond %{REQUEST_URI} ^/[a-zA-Z0-9]+$" >> /etc/apache2/sites-available/meet.conf
   echo "RewriteRule ^/(.*)$ / [PT]" >> /etc/apache2/sites-available/meet.conf
-  echo "RewriteRule ^/http-bind$ https://meet.$domainName:5281/http-bind [P,L]" >> /etc/apache2/sites-available/meet.conf
+  echo "RewriteRule ^/http-bind$ http://meet.$domainName:5280/http-bind [P,L]" >> /etc/apache2/sites-available/meet.conf
   echo "</Virtualhost>" >> /etc/apache2/sites-available/meet.conf
 
   a2ensite meet.conf
   systemctl restart apache2
 }
-
+ 
 Install_Scrumblr()
 {
   # Install dependency
@@ -2209,31 +2209,31 @@ Install_CairnGit()
   sleep 4
 }
   
-Lets_Cert()
+Lets_cert()
 {  
  # Cheat cert
- # echo "<VirtualHost *:80>" > /etc/apache2/sites-available/aCERT.conf
- # echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/aCERT.conf
- # echo "ServerName  acert.$domainName" >> /etc/apache2/sites-available/aCERT.conf
- # echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "AllowOverride all" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "Order allow,deny" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "allow from all" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "</Directory>" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/aCERT.conf
-  # echo "</VirtualHost>" >> /etc/apache2/sites-available/aCERT.conf
+  #echo "<VirtualHost *:80>" > /etc/apache2/sites-available/acert.conf
+    #echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/acert.conf
+ # echo "ServerName  acert.$domainName" >> /etc/apache2/sites-available/acert.conf
+ # echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/acert.conf
+ #  echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/acert.conf
+ #  echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/acert.conf
+   #echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/acert.conf
+#   echo "AllowOverride all" >> /etc/apache2/sites-available/acert.conf
+ #echo "Order allow,deny" >> /etc/apache2/sites-available/acert.conf
+  # echo "allow from all" >> /etc/apache2/sites-available/acert.conf
+  #echo "</Directory>" >> /etc/apache2/sites-available/acert.conf
+#   echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/acert.conf
+#  echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/acert.conf
+ # echo "</VirtualHost>" >> /etc/apache2/sites-available/acert.conf
   
- #  a2ensite aCERT
+ #  a2ensite acert
   # systemctl restart apache2
 
   # Configuration letsencrypt cerbot
   apt-get -y install python-letsencrypt-apache
-  # letsencrypt --apache
-  letsencrypt --apache -d $domainName -d rainloop.$domainName -d brainstorming.$domainName -d framadate.$domainName  -d postfixadmin.$domainName -d meet.$domainName
+  #letsencrypt --apache
+  letsencrypt --apache -d $domainName -d rainloop.$domainName -d brainstorming.$domainName -d framadate.$domainName  -d postfixadmin.$domainName 
   echo -e "Installation de let's encrypt.......\033[32mDone\033[00m"
   sleep 4
   
@@ -2638,11 +2638,14 @@ Security_app()
     mv /usr/share/modsecurity-crs/base_rules/modsecurity_crs_35_bad_robots.conf /usr/share/modsecurity-crs/base_rules/modsecurity_crs_35_bad_robots.conf.disable
   }
 
-  # Hide Apache version
-  sed -i "s/ServerTokens .*/ServerTokens Prod/g" /etc/apache2/httpd.conf
-  sed -i "s/ServerSignature .*/ServerSignature off/g" /etc/apache2/httpd.conf
+  Hide_ApacheVersion()
+  {
+    sed -i "s/ServerTokens .*/ServerTokens Prod/g" /etc/apache2/httpd.conf
+    sed -i "s/ServerSignature .*/ServerSignature off/g" /etc/apache2/httpd.conf
+  }
 
-  # Install and configure fail2ban
+  Install_Fail2ban()
+  {
   apt-get -y install fail2ban
 
   echo "[ssh]" > /etc/fail2ban/jail.conf
@@ -2684,29 +2687,33 @@ Security_app()
   echo "ignoreregex =" >> /etc/fail2ban/filter.d/http-w00t.conf
 
   systemctl restart fail2ban
+  }
 
 # Change SSH port
 sed -i "s/ Port 22/Port 1234/g" /etc/ssh/sshd_config
 
-# Install and configure unattended-upgrades only for security updates
-apt-get -y install unattended-upgrades
+  Install_unattendedupgrades()
+  {
+    apt-get -y install unattended-upgrades
+  }
 
-#DOS and DDOS protection
-# Install and configure mod-evasive for apache2
-apt-get -y install libapache2-mod-evasive
-mkdir -p /var/lock/mod_evasive
-chown -R apache:apache /var/lock/mod_evasive
-systemctl restart apache2
-# Remove blacklist ip
-0 5 * * * find /var/lock/mod_evasive -mtime +1 -type f -exec rm -f '{}' \; 
+  DOSDDOS_protection()
+  {
+  # Install and configure mod-evasive for apache2
+  apt-get -y install libapache2-mod-evasive
+  mkdir -p /var/lock/mod_evasive
+  chown -R apache:apache /var/lock/mod_evasive
+  systemctl restart apache2
+  # Remove blacklist ip
+  0 5 * * * find /var/lock/mod_evasive -mtime +1 -type f -exec rm -f '{}' \; 
 
-echo "#!/bin/bash" > /srv/SYN_flood_fighter.sh
-echo "for i in \` netstat -tanpu | grep \"SYN_RECV\" | awk {'print \$5'} | cut -f 1 -d ":" | sort | uniq -c | sort -n | awk {'if (\$1 > 3) print \$2'}\` ; do echo \$i; done" >> /srv/SYN_flood_fighter.sh
+  echo "#!/bin/bash" > /srv/SYN_flood_fighter.sh
+  echo "for i in \` netstat -tanpu | grep \"SYN_RECV\" | awk {'print \$5'} | cut -f 1 -d ":" | sort | uniq -c | sort -n | awk {'if (\$1 > 3) print \$2'}\` ; do echo \$i; done" >> /srv/SYN_flood_fighter.sh
 
-# Save Linux parameter
-echo "cat /proc/sys/net/ipv4/tcp_syncookies > /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
-echo "cat /proc/sys/net/ipv4/tcp_max_syn_backlog >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
-echo "cat /proc/sys/net/ipv4/conf/all/rp_filter >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
+  # Save Linux parameter
+  echo "cat /proc/sys/net/ipv4/tcp_syncookies > /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
+  echo "cat /proc/sys/net/ipv4/tcp_max_syn_backlog >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
+  echo "cat /proc/sys/net/ipv4/conf/all/rp_filter >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
 
 # Update Linux protection
 echo 'echo "1" > /proc/sys/net/ipv4/tcp_syncookies' >> /srv/SYN_flood_fighter.sh
@@ -2726,14 +2733,9 @@ echo "systemctl restart apache2" >> /srv/SYN_flood_fighter.sh
 # Reload old Linux parameter
 
 # Add in log ip of attackers
-
-# Reload old iptables
-
-
-
 # Add script in crontab
-
-}
+  }
+  }
 
 Cleanning()
 {
@@ -2810,9 +2812,8 @@ then
   Install_Mattermost
   Install_Framadate
   Install_Scrumblr
-  Install_JitsiMeet
   Install_CairnGit
-  Lets_Cert
+  Lets_cert
   Cleanning
 elif [ "$choix" = "Cohabitation" ]
 then
