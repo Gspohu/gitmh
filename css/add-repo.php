@@ -2,6 +2,16 @@
    header('content-type: text/css');
    ob_start('ob_gzhandler');
    header('Cache-Control: max-age=31536000, must-revalidate');
+
+        include_once('../model/connexion_sql.php');
+
+        include_once('../model/design.php');
+
+        include_once('style.php');
+
+        include_once('modification.php');
+
+        include_once('nav.php');
 ?>
 
 .form_add
@@ -203,3 +213,7 @@ input.file
 	padding : 1px 0px 1px 0px;
 	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.7);
 }
+
+<?php
+        include_once('footer.php');
+?>
