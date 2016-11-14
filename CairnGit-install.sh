@@ -84,17 +84,24 @@ Install_mail_server()
   # DNS
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
-  Consider to update your DNS like this :
-  hostname------IN------A----------ipv4 of your server
-  hostname------IN------AAAA-------ipv6 of your server
-  mail----------IN------A----------ipv4 of your server
-  mail----------IN------AAAA-------ipv6 of your server
-  postfixadmin--IN------CNAME------hostname
-  rainloop------IN------CNAME------hostname
-  @-------------IN------MX 10------mail.$domainName.
-  smtp----------IN------CNAME------hostname
-  imap----------IN------CNAME------hostname" 17 60
-  
+  Consider to update your DNS like this :	
+  $domainName.	0	MX	10 mail.$domainName.		
+  $domainName.	0	A	ipv4 of your server			
+  brainstorming.$domainName.	0	A	ipv4 of your server		
+  conference.meet.$domainName.	0	A	ipv4 of your server		
+  framadate.$domainName.	0	A	ipv4 of your server		
+  mail.$domainName.	0	AAAA	ipv6 of your server		
+  mail.$domainName.	0	A	ipv4 of your server
+  mattermost.$domainName.	0	A	ipv4 of your server		
+  meet.$domainName.	0	A	ipv4 of your JitsiMeet server		
+  postfixadmin.$domainName.	0	A	ipv4 of your server		
+  rainloop.$domainName.	0	A	ipv4 of your server		
+  imap.$domainName.	0	CNAME	$domainName.		
+  stmp.$domainName.	0	CNAME	$domainName.		
+  _dmarc.$domainName.	0	TXT	\"v=DMARC1; p=reject; rua=mailto:postmaster@$domainName; ruf=mailto:admin@$domainName; fo=0; adkim=s; aspf=s; pct=100; rf=afrf; sp=reject\"		
+  $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.google.com ~all\"" 20 60	
+
+
   # Install Postfix
   apt-get -y install postfix postfix-mysql postfix-policyd-spf-python
   
@@ -667,6 +674,14 @@ Install_mail_server()
   echo "$domainName" >> /etc/opendkim/TrustedHosts
   echo "mail.$domainName" >> /etc/opendkim/TrustedHosts
   
+  # DNS
+  opendkimPubKey=$(sed -n '/-----BEGIN PUBLIC KEY-----/,/-----END PUBLIC KEY-----/{//d;p}' /etc/opendkim/opendkim.pub.key)
+  opendkimPubKey=$(echo $opendkimPubKey | sed s/' '/''/g)
+  dialog --backtitle "Cairngit installation" --title "DNS configuration" \
+  --ok-label "Next" --msgbox "
+  Consider to update your DNS like this :		
+	dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 5 60
+
   # Installation of OpenDMARC
   apt-get -y install opendmarc
   
@@ -2258,6 +2273,15 @@ Lets_cert()
   systemctl restart postgrey
 }  
 
+Install_Git()
+{
+  # Create Git user
+  USER="git"
+  echo "Creation of git user"
+  useradd -p $pass  -U -m $USER
+  echo "Creation of ".${USER}." user" OK
+}
+
 Security_app()
 {
   # Enabled UFW
@@ -2292,7 +2316,7 @@ Security_app()
   
     apt-get -y install libpcap-dev libpcre3-dev libdumbnet-dev autoconf
   
-     mkdir ~/snort_src
+    mkdir ~/snort_src
   
     cd ~/snort_src/
   
@@ -2615,11 +2639,11 @@ Security_app()
     # Install dependency
     apt-get -y install mailutils
 
-    # Send mail when someone is succefully connected in SSH (need to be improve with sshrc)
+    # Send mail when someone is succefully connected in SSH
     dialog --backtitle "Cairngit installation" --title "Email for security report"\
     --inputbox "/!\\ Should be external of this server /!\\" 7 60 2> $FICHTMP
     email=`cat $FICHTMP`
-    echo "echo 'NOTIFICATION - Acces SSH en '\` id | cut -d \"(\" -f2 | cut -d \")\" -f1\`' sur '\`hostname\`' le: ' \`date\`\ \`who\` | mail -s \"NOTIFICATION - Connexion en \"\`id | cut -d \'(\' -f2 | cut -d \')\' -f1\`\" via SSH depuis: \`who | cut -d\"(\" -f2 | cut -d\")\" -f1\`\" $email" >>  /etc/bash.bashrc
+    echo "echo 'SSH access on '\` id | cut -d \"(\" -f2 | cut -d \")\" -f1\`' account on '\`hostname\`' server at : ' \`date\`\ \`who\` | mail -s \"NOTIFICATION - Connexion on \"\`id | cut -d '(' -f2 | cut -d ')' -f1\`\" account with SSH since : \`who | cut -d\"(\" -f2 | cut -d\")\" -f1\`\" $email" >>  /etc/ssh/sshrc
   }
 
   # List listing ports
