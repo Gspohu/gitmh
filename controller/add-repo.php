@@ -130,8 +130,10 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 
 			copy("example/".$repo_license.".txt", $path.$repo_license.".txt");
 			exec("git init ".escapeshellarg($path));
-			exec("git add .");
-			exec("git commit -m 'Initial commit'");
+			exec("mv hooks/post-update.sample hooks/post-update".escapeshellarg($path));
+			exec("chmod a+x hooks/post-update".escapeshellarg($path));
+			exec("git add .".escapeshellarg($path));
+			exec("git commit -m 'Initial commit'".escapeshellarg($path));
 			$gitignore = fopen($path.".gitignore", 'a+');
 			fputs($gitignore, '.gitignore'.PHP_EOL);
  			fputs($gitignore, '.cairn'.PHP_EOL);

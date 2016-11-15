@@ -87,6 +87,7 @@ Install_mail_server()
   Consider to update your DNS like this :	
   $domainName.	0	MX	10 mail.$domainName.		
   $domainName.	0	A	ipv4 of your server			
+  git.$domainName.	0	A	ipv4 of your server		
   brainstorming.$domainName.	0	A	ipv4 of your server		
   conference.meet.$domainName.	0	A	ipv4 of your server		
   framadate.$domainName.	0	A	ipv4 of your server		
@@ -2282,6 +2283,19 @@ Install_Git()
   echo git:$pass | chpasswd
   chsh git -s /usr/bin/git-shell
   echo "Creation of ".${USER}." user" OK
+
+  echo "<VirtualHost *:80>" > /etc/apache2/sites-available/git.conf
+  echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/git.conf
+  echo "ServerName  git.$domainName" >> /etc/apache2/sites-available/git.conf
+  echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/git.conf
+  echo "DocumentRoot /var/www/CairnGit/repository/" >> /etc/apache2/sites-available/git.conf
+  echo "<Directory /var/www/CairnGit/repository/>" >> /etc/apache2/sites-available/git.conf
+  echo "Order allow,deny" >> /etc/apache2/sites-available/git.conf
+  echo "allow from all" >> /etc/apache2/sites-available/git.conf
+  echo "</Directory>" >> /etc/apache2/sites-available/git.conf
+  echo "ErrorLog /var/www/CairnGit/logs/error.log" >> /etc/apache2/sites-available/git.conf
+  echo "CustomLog /var/www/CairnGit/logs/access.log combined" >> /etc/apache2/sites-available/git.conf
+  echo "</VirtualHost>" >> /etc/apache2/sites-available/git.conf
 }
 
 Security_app()
