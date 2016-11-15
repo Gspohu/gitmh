@@ -99,7 +99,7 @@ Install_mail_server()
   imap.$domainName.	0	CNAME	$domainName.		
   stmp.$domainName.	0	CNAME	$domainName.		
   _dmarc.$domainName.	0	TXT	\"v=DMARC1; p=reject; rua=mailto:postmaster@$domainName; ruf=mailto:admin@$domainName; fo=0; adkim=s; aspf=s; pct=100; rf=afrf; sp=reject\"		
-  $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.google.com ~all\"" 20 60	
+  $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.google.com ~all\"" 25 80	
 
 
   # Install Postfix
@@ -680,7 +680,7 @@ Install_mail_server()
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
   Consider to update your DNS like this :		
-	dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 5 60
+	dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 10 70
 
   # Installation of OpenDMARC
   apt-get -y install opendmarc
@@ -2278,7 +2278,9 @@ Install_Git()
   # Create Git user
   USER="git"
   echo "Creation of git user"
-  useradd -p $pass  -U -m $USER
+  useradd -U -m $USER 
+  echo git:$pass | chpasswd
+  chsh git -s /usr/bin/git-shell
   echo "Creation of ".${USER}." user" OK
 }
 
@@ -2838,6 +2840,7 @@ then
   Install_Scrumblr
   Install_CairnGit
   Lets_cert
+  Install_Git
   Cleanning
 elif [ "$choix" = "Cohabitation" ]
 then
