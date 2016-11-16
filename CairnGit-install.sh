@@ -84,12 +84,11 @@ Install_mail_server()
   # DNS
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
-  Consider to update your DNS like this :	
+Consider to update your DNS like this :	
 $domainName.	0	MX	10 mail.$domainName.		
 $domainName.	0	A	ipv4 of your server			
 git.$domainName.	0	A	ipv4 of your server		
 brainstorming.$domainName.	0	A	ipv4 of your server		
-conference.meet.$domainName.	0	A	ipv4 of your jitsi-meet server	
 framadate.$domainName.	0	A	ipv4 of your server		
 mail.$domainName.	0	AAAA	ipv6 of your server		
 mail.$domainName.	0	A	ipv4 of your server
@@ -679,8 +678,8 @@ $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.goog
   opendkimPubKey=$(echo $opendkimPubKey | sed s/' '/''/g)
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
-  Consider to update your DNS like this :		
-dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 15 70
+Consider to update your DNS like this :		
+dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 13 70
 
   # Installation of OpenDMARC
   apt-get -y install opendmarc
@@ -2257,8 +2256,8 @@ Install_Git()
   echo git:$pass | chpasswd
   chsh git -s /usr/bin/git-shell
   echo "Creation of ".${USER}." user" OK
-
   echo "<VirtualHost *:80>" > /etc/apache2/sites-available/git.conf
+
   echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/git.conf
   echo "ServerName  git.$domainName" >> /etc/apache2/sites-available/git.conf
   echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/git.conf
