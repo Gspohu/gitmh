@@ -85,23 +85,22 @@ Install_mail_server()
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
   Consider to update your DNS like this :	
-  $domainName.	0	MX	10 mail.$domainName.		
-  $domainName.	0	A	ipv4 of your server			
-  git.$domainName.	0	A	ipv4 of your server		
-  brainstorming.$domainName.	0	A	ipv4 of your server		
-  conference.meet.$domainName.	0	A	ipv4 of your server		
-  framadate.$domainName.	0	A	ipv4 of your server		
-  mail.$domainName.	0	AAAA	ipv6 of your server		
-  mail.$domainName.	0	A	ipv4 of your server
-  mattermost.$domainName.	0	A	ipv4 of your server		
-  meet.$domainName.	0	A	ipv4 of your JitsiMeet server		
-  postfixadmin.$domainName.	0	A	ipv4 of your server		
-  rainloop.$domainName.	0	A	ipv4 of your server		
-  imap.$domainName.	0	CNAME	$domainName.		
-  stmp.$domainName.	0	CNAME	$domainName.		
-  _dmarc.$domainName.	0	TXT	\"v=DMARC1; p=reject; rua=mailto:postmaster@$domainName; ruf=mailto:admin@$domainName; fo=0; adkim=s; aspf=s; pct=100; rf=afrf; sp=reject\"		
-  $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.google.com ~all\"" 25 80	
-
+$domainName.	0	MX	10 mail.$domainName.		
+$domainName.	0	A	ipv4 of your server			
+git.$domainName.	0	A	ipv4 of your server		
+brainstorming.$domainName.	0	A	ipv4 of your server		
+conference.meet.$domainName.	0	A	ipv4 of your jitsi-meet server	
+framadate.$domainName.	0	A	ipv4 of your server		
+mail.$domainName.	0	AAAA	ipv6 of your server		
+mail.$domainName.	0	A	ipv4 of your server
+mattermost.$domainName.	0	A	ipv4 of your server		
+meet.$domainName.	0	A	ipv4 of your JitsiMeet server		
+postfixadmin.$domainName.	0	A	ipv4 of your server		
+rainloop.$domainName.	0	A	ipv4 of your server		
+imap.$domainName.	0	CNAME	$domainName.		
+stmp.$domainName.	0	CNAME	$domainName.		
+_dmarc.$domainName.	0	TXT	\"v=DMARC1; p=reject; rua=mailto:postmaster@$domainName; ruf=mailto:admin@$domainName; fo=0; adkim=s; aspf=s; pct=100; rf=afrf; sp=reject\"		
+$domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.google.com ~all\"" 25 80	
 
   # Install Postfix
   apt-get -y install postfix postfix-mysql postfix-policyd-spf-python
@@ -681,7 +680,7 @@ Install_mail_server()
   dialog --backtitle "Cairngit installation" --title "DNS configuration" \
   --ok-label "Next" --msgbox "
   Consider to update your DNS like this :		
-	dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 10 70
+dkim._domainkey.$domainName.	0	DKIM	v=DKIM1; k=rsa; t=y:s; s=email; p=$opendkimPubKey	" 15 70
 
   # Installation of OpenDMARC
   apt-get -y install opendmarc
@@ -1466,7 +1465,6 @@ Install_JitsiMeet()
 {
   # Install dependency
   apt-get -y  install apt-transport-https	
-  mkdir -p /var/www/meet/logs/
   
   # Add repository
   echo 'deb https://download.jitsi.org stable/' >> /etc/apt/sources.list.d/jitsi-stable.list
@@ -1478,31 +1476,7 @@ Install_JitsiMeet()
   
   # Start service prosody 
   systemctl restart prosody
-  
-  # Permission
-  chown www-data -R /usr/share/jitsi-meet/
-  chown www-data -R /etc/jitsi/meet/
 
-  # Configuration of Jitsi Meet
-  echo "disableThirdPartyRequests: true," >> /etc/jitsi/meet/*-config.js
-  echo "getroomnode: function (path) { return location.pathname.replace('/meet/',''); }," >> /etc/jitsi/meet/*-config.js
-  
-  # Configuration Apache2
-  echo "<VirtualHost *:80>" > /etc/apache2/sites-available/meet.conf
-  echo "ServerAdmin postmaster@$domainName" >> /etc/apache2/sites-available/meet.conf
-  echo "ServerName meet.$domainName" >> /etc/apache2/sites-available/meet.conf
-  echo "ServerAlias meet.$domainName" >> /etc/apache2/sites-available/meet.conf
-  echo "DocumentRoot /usr/share/jitsi-meet" >> /etc/apache2/sites-available/meet.conf
-  echo "" >> /etc/apache2/sites-available/meet.conf
-  echo "SSLProxyEngine On" >> /etc/apache2/sites-available/meet.conf
-  echo "RewriteEngine On" >> /etc/apache2/sites-available/meet.conf
-  echo "RewriteCond %{REQUEST_URI} ^/[a-zA-Z0-9]+$" >> /etc/apache2/sites-available/meet.conf
-  echo "RewriteRule ^/(.*)$ / [PT]" >> /etc/apache2/sites-available/meet.conf
-  echo "RewriteRule ^/http-bind$ http://meet.$domainName:5280/http-bind [P,L]" >> /etc/apache2/sites-available/meet.conf
-  echo "</Virtualhost>" >> /etc/apache2/sites-available/meet.conf
-
-  a2ensite meet.conf
-  systemctl restart apache2
 }
  
 Install_Scrumblr()
