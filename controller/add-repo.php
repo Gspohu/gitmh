@@ -126,14 +126,15 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 			$ext = ".". $extension_upload;
 			include_once('model/add_repo.php');
 
-			$path = "repository/".$_SESSION['pseudo']."_repo/".$repo_name."/"; # Faille /!\
+			$path = escapeshellcmd(escapeshellarg("repository/".$_SESSION['pseudo']."_repo/".$repo_name."/")); 
+			$output_exec="/var/www/CairnGit/logs/error.log";			
 
 			copy("example/".$repo_license.".txt", $path.$repo_license.".txt");
-			exec("git init ".escapeshellarg($path));
-			exec("cd escapeshellarg($path); mv hooks/post-update.sample hooks/post-update");
-			exec("cd escapeshellarg($path); chmod a+x hooks/post-update");
-			exec("cd escapeshellarg($path); git add .");
-			exec("cd escapeshellarg($path); git commit -m 'Initial commit'");
+			exec("git init ".$path, $output_exec);
+			exec("mv ".$path."hooks/post-update.sample ".$path."hooks/post-update", $output_exec);
+			exec("chmod a+x ".$path."hooks/post-update", $output_exec);
+			exec("git --git-dir=".$path."/.git --work-tree=".$path." add .", $output_exec);
+			exec("git --git-dir=".$path."/.git --work-tree=".$path." commit -m 'Initial commit'", $output_exec);
 			$gitignore = fopen($path.".gitignore", 'a+');
 			fputs($gitignore, '.gitignore'.PHP_EOL);
  			fputs($gitignore, '.cairn'.PHP_EOL);
