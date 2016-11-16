@@ -135,7 +135,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 			exec("chmod a+x ".$path.".git/hooks/post-update", $output_exec);
 			exec("git --git-dir=".$path."/.git --work-tree=".$path." add .", $output_exec);
 			exec("git --git-dir=".$path."/.git --work-tree=".$path." commit -m 'Initial commit'", $output_exec);
-			$gitignore = fopen($path.".gitignore", 'a+');
+			$gitignorePath = $path.".gitignore";
+			$gitignore = fopen($gitignorePath, 'a+');
 			fputs($gitignore, '.gitignore'.PHP_EOL);
  			fputs($gitignore, '.cairn'.PHP_EOL);
 			fclose($gitignore);
