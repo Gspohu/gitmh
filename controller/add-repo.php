@@ -131,8 +131,8 @@ if(isset($_POST['repo_name']) && isset($_POST['publpriv']) && isset($_POST['repo
 
 			copy("example/".$repo_license.".txt", $path.$repo_license.".txt");
 			exec("git init ".$path, $output_exec);
-			exec("mv ".$path."hooks/post-update.sample ".$path."hooks/post-update", $output_exec);
-			exec("chmod a+x ".$path."hooks/post-update", $output_exec);
+			exec("mv ".$path.".git/hooks/post-update.sample ".$path.".git/hooks/post-update", $output_exec);
+			exec("chmod a+x ".$path.".git/hooks/post-update", $output_exec);
 			exec("git --git-dir=".$path."/.git --work-tree=".$path." add .", $output_exec);
 			exec("git --git-dir=".$path."/.git --work-tree=".$path." commit -m 'Initial commit'", $output_exec);
 			$gitignore = fopen($path.".gitignore", 'a+');
