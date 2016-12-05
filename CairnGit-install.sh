@@ -138,6 +138,7 @@ $domainName.	600	SPF	\"v=spf1 a mx ptr ip4:ipv4 of your server include:_spf.goog
   echo "ServerName  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
   echo "ServerAlias  postfixadmin.$domainName" >> /etc/apache2/sites-available/postfixadmin.conf
   echo "DocumentRoot /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
+  echo "php_admin_value open_basedir /var/www/postfixadmin/" >> /etc/apache2/sites-available/postfixadmin.conf
   echo "<Directory /var/www/postfixadmin/>" >> /etc/apache2/sites-available/postfixadmin.conf
   echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/postfixadmin.conf
   echo "AllowOverride all" >> /etc/apache2/sites-available/postfixadmin.conf
@@ -1103,6 +1104,7 @@ Install_Rainloop()
   echo "ServerName rainloop.$domainName" >> /etc/apache2/sites-available/rainloop.conf
   echo "ServerAlias rainloop.$domainName" >> /etc/apache2/sites-available/rainloop.conf
   echo "DocumentRoot /var/www/rainloop/" >> /etc/apache2/sites-available/rainloop.conf
+  echo "php_admin_value open_basedir /var/www/rainloop/" >> /etc/apache2/sites-available/rainloop.conf
   echo "<Directory /var/www/rainloop/ >" >> /etc/apache2/sites-available/rainloop.conf
   echo "AllowOverride All" >> /etc/apache2/sites-available/rainloop.conf
   echo "</Directory>" >> /etc/apache2/sites-available/rainloop.conf
@@ -1348,6 +1350,7 @@ Install_Framadate()
   echo "ServerName framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
   echo "ServerAlias framadate.$domainName" >> /etc/apache2/sites-available/framadate.conf
   echo "DocumentRoot /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
+  echo "php_admin_value open_basedir /var/www/framadate/" >> /etc/apache2/sites-available/framadate.conf
   echo "<Directory /var/www/framadate/ >" >> /etc/apache2/sites-available/framadate.conf
   echo "AllowOverride All" >> /etc/apache2/sites-available/framadate.conf
   echo "</Directory>" >> /etc/apache2/sites-available/framadate.conf
@@ -2160,6 +2163,7 @@ Install_CairnGit()
   echo "ServerName  $domainName" >> /etc/apache2/sites-available/CairnGit.conf
   echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/CairnGit.conf
   echo "DocumentRoot /var/www/CairnGit/" >> /etc/apache2/sites-available/CairnGit.conf
+  echo "php_admin_value open_basedir /var/www/CairnGit/" >> /etc/apache2/sites-available/CairnGit.conf
   echo "<Directory /var/www/CairnGit/>" >> /etc/apache2/sites-available/CairnGit.conf
   echo "Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/CairnGit.conf
   echo "AllowOverride all" >> /etc/apache2/sites-available/CairnGit.conf
@@ -2235,7 +2239,8 @@ Lets_cert()
   sed -i "s/<\/Directory>/<\/Directory>\nRedirect permanent \/ https:\/\/rainloop.$domainName\//g" /etc/apache2/sites-available/rainloop.conf
   
   # Ajout d'une règle cron pour renouveller automatique le certificat
-  echo "* * * 2 * letsencrypt renew" > /tmp/crontab.tmp
+  crontab -l > /tmp/crontab.tmp
+  echo "* * * 2 * letsencrypt renew" >> /tmp/crontab.tmp
   crontab /tmp/crontab.tmp
   rm /tmp/crontab.tmp
 
@@ -2262,6 +2267,7 @@ Install_Git()
   echo "ServerName  git.$domainName" >> /etc/apache2/sites-available/git.conf
   echo "ServerAlias  $domainName" >> /etc/apache2/sites-available/git.conf
   echo "DocumentRoot /var/www/CairnGit/repository/" >> /etc/apache2/sites-available/git.conf
+  echo "php_admin_value open_basedir /var/www/CairnGit/repository/" >> /etc/apache2/sites-available/git.conf
   echo "<Directory /var/www/CairnGit/repository/>" >> /etc/apache2/sites-available/git.conf
   echo "Order allow,deny" >> /etc/apache2/sites-available/git.conf
   echo "allow from all" >> /etc/apache2/sites-available/git.conf
@@ -2277,22 +2283,34 @@ Security_app()
   #  ufw enable
 
   # Install check rootkits
+  Mail_adress()
+  {
+    # Install dependency
+    apt-get -y install mailutils
+
+    # Send mail when someone is succefully connected in SSH
+    dialog --backtitle "Cairngit installation" --title "Email for security reports"\
+    --inputbox "/!\\ Should be external of this server /!\\" 7 60 2> $FICHTMP
+    email=`cat $FICHTMP`
+    hostname=$(hostname)
+  }
+
   Check_rootkits()
   {
     apt-get -y install rkhunter chkrootkit lynis
 
-    # Configuration of check rootkit
+    # Configuration of rkhunter
     rkhunter --propupd
 
     # Crontab rules for anti rootkit
     crontab -l > /tmp/crontab.tmp
-    echo "0 0 * * 0 rkhunter --update" >> /tmp/crontab.tmp
-    echo "0 1 * * 0 rkhunter --checkall --report-warnings-only" >> /tmp/crontab.tmp
+    echo "0 0 * * 0 root rkhunter --update" >> /tmp/crontab.tmp
+    echo "0 1 * * 0 root rkhunter --checkall --report-warnings-only | $email -s \"[$hostname on $domainName][RkHunter] Rapport de vérification\"" >> /tmp/crontab.tmp
 
-    echo "0 2 * * 0 chkrootkit -q" >> /tmp/crontab.tmp
+    echo "0 2 * * 0 root chkrootkit -q | $email -s \"[$hostname on $domainName][ChkRootkit] Rapport de vérification\"" >> /tmp/crontab.tmp
 
-    echo "0 3 * * 0 lynis --check-update" >> /tmp/crontab.tmp
-    echo "0 4 * * 0 lynis --check-all -Q" >> /tmp/crontab.tmp
+    echo "0 3 1 * * root lynis --check-update" >> /tmp/crontab.tmp
+    echo "0 4 1 * * root lynis --check-all -Q | $email -s \"[$hostname on $domainName][Lynis] Rapport de vérification\"" >> /tmp/crontab.tmp
     crontab /tmp/crontab.tmp
     rm /tmp/crontab.tmp
   }
@@ -2392,41 +2410,41 @@ Security_app()
     sed -i "s/include \$RULE\_PATH/#include \$RULE\_PATH/" /etc/snort/snort.conf
   
     sed -i "55 s/ipvar HOME_NET any/ipvar HOME_NET 192.168.1.0\/22/g" /etc/snort/snort.conf
-  sed -i "104 s/var RULE_PATH ..\/rules/var RULE_PATH \/etc\/snort\/rules/g" /etc/snort/snort.conf
-  sed -i "105 s/var SO_RULE_PATH ..\/so_rules/var SO_RULE_PATH \/etc\/snort\/so_rules/g" /etc/snort/snort.conf
-  sed -i "106 s/var PREPROC_RULE_PATH ..\/preproc_rules/var PREPROC_RULE_PATH \/etc\/snort\/preproc_rules/g" /etc/snort/snort.conf
-  sed -i "108 s/var WHITE_LIST_PATH ..\/rules/var WHITE_LIST_PATH \/etc\/snort\/rules\/iplists/g" /etc/snort/snort.conf
-  sed -i "109 s/var BLACK_LIST_PATH ..\/rules/var BLACK_LIST_PATH \/etc\/snort\/rules\/iplists/g" /etc/snort/snort.conf
-  sed -i "521 s/# output unified2: filename merged.log, limit 128, nostamp, mpls_event_types, vlan_event_types/output unified2: filename snort.u2, limit 128/g" /etc/snort/snort.conf
-  sed -i "545 s/#include \$RULE_PATH\/local.rules/include \$RULE_PATH\/local.rules/g" /etc/snort/snort.conf
+    sed -i "104 s/var RULE_PATH ..\/rules/var RULE_PATH \/etc\/snort\/rules/g" /etc/snort/snort.conf
+    sed -i "105 s/var SO_RULE_PATH ..\/so_rules/var SO_RULE_PATH \/etc\/snort\/so_rules/g" /etc/snort/snort.conf
+    sed -i "106 s/var PREPROC_RULE_PATH ..\/preproc_rules/var PREPROC_RULE_PATH \/etc\/snort\/preproc_rules/g" /etc/snort/snort.conf
+    sed -i "108 s/var WHITE_LIST_PATH ..\/rules/var WHITE_LIST_PATH \/etc\/snort\/rules\/iplists/g" /etc/snort/snort.conf
+    sed -i "109 s/var BLACK_LIST_PATH ..\/rules/var BLACK_LIST_PATH \/etc\/snort\/rules\/iplists/g" /etc/snort/snort.conf
+    sed -i "521 s/# output unified2: filename merged.log, limit 128, nostamp, mpls_event_types, vlan_event_types/output unified2: filename snort.u2, limit 128/g" /etc/snort/snort.conf
+    sed -i "545 s/#include \$RULE_PATH\/local.rules/include \$RULE_PATH\/local.rules/g" /etc/snort/snort.conf
   
-  cd ~/snort_src/
+    cd ~/snort_src/
   
-  git clone git://github.com/firnsy/barnyard2.git
+    git clone git://github.com/firnsy/barnyard2.git
   
-  cd barnyard2/
+    cd barnyard2/
   
-  autoreconf -fvi -I ./m4
+    autoreconf -fvi -I ./m4
   
-  ln -s /usr/include/dumbnet.h /usr/include/dnet.h
+    ln -s /usr/include/dumbnet.h /usr/include/dnet.h
   
-  ldconfig
+    ldconfig
   
-  ./configure --with-mysql --with-mysql-libraries=/usr/lib/x86_64-linux-gnu
+    ./configure --with-mysql --with-mysql-libraries=/usr/lib/x86_64-linux-gnu
   
-  make
+    make
   
-  make install
+    make install
   
-  cp etc/barnyard2.conf /etc/snort
+    cp etc/barnyard2.conf /etc/snort
   
-  mkdir /var/log/barnyard2
+    mkdir /var/log/barnyard2
   
-  chown snort.snort /var/log/barnyard2
+    chown snort.snort /var/log/barnyard2
   
-  touch /var/log/snort/barnyard2.waldo
+    touch /var/log/snort/barnyard2.waldo
   
-  chown snort.snort /var/log/snort/barnyard2.waldo
+    chown snort.snort /var/log/snort/barnyard2.waldo
   
   mysql -u root -p${pass} -e "CREATE DATABASE snort;"
   mysql -u root -p${pass} -e "CREATE USER 'snort'@'localhost' IDENTIFIED BY '$pass';"
@@ -2625,13 +2643,6 @@ Security_app()
 
   mail_SSH()
   {
-    # Install dependency
-    apt-get -y install mailutils
-
-    # Send mail when someone is succefully connected in SSH
-    dialog --backtitle "Cairngit installation" --title "Email for security report"\
-    --inputbox "/!\\ Should be external of this server /!\\" 7 60 2> $FICHTMP
-    email=`cat $FICHTMP`
     echo "echo 'SSH access on '\` id | cut -d \"(\" -f2 | cut -d \")\" -f1\`' account on '\`hostname\`' server at : ' \`date\`\ \`who\` | mail -s \"NOTIFICATION - Connexion on \"\`id | cut -d '(' -f2 | cut -d ')' -f1\`\" account with SSH since : \`who | cut -d\"(\" -f2 | cut -d\")\" -f1\`\" $email" >>  /etc/ssh/sshrc
   }
 
@@ -2728,26 +2739,26 @@ sed -i "s/ Port 22/Port 1234/g" /etc/ssh/sshd_config
   echo "cat /proc/sys/net/ipv4/tcp_max_syn_backlog >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
   echo "cat /proc/sys/net/ipv4/conf/all/rp_filter >> /srv/save_lin_parameter.dat" >> /srv/SYN_flood_fighter.sh
 
-# Update Linux protection
-echo 'echo "1" > /proc/sys/net/ipv4/tcp_syncookies' >> /srv/SYN_flood_fighter.sh
-echo 'echo "1024" > /proc/sys/net/ipv4/tcp_max_syn_backlog' >> /srv/SYN_flood_fighter.sh
-echo 'echo "1" > /proc/sys/net/ipv4/conf/all/rp_filter' >> /srv/SYN_flood_fighter.sh
+    # Update Linux protection
+    echo 'echo "1" > /proc/sys/net/ipv4/tcp_syncookies' >> /srv/SYN_flood_fighter.sh
+    echo 'echo "1024" > /proc/sys/net/ipv4/tcp_max_syn_backlog' >> /srv/SYN_flood_fighter.sh
+    echo 'echo "1" > /proc/sys/net/ipv4/conf/all/rp_filter' >> /srv/SYN_flood_fighter.sh
+ 
+    # Reload Linux configuration
+    echo "sysctl -p /etc/sysctl.conf" >> /srv/SYN_flood_fighter.sh
 
-# Reload Linux configuration
-echo "sysctl -p /etc/sysctl.conf" >> /srv/SYN_flood_fighter.sh
-
-# Add new Apache2 rules 
+    # Add new Apache2 rules 
 
 
-# Restart Apache2
-echo "systemctl restart apache2" >> /srv/SYN_flood_fighter.sh
+    # Restart Apache2
+    echo "systemctl restart apache2" >> /srv/SYN_flood_fighter.sh
 
-# End of the DDOS/DOS attack
-# Reload old Linux parameter
+    # End of the DDOS/DOS attack
+    # Reload old Linux parameter
 
-# Add in log ip of attackers
-# Add script in crontab
-  }
+    # Add in log ip of attackers
+    # Add script in crontab
+    }
   }
 
 Cleanning()
