@@ -49,7 +49,7 @@
 	height: 25px;
 	text-align: center;
 	font-size: 23px;
-	letter-spacing: -3px;
+	letter-spacing: -2px;
 	text-decoration: none;
    color: #DDD9D1;
 }
@@ -166,6 +166,8 @@
 {
 	display: flex;
 	justify-content: flex-start;
+        width: 40%;
+	overflow-wrap: break-word;
 }
 
 .title_repo_list_contain_a a
@@ -176,6 +178,12 @@
 	font-size: 20px;
 	font-weight: normal;
 	margin-bottom: -10px;
+}
+
+.title_repo_list_contain_a p
+{
+        width: 60%;
+	overflow-wrap: break-word;
 }
 
 .tabgroup_repo_list_contain
@@ -399,6 +407,7 @@ input.file
 {
 	position: relative;
 	width: auto;
+	max-width: 30%;
 	height: 50px;
 	margin-right: 15px;
 }

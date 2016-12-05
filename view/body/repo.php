@@ -35,7 +35,7 @@
 		</a>
 		<a href="/<?php echo $owner.'🜉/'.$repo.'📂/progest'; ?>" class="aside_repo_choix">
 			<div class="aside_repo_choix_logo" >
-				←⧰⬎
+				⧰
          </div>
          <div class="aside_repo_choix_text" >
 				Progest
@@ -87,6 +87,7 @@
 			<div class="title_repo_list_contain_a">
 				<?php 
 					echo '<img class="project_logo" src="/repository/'.$owner.'_repo/'.$repo.'/.cairn/repo_logo'.$ext.'"/>';
+					echo '<p>';
 					if(isset($_GET['tab'])) 
 					{ 
 						echo '<a href="/'.$owner.'🜉">'.$owner.'/</a><a href="/'.$owner.'🜉/'.$repo.'📂">'.$repo.'/</a><a href="/'.$owner.'/🜉'.$repo.'📂/'.$tab.'⚙"">'.$tab.'</a>';
@@ -95,7 +96,7 @@
 					{
 						echo '<a href="/'.$owner.'🜉">'.$owner.'/</a><a href="/'.$owner.'🜉/'.$repo.'📂">'.$repo.'/</a>';
 					}
-
+					echo '</p>'
 				?>
 			</div>
 
